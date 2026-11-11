@@ -2,11 +2,12 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Shield, Sparkles } from "lucide-react";
-import Link from "next/link";
 import React, { useState } from "react";
 import { startDemoSession } from "@/actions/auth";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 
 export function LandingHero() {
+  const { openAuthModal } = useAuthModal();
   const shouldReduceMotion = useReducedMotion();
   const [demoLoading, setDemoLoading] = useState(false);
 
@@ -73,12 +74,13 @@ export function LandingHero() {
                 )}
               </button>
 
-              <Link
-                href="/login"
-                className="w-full sm:w-auto px-6 py-3.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-border rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2"
+              <button
+                type="button"
+                onClick={() => openAuthModal("signin")}
+                className="w-full sm:w-auto px-6 py-3.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-border rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 Sign In
-              </Link>
+              </button>
             </div>
 
             {/* Trust Chips */}

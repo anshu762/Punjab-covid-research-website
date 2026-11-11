@@ -1,11 +1,12 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
 import React, { useState } from "react";
 import { startDemoSession } from "@/actions/auth";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 
 export function LandingFooter() {
+  const { openAuthModal } = useAuthModal();
   const [demoLoading, setDemoLoading] = useState(false);
   const authorName = process.env.NEXT_PUBLIC_AUTHOR_NAME;
   const authorUrl = process.env.NEXT_PUBLIC_AUTHOR_URL;
@@ -46,12 +47,13 @@ export function LandingFooter() {
                 </>
               )}
             </button>
-            <Link
-              href="/login"
-              className="w-full sm:w-auto px-6 py-3 text-sm font-semibold text-slate-300 hover:text-white bg-navy-800 hover:bg-navy-800/80 rounded-xl transition-colors text-center"
+            <button
+              type="button"
+              onClick={() => openAuthModal("signin")}
+              className="w-full sm:w-auto px-6 py-3 text-sm font-semibold text-slate-300 hover:text-white bg-navy-800 hover:bg-navy-800/80 rounded-xl transition-colors text-center cursor-pointer"
             >
               Sign In
-            </Link>
+            </button>
           </div>
         </div>
       </div>

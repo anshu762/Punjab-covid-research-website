@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { startDemoSession } from "@/actions/auth";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 
 export function LandingNavbar() {
+  const { openAuthModal } = useAuthModal();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [demoLoading, setDemoLoading] = useState(false);
@@ -67,17 +69,18 @@ export function LandingNavbar() {
 
         {/* CTA Buttons */}
         <div className="hidden sm:flex items-center gap-3">
-          <Link
-            href="/login"
-            className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-ink hover:bg-slate-100 rounded-lg transition-colors"
+          <button
+            type="button"
+            onClick={() => openAuthModal("signin")}
+            className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-ink hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
           >
             Sign in
-          </Link>
+          </button>
           <button
             type="button"
             disabled={demoLoading}
             onClick={handleStartDemo}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-75 rounded-lg shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 flex items-center gap-2"
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-75 rounded-lg shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 flex items-center gap-2 cursor-pointer"
           >
             {demoLoading ? (
               <>
@@ -144,17 +147,21 @@ export function LandingNavbar() {
             </a>
           </nav>
           <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
-            <Link
-              href="/login"
-              className="w-full text-center px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openAuthModal("signin");
+              }}
+              className="w-full text-center px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg cursor-pointer"
             >
               Sign in
-            </Link>
+            </button>
             <button
               type="button"
               disabled={demoLoading}
               onClick={handleStartDemo}
-              className="w-full text-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-xs"
+              className="w-full text-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-xs cursor-pointer"
             >
               {demoLoading ? "Launching demo..." : "Try the demo"}
             </button>
