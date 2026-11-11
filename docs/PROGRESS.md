@@ -19,9 +19,9 @@
 - [x] Task 6 — Compute HTTP endpoints (Direct JWT upload, confirm, import-bundled, archive-fetch)
 
 ### Checkpoint C — Web: API routes, chart foundation, shared UI
-- [ ] Task 7 — Next.js route handlers (`/api/datasets/*`, pagination, downloads, zod schemas)
-- [ ] Task 8 — Plotly chart foundation (`PlotlyChart.tsx`, accessible toolbar, table alternative, theme)
-- [ ] Task 9 — Dataset hooks (`useDatasets`, `useDataset`, `useObservations`) and TanStack Query
+- [x] Task 7 — Next.js route handlers (`/api/datasets/*`, pagination, downloads, zod schemas)
+- [x] Task 8 — Plotly chart foundation (`PlotlyChart.tsx`, accessible toolbar, table alternative, theme)
+- [x] Task 9 — Dataset hooks (`useDatasets`, `useDataset`, `useObservations`) and TanStack Query
 
 ### Checkpoint D — Data screen and Overview screen
 - [ ] Task 10 — `/data` page (Source selector, upload stepper, population provenance, paginated table)
