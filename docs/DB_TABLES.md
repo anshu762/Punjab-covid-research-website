@@ -15,6 +15,7 @@ All column names are **snake_case** (`@map`).
 | `name` | `VARCHAR` | Nullable |
 | `email` | `VARCHAR` | Unique, Nullable |
 | `email_verified` | `TIMESTAMPTZ` | Nullable |
+| `password_hash` | `VARCHAR` | Nullable (bcrypt hash for email/password users) |
 | `image` | `VARCHAR` | Nullable |
 | `is_demo` | `BOOLEAN` | Default `false` |
 | `demo_expires_at` | `TIMESTAMPTZ` | Nullable (used for 24h cleanup) |

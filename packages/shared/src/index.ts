@@ -4,4 +4,5 @@ export * from "./format";
 export * from "./errors";
 export * from "./status";
 export * from "./schemas/dataset";
+export * from "./schemas/auth";
 export * from "./stats";

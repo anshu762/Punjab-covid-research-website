@@ -1,7 +1,8 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { type DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
+import bcrypt from "bcryptjs";
+import { LoginSchema } from "@epilens/shared";
 import { authConfig } from "./auth.config";
 import { db } from "./lib/db";
 import { seedDemoData } from "./lib/demo";
@@ -26,14 +27,42 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   providers: [
-    ...(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET
-      ? [
-          Google({
-            clientId: process.env.AUTH_GOOGLE_ID,
-            clientSecret: process.env.AUTH_GOOGLE_SECRET,
-          }),
-        ]
-      : []),
+    Credentials({
+      id: "credentials",
+      name: "Email and Password",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const parseResult = LoginSchema.safeParse(credentials);
+        if (!parseResult.success) {
+          return null;
+        }
+
+        const { email, password } = parseResult.data;
+        const user = await db.user.findUnique({
+          where: { email },
+        });
+
+        if (!user || !user.passwordHash) {
+          return null;
+        }
+
+        const passwordsMatch = await bcrypt.compare(password, user.passwordHash);
+        if (!passwordsMatch) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          isDemo: user.isDemo,
+          demoExpiresAt: user.demoExpiresAt,
+        };
+      },
+    }),
     Credentials({
       id: "demo",
       name: "Demo Account",

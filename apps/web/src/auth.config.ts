@@ -12,6 +12,7 @@ export const authConfig: NextAuthConfig = {
       const isPublicPath =
         pathname === "/" ||
         pathname === "/login" ||
+        pathname === "/signup" ||
         pathname.startsWith("/api/auth") ||
         pathname.startsWith("/api/cron") ||
         pathname.startsWith("/api/health") ||

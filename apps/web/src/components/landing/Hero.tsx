@@ -77,7 +77,7 @@ export function LandingHero() {
                 href="/login"
                 className="w-full sm:w-auto px-6 py-3.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-border rounded-xl shadow-xs transition-colors flex items-center justify-center gap-2"
               >
-                Sign in with Google
+                Sign In
               </Link>
             </div>
 
