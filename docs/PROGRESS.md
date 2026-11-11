@@ -14,9 +14,9 @@
 - [x] Task 3 — Pytest suite `tests/test_cleaning.py`, `tests/test_csv_io.py`
 
 ### Checkpoint B — Persistence, bundled data, endpoints (compute service)
-- [ ] Task 4 — Bundled datasets (Punjab frozen archive download + synthetic demo generation)
-- [ ] Task 5 — Service layer `app/data/service.py` (psycopg, owner isolation, bulk observations)
-- [ ] Task 6 — Compute HTTP endpoints (Direct JWT upload, confirm, import-bundled, archive-fetch)
+- [x] Task 4 — Bundled datasets (Punjab frozen archive download + synthetic demo generation)
+- [x] Task 5 — Service layer `app/data/service.py` (psycopg, owner isolation, bulk observations)
+- [x] Task 6 — Compute HTTP endpoints (Direct JWT upload, confirm, import-bundled, archive-fetch)
 
 ### Checkpoint C — Web: API routes, chart foundation, shared UI
 - [ ] Task 7 — Next.js route handlers (`/api/datasets/*`, pagination, downloads, zod schemas)

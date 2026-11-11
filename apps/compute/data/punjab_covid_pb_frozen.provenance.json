@@ -1,0 +1,16 @@
+{
+  "dataset_key": "punjab_frozen_archive",
+  "name": "Punjab COVID-19 Archive (covid19india)",
+  "source_url": "https://data.covid19india.org/csv/latest/state_wise_daily.csv",
+  "retrieved_at": "2026-11-11T15:14:02.812110Z",
+  "full_source_sha256": "2011cf18afb24a9eff08ce5e2d385d83fb628af36da9e9a84b04e4688ff5c834",
+  "filtered_csv_sha256": "279cc8c42be5854375627f5a2b737c24ae60eff418a3cee9bcf5cfdbece1dca9",
+  "region_code": "PB",
+  "region_name": "Punjab, India",
+  "date_start": "2020-03-14",
+  "date_end": "2021-10-31",
+  "record_count": 597,
+  "is_synthetic": false,
+  "population": 27743338,
+  "population_provenance": "Census 2011 official state total for Punjab, India"
+}

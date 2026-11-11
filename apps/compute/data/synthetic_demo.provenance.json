@@ -1,0 +1,15 @@
+{
+  "dataset_key": "synthetic_demo",
+  "name": "Synthetic Demo (Punjab-like)",
+  "source_url": "synthetic://generator?seed=42",
+  "retrieved_at": "2026-11-11T15:14:29.071433+00:00",
+  "filtered_csv_sha256": "59d1fe6dd9ce31028b6025a082bb424a813f0051d4bd05e875985612123d0ec7",
+  "region_code": "PB",
+  "region_name": "Punjab, India",
+  "date_start": "2020-07-01",
+  "date_end": "2020-11-30",
+  "record_count": 153,
+  "is_synthetic": true,
+  "population": 27743338,
+  "population_provenance": "Synthetic Punjab-like epidemic curve (Seed 42) based on Census 2011 population baseline"
+}
