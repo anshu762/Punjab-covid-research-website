@@ -24,6 +24,6 @@
 - [x] Task 9 — Dataset hooks (`useDatasets`, `useDataset`, `useObservations`) and TanStack Query
 
 ### Checkpoint D — Data screen and Overview screen
-- [ ] Task 10 — `/data` page (Source selector, upload stepper, population provenance, paginated table)
-- [ ] Task 11 — `/overview` page (4 StatCards, incidence chart with 7-day trailing mean line, CoverageStrip)
-- [ ] Task 12 — Unit tests, component tests, and Playwright smoke test
+- [x] Task 10 — `/data` page (Source selector, upload stepper, population provenance, paginated table)
+- [x] Task 11 — `/overview` page (4 StatCards, incidence chart with 7-day trailing mean line, CoverageStrip)
+- [x] Task 12 — Unit tests, component tests, and Playwright smoke test

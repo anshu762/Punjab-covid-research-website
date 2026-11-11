@@ -19,6 +19,9 @@ importers:
       '@prisma/client':
         specifier: 6.4.1
         version: 6.4.1(prisma@6.4.1(typescript@5.9.3))(typescript@5.9.3)
+      '@tanstack/react-query':
+        specifier: 5.62.7
+        version: 5.62.7(react@19.3.0)
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
@@ -28,6 +31,9 @@ importers:
       framer-motion:
         specifier: 12.38.0
         version: 12.38.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      jose:
+        specifier: 5.9.6
+        version: 5.9.6
       lucide-react:
         specifier: 1.16.0
         version: 1.16.0(react@19.3.0)
@@ -37,6 +43,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.25
         version: 5.0.0-beta.25(next@16.4.6(@babel/core@7.29.13)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
+      plotly.js-basic-dist-min:
+        specifier: 2.35.2
+        version: 2.35.2
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -62,6 +71,9 @@ importers:
       '@types/node':
         specifier: 20.19.43
         version: 20.19.43
+      '@types/plotly.js-basic-dist-min':
+        specifier: 2.12.3
+        version: 2.12.3
       '@types/react':
         specifier: 19.3.0
         version: 19.3.0
@@ -940,6 +952,14 @@ packages:
   '@tailwindcss/turbopack@4.3.3':
     resolution: {integrity: sha512-FgL4wRgItNdXcDjcgYUSd59gNsWqNVK4GotjZimZMmt7OOIkRNqH2QEUcRXLdBDXvwTsi5rkYxDxzfrFUkmObQ==}
 
+  '@tanstack/query-core@5.62.7':
+    resolution: {integrity: sha512-fgpfmwatsrUal6V+8EC2cxZIQVl9xvL7qYa03gsdsCy985UTUlS4N+/3hCzwR0PclYDqisca2AqR1BVgJGpUDA==}
+
+  '@tanstack/react-query@5.62.7':
+    resolution: {integrity: sha512-+xCtP4UAFDTlRTYyEjLx0sRtWyr5GIk7TZjZwBu4YaNahi3Rt2oMyRqfpfVrtwsqY2sayP4iXVCwmC+ZqqFmuw==}
+    peerDependencies:
+      react: ^18 || ^19
+
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
@@ -954,6 +974,12 @@ packages:
 
   '@types/node@20.19.43':
     resolution: {integrity: sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==}
+
+  '@types/plotly.js-basic-dist-min@2.12.3':
+    resolution: {integrity: sha512-yzHUU+E5OBcKXKsUpzn1sr87XQPqTen36yox1He0tpANh9WdJE5kkt1iIq8dk2oqlbA7bc1B1qF5Fv3KsENfCA==}
+
+  '@types/plotly.js@3.0.15':
+    resolution: {integrity: sha512-ftBxk2fB7BxxeMpT0IVEb/3HKpYTXO5nCdR5mGEz6gHpLd6GGRFxvDVoG1gpD/gBAgoN36KIyRflxCnOfWlskQ==}
 
   '@types/react-dom@19.3.0':
     resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
@@ -1903,6 +1929,9 @@ packages:
   jose@5.10.0:
     resolution: {integrity: sha512-s+3Al/p9g32Iq+oqXxkW//7jk2Vig6FF1CFqzVXoTUXt2qz89YWbL+OwS17NFYEvxC35n0FKeGO2LGYSxeM2Gg==}
 
+  jose@5.9.6:
+    resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -2222,6 +2251,9 @@ packages:
   picomatch@4.0.7:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
+
+  plotly.js-basic-dist-min@2.35.2:
+    resolution: {integrity: sha512-+apJo+/k9YcDH7W39uIONM+t4P6x15w2MEZnmbi3JjGAl9yW1ZJmyqq4xtynwuIbyU26Nv+4oVu1IULGgUkzlQ==}
 
   possible-typed-array-names@1.1.0:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
@@ -3329,6 +3361,13 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
 
+  '@tanstack/query-core@5.62.7': {}
+
+  '@tanstack/react-query@5.62.7(react@19.3.0)':
+    dependencies:
+      '@tanstack/query-core': 5.62.7
+      react: 19.3.0
+
   '@types/cookie@0.6.0': {}
 
   '@types/estree@1.0.10': {}
@@ -3340,6 +3379,12 @@ snapshots:
   '@types/node@20.19.43':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/plotly.js-basic-dist-min@2.12.3':
+    dependencies:
+      '@types/plotly.js': 3.0.15
+
+  '@types/plotly.js@3.0.15': {}
 
   '@types/react-dom@19.3.0(@types/react@19.3.0)':
     dependencies:
@@ -4549,6 +4594,8 @@ snapshots:
 
   jose@5.10.0: {}
 
+  jose@5.9.6: {}
+
   js-tokens@4.0.0: {}
 
   js-yaml@4.3.2:
@@ -4824,6 +4871,8 @@ snapshots:
   picomatch@2.3.2: {}
 
   picomatch@4.0.7: {}
+
+  plotly.js-basic-dist-min@2.35.2: {}
 
   possible-typed-array-names@1.1.0: {}
 
