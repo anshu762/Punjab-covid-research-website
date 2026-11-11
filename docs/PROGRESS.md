@@ -4,7 +4,7 @@
 - [x] Task 1 — Monorepo scaffold
 - [x] Task 2 — Shared package (`packages/shared/src`)
 - [x] Task 3 — Prisma schema + migration
-- [ ] Task 4 — Environment handling
+- [x] Task 4 — Environment handling
 
 ## Checkpoint B — Auth, BFF utilities, compute service with job queue
 - [ ] Task 5 — Auth.js v5 (Edge-safe split, Demo credentials provider, isolated session)
