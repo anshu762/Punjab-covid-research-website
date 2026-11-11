@@ -8,7 +8,7 @@
 
 ## Checkpoint B — Auth, BFF utilities, compute service with job queue
 - [x] Task 5 — Auth.js v5 (Edge-safe split, Demo credentials provider, isolated session)
-- [ ] Task 6 — BFF utilities (`http.ts`, `compute.ts`, `logger.ts`, health route)
+- [x] Task 6 — BFF utilities (`http.ts`, `compute.ts`, `logger.ts`, health route)
 - [ ] Task 7 — Compute service skeleton (`FastAPI`, Postgres worker, queue, reaper)
 - [ ] Task 8 — Connect web ↔ compute (`/api/dev/selftest`, `/dev/health`)
 
