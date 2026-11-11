@@ -3,7 +3,7 @@
 ## Checkpoint A — Repo, shared package, database
 - [x] Task 1 — Monorepo scaffold
 - [x] Task 2 — Shared package (`packages/shared/src`)
-- [ ] Task 3 — Prisma schema + migration
+- [x] Task 3 — Prisma schema + migration
 - [ ] Task 4 — Environment handling
 
 ## Checkpoint B — Auth, BFF utilities, compute service with job queue
