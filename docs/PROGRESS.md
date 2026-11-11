@@ -15,7 +15,7 @@
 ## Checkpoint C — Design system and app shell
 - [x] Task 9 — Design tokens, shadcn/ui restyling, custom layout/common components
 - [x] Task 10 — Workspace store (zustand + localStorage persist `epilens-workspace-v1`)
-- [ ] Task 11 — App routes and honest empty states (7 PRD pages)
+- [x] Task 11 — App routes and honest empty states (7 PRD pages)
 
 ## Checkpoint D — Landing page and login
 - [ ] Task 12 — Public landing page (9 framer-motion sections + RK4 illustrative SIR playground)
