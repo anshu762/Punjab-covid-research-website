@@ -7,7 +7,7 @@ import { AuthCard } from "@/components/auth/AuthCard";
 
 function SignUpContent() {
   return (
-    <div className="w-full max-w-md space-y-4">
+    <div className="w-full max-w-3xl space-y-4">
       {/* Return to Landing Page */}
       <div>
         <Link

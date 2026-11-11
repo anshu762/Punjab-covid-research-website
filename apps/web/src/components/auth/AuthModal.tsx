@@ -50,11 +50,11 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
 
           {/* Modal Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 15 }}
-            transition={{ type: "spring", duration: 0.35, bounce: 0.15 }}
-            className="relative z-10 w-full max-w-md my-auto"
+            exit={{ opacity: 0, scale: 0.96, y: 12 }}
+            transition={{ type: "spring", duration: 0.35, bounce: 0.12 }}
+            className="relative z-10 w-full max-w-3xl my-auto"
           >
             <AuthCard initialMode={initialMode} onClose={onClose} isModal />
           </motion.div>
