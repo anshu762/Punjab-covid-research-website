@@ -20,4 +20,4 @@
 ## Checkpoint D — Landing page and login
 - [x] Task 12 — Public landing page (9 framer-motion sections + RK4 illustrative SIR playground)
 - [x] Task 13 — `/login` page (Google + 1-click isolated demo login)
-- [ ] Task 14 — Docs and final verification (README, acceptance checklist, phase report)
+- [x] Task 14 — Docs and final verification (README, acceptance checklist, phase report)
