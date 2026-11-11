@@ -10,7 +10,7 @@
 - [x] Task 5 — Auth.js v5 (Edge-safe split, Demo credentials provider, isolated session)
 - [x] Task 6 — BFF utilities (`http.ts`, `compute.ts`, `logger.ts`, health route)
 - [x] Task 7 — Compute service skeleton (`FastAPI`, Postgres worker, queue, reaper)
-- [ ] Task 8 — Connect web ↔ compute (`/api/dev/selftest`, `/dev/health`)
+- [x] Task 8 — Connect web ↔ compute (`/api/dev/selftest`, `/dev/health`)
 
 ## Checkpoint C — Design system and app shell
 - [ ] Task 9 — Design tokens, shadcn/ui restyling, custom layout/common components
