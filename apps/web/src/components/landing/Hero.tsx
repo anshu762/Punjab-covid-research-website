@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Shield, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { startDemoSession } from "@/auth";
+import { startDemoSession } from "@/actions/auth";
 
 export function LandingHero() {
   const shouldReduceMotion = useReducedMotion();

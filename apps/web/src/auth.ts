@@ -103,8 +103,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
 });
-
-export async function startDemoSession() {
-  "use server";
-  return signIn("demo", { redirectTo: "/overview" });
-}

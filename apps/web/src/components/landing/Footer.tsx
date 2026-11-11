@@ -3,7 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
-import { startDemoSession } from "@/auth";
+import { startDemoSession } from "@/actions/auth";
 
 export function LandingFooter() {
   const [demoLoading, setDemoLoading] = useState(false);

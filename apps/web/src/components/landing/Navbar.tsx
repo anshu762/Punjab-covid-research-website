@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { startDemoSession } from "@/auth";
+import { startDemoSession } from "@/actions/auth";
 
 export function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);

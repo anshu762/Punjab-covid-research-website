@@ -61,6 +61,9 @@ importers:
       tailwind-merge:
         specifier: 3.5.0
         version: 3.5.0
+      zod:
+        specifier: 3.24.1
+        version: 3.24.1
       zustand:
         specifier: 5.0.11
         version: 5.0.11(@types/react@19.3.0)(react@19.3.0)

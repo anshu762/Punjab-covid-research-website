@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, CheckCircle, Info } from "lucide-react";
 import React, { Suspense, useState } from "react";
-import { startDemoSession } from "@/auth";
+import { startDemoSession } from "@/actions/auth";
 import { InlineError } from "@/components/common/InlineError";
 
 function LoginForm() {
