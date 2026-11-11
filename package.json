@@ -1,0 +1,15 @@
+{
+  "name": "epilens-monorepo",
+  "private": true,
+  "packageManager": "pnpm@11.2.2",
+  "scripts": {
+    "dev:web": "pnpm --filter @epilens/web dev",
+    "dev:compute": "cd apps/compute && python -m uvicorn app.main:app --reload --port 8000",
+    "typecheck": "pnpm -r --parallel run typecheck",
+    "lint": "pnpm -r --parallel run lint",
+    "test": "pnpm -r run test",
+    "test:compute": "cd apps/compute && python -m pytest -q",
+    "db:migrate": "pnpm --filter @epilens/web prisma migrate dev",
+    "db:generate": "pnpm --filter @epilens/web prisma generate"
+  }
+}
