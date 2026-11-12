@@ -6,7 +6,6 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { InteractiveSirPlayground } from "@/components/landing/InteractiveSirPlayground";
 import { LandingNavbar } from "@/components/landing/Navbar";
 import { RigorSection } from "@/components/landing/RigorSection";
-import { TechStackStrip } from "@/components/landing/TechStackStrip";
 
 export default function LandingPage() {
   return (
@@ -19,7 +18,6 @@ export default function LandingPage() {
         <HowItWorks />
         <InteractiveSirPlayground />
         <RigorSection />
-        <TechStackStrip />
       </main>
       <LandingFooter />
     </div>

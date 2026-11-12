@@ -60,8 +60,13 @@ export function LandingFooter() {
 
       {/* Sub-footer & Disclaimers */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-        <div>
-          <span className="font-semibold text-white">EpiLens</span> &mdash; Research workbench for Punjab COVID-19 data.
+        <div className="space-y-1 text-center sm:text-left">
+          <div>
+            <span className="font-semibold text-white">EpiLens</span> &mdash; Research workbench for Punjab COVID-19 data.
+          </div>
+          <p className="text-[11px] text-slate-400">
+            made with Anubhav
+          </p>
         </div>
 
         <div className="text-center sm:text-right space-y-1">
