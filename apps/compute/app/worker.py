@@ -52,6 +52,7 @@ def handle_selftest(job: dict[str, Any]) -> None:
 
 
 register_handler("SELFTEST", handle_selftest)
+import app.jobs  # noqa: F401
 
 
 def run_reaper() -> None:
