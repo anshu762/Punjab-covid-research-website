@@ -118,9 +118,9 @@
 - [x] Task 5 — Reliability checks (Neon suspend backoff, mid-run reconnect, idempotency, 2-job limit)
 
 ### Checkpoint D — Full end-to-end verification vs the PRD
-- [ ] Task 6 — E2E test suite `e2e/full-workflow.spec.ts`
-- [ ] Task 7 — Backend verification summary (`pytest -q`, mathematical invariants)
-- [ ] Task 8 — PRD traceability matrix `docs/TRACEABILITY.md`
+- [x] Task 6 — E2E test suite `e2e/full-workflow.spec.ts`
+- [x] Task 7 — Backend verification summary (`pytest -q`, mathematical invariants)
+- [x] Task 8 — PRD traceability matrix `docs/TRACEABILITY.md`
 
 ### Checkpoint E — Deployment and portfolio assets
 - [ ] Task 9 — Deploy configs (`vercel.json`, `Dockerfile`, `.github/workflows/ci.yml`, `docs/DEPLOY.md`, `scripts/smoke.sh`)
