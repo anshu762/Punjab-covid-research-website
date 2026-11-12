@@ -5,4 +5,7 @@ export * from "./errors";
 export * from "./status";
 export * from "./schemas/dataset";
 export * from "./schemas/auth";
+export * from "./schemas/run";
+export * from "./hash";
 export * from "./stats";
+
