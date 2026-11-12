@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Lint, Typecheck & Test Monorepo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11.2.2
+
+      - name: Setup Node.js 22 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Workspace Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm --filter @epilens/web db:generate
+
+      - name: TypeScript Typecheck
+        run: pnpm typecheck
+
+      - name: ESLint Check
+        run: pnpm lint
+
+      - name: Automated UI Consistency Audit
+        run: node scripts/ui-audit.js
+
+      - name: Run Vitest Suite (Web & Shared)
+        run: pnpm test
+
+      - name: Install Compute Python Dependencies
+        working-directory: apps/compute
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Pytest Suite (Compute Engine)
+        working-directory: apps/compute
+        run: |
+          pytest -q tests/test_scenarios.py tests/test_exports.py tests/test_sensitivity.py tests/test_cleaning.py tests/test_csv_io.py

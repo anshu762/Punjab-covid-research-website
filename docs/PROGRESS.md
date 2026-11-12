@@ -123,8 +123,8 @@
 - [x] Task 8 — PRD traceability matrix `docs/TRACEABILITY.md`
 
 ### Checkpoint E — Deployment and portfolio assets
-- [ ] Task 9 — Deploy configs (`vercel.json`, `Dockerfile`, `.github/workflows/ci.yml`, `docs/DEPLOY.md`, `scripts/smoke.sh`)
-- [ ] Task 10 — Portfolio assets (`README.md`, `docs/CASE_STUDY.md`, `docs/DEMO_SCRIPT.md`, version tag v1.0.0)
+- [x] Task 9 — Deploy configs (`vercel.json`, `Dockerfile`, `.github/workflows/ci.yml`, `docs/DEPLOY.md`, `scripts/smoke.sh`)
+- [x] Task 10 — Portfolio assets (`README.md`, `docs/CASE_STUDY.md`, `docs/DEMO_SCRIPT.md`, version tag v1.0.0)
 
 
 

@@ -18,6 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
   title: "EpiLens — Punjab COVID-19 Research Workbench",
   description:
     "Private research workbench for Punjab COVID-19 data: SIR model fitting, forecast evaluation, scenarios, and reproducible exports.",
