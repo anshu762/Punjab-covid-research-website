@@ -5,6 +5,9 @@
   "scripts": {
     "dev:web": "pnpm --filter @epilens/web dev",
     "dev:compute": "cd apps/compute && python -m uvicorn app.main:app --reload --port 8000",
+    "build": "pnpm --filter @epilens/web build",
+    "vercel-build": "pnpm --filter @epilens/web build",
+    "postinstall": "pnpm --filter @epilens/web exec prisma generate",
     "typecheck": "pnpm -r --parallel run typecheck",
     "lint": "pnpm -r --parallel run lint",
     "test": "pnpm -r run test",

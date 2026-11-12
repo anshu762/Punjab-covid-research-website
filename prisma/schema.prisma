@@ -1,0 +1,368 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum DatasetStatus {
+  PENDING_MAPPING
+  READY
+  BLOCKED
+}
+
+enum QualityFlag {
+  OK
+  MISSING
+  DUPLICATE
+  CORRECTED
+  CORRECTION_DAY
+  UNRESOLVED_CORRECTION
+}
+
+enum FileKind {
+  RAW_UPLOAD
+  CLEAN_CSV
+  QUALITY_LOG
+  EXPORT
+}
+
+enum RunMode {
+  FIT
+  EVALUATE
+}
+
+enum ModelType {
+  M1
+  M2
+}
+
+enum RunStatus {
+  QUEUED
+  VALIDATING
+  FITTING
+  EVALUATING
+  ESTIMATING_UNCERTAINTY
+  EXPORTING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum ScenarioStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum ExportStatus {
+  QUEUED
+  RUNNING
+  READY
+  FAILED
+}
+
+enum JobType {
+  RUN
+  SCENARIO
+  SENSITIVITY
+  EXPORT
+  SELFTEST
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  DONE
+  FAILED
+  CANCELLED
+}
+
+model User {
+  id            String       @id @default(cuid()) @map("id")
+  name          String?      @map("name")
+  email         String?      @unique @map("email")
+  emailVerified DateTime?    @map("email_verified")
+  passwordHash  String?      @map("password_hash")
+  image         String?      @map("image")
+  isDemo        Boolean      @default(false) @map("is_demo")
+  demoExpiresAt DateTime?    @map("demo_expires_at")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  accounts      Account[]
+  sessions      Session[]
+  datasets      Dataset[]
+  runs          Run[]
+  scenarios     Scenario[]
+  exports       Export[]
+  files         StoredFile[]
+  aiExplanations AiExplanation[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid()) @map("id")
+  userId            String  @map("user_id")
+  type              String  @map("type")
+  provider          String  @map("provider")
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @map("refresh_token") @db.Text
+  access_token      String? @map("access_token") @db.Text
+  expires_at        Int?    @map("expires_at")
+  token_type        String? @map("token_type")
+  scope             String? @map("scope")
+  id_token          String? @map("id_token") @db.Text
+  session_state     String? @map("session_state")
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid()) @map("id")
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime @map("expires")
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String   @map("identifier")
+  token      String   @unique @map("token")
+  expires    DateTime @map("expires")
+
+  @@id([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Dataset {
+  id                      String        @id @default(cuid()) @map("id")
+  ownerId                 String        @map("owner_id")
+  familyId                String        @map("family_id")
+  version                 Int           @map("version")
+  name                    String        @map("name")
+  regionCode              String        @default("PB") @map("region_code")
+  isSynthetic             Boolean       @default(false) @map("is_synthetic")
+  sourceKind              String        @map("source_kind")
+  sourceName              String        @map("source_name")
+  sourceUrl               String?       @map("source_url")
+  retrievedAt             DateTime      @map("retrieved_at")
+  sha256                  String        @map("sha256")
+  status                  DatasetStatus @map("status")
+  rawFileId               String?       @map("raw_file_id")
+  cleanFileId             String?       @map("clean_file_id")
+  qualityLogFileId        String?       @map("quality_log_file_id")
+  schemaMapping           Json?         @map("schema_mapping")
+  qualitySummary          Json?         @map("quality_summary")
+  populationValue         Int?          @map("population_value")
+  populationSourceUrl     String?       @map("population_source_url")
+  populationReferenceYear Int?          @map("population_reference_year")
+  populationGeography     String?       @map("population_geography")
+  createdAt               DateTime      @default(now()) @map("created_at")
+  updatedAt               DateTime      @updatedAt @map("updated_at")
+  owner                   User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  observations            Observation[]
+  runs                    Run[]
+  files                   StoredFile[]
+
+  @@unique([ownerId, familyId, version])
+  @@index([ownerId, createdAt])
+  @@map("datasets")
+}
+
+model Observation {
+  datasetId             String      @map("dataset_id")
+  date                  DateTime    @map("date") @db.Date
+  newConfirmedRaw       Int?        @map("new_confirmed_raw")
+  newConfirmedAnalysis  Int?        @map("new_confirmed_analysis")
+  qualityFlag           QualityFlag @map("quality_flag")
+  transformationId      String?     @map("transformation_id")
+  sourceRef             String?     @map("source_ref")
+  dataset               Dataset     @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  @@id([datasetId, date])
+  @@map("observations")
+}
+
+model StoredFile {
+  id        String   @id @default(cuid()) @map("id")
+  ownerId   String   @map("owner_id")
+  datasetId String?  @map("dataset_id")
+  runId     String?  @map("run_id")
+  kind      FileKind @map("kind")
+  filename  String   @map("filename")
+  mimeType  String   @map("mime_type")
+  sizeBytes Int      @map("size_bytes")
+  sha256    String   @map("sha256")
+  content   Bytes    @map("content")
+  createdAt DateTime @default(now()) @map("created_at")
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  dataset   Dataset? @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  run       Run?     @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("stored_files")
+}
+
+model Run {
+  id             String        @id @default(cuid()) @map("id")
+  ownerId        String        @map("owner_id")
+  datasetId      String        @map("dataset_id")
+  displayName    String        @map("display_name")
+  mode           RunMode       @map("mode")
+  modelType      ModelType     @map("model_type")
+  config         Json          @map("config")
+  configHash     String        @map("config_hash")
+  cacheKey       String        @map("cache_key")
+  status         RunStatus     @default(QUEUED) @map("status")
+  stage          String        @default("queued") @map("stage")
+  progressDone   Int?          @map("progress_done")
+  progressTotal  Int?          @map("progress_total")
+  cancelRequested Boolean      @default(false) @map("cancel_requested")
+  idempotencyKey String?       @map("idempotency_key")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  startedAt      DateTime?     @map("started_at")
+  completedAt    DateTime?     @map("completed_at")
+  codeVersion    String        @map("code_version")
+  seed           Int           @map("seed")
+  errorReference String?       @map("error_reference")
+  errorMessage   String?       @map("error_message")
+  hasFit         Boolean       @default(false) @map("has_fit")
+  evaluated      Boolean       @default(false) @map("evaluated")
+  owner          User          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  dataset        Dataset       @relation(fields: [datasetId], references: [id], onDelete: Restrict)
+  fitResult      FitResult?
+  forecastRows   ForecastRow[]
+  scenarios      Scenario[]
+  exports        Export[]
+  files          StoredFile[]
+  sensitivityResult SensitivityResult?
+
+  @@unique([ownerId, idempotencyKey])
+  @@index([ownerId, createdAt])
+  @@index([ownerId, cacheKey])
+  @@map("runs")
+}
+
+model FitResult {
+  runId              String   @id @map("run_id")
+  parameters         Json     @map("parameters")
+  parameterIntervals Json?    @map("parameter_intervals")
+  assumptions        Json     @map("assumptions")
+  convergence        Json     @map("convergence")
+  boundaryHits       Json     @map("boundary_hits")
+  changePoint        Json?    @map("change_point")
+  payload            Json     @map("payload")
+  createdAt          DateTime @default(now()) @map("created_at")
+  run                Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("fit_results")
+}
+
+model ForecastRow {
+  id                        Int      @id @default(autoincrement()) @map("id")
+  runId                     String   @map("run_id")
+  model                     String   @map("model")
+  originDate                DateTime @map("origin_date") @db.Date
+  targetDate                DateTime @map("target_date") @db.Date
+  split                     String   @map("split")
+  estimate                  Float    @map("estimate")
+  lower                     Float?   @map("lower")
+  upper                     Float?   @map("upper")
+  intervalUnavailableReason String?  @map("interval_unavailable_reason")
+  actual                    Float    @map("actual")
+  run                       Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId, model, originDate])
+  @@map("forecast_rows")
+}
+
+model Scenario {
+  id             String         @id @default(cuid()) @map("id")
+  ownerId        String         @map("owner_id")
+  parentRunId    String         @map("parent_run_id")
+  percentChange  Int            @map("percent_change")
+  horizonDays    Int            @map("horizon_days")
+  status         ScenarioStatus @default(QUEUED) @map("status")
+  config         Json           @map("config")
+  dailyOutputs   Json?          @map("daily_outputs")
+  summary        Json?          @map("summary")
+  errorReference String?        @map("error_reference")
+  errorMessage   String?        @map("error_message")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  completedAt    DateTime?      @map("completed_at")
+  owner          User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  parentRun      Run            @relation(fields: [parentRunId], references: [id], onDelete: Cascade)
+
+  @@map("scenarios")
+}
+
+model Export {
+  id             String       @id @default(cuid()) @map("id")
+  ownerId        String       @map("owner_id")
+  runId          String       @map("run_id")
+  scenarioId     String?      @map("scenario_id")
+  type           String       @map("type")
+  status         ExportStatus @default(QUEUED) @map("status")
+  fileId         String?      @map("file_id")
+  checksum       String?      @map("checksum")
+  manifest       Json?        @map("manifest")
+  errorReference String?      @map("error_reference")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  expiresAt      DateTime?    @map("expires_at")
+  owner          User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  run            Run          @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("exports")
+}
+
+model Job {
+  id          String    @id @default(cuid()) @map("id")
+  type        JobType   @map("type")
+  refId       String    @map("ref_id")
+  status      JobStatus @default(QUEUED) @map("status")
+  attempts    Int       @default(0) @map("attempts")
+  maxAttempts Int       @default(2) @map("max_attempts")
+  lockedAt    DateTime? @map("locked_at")
+  lockedBy    String?   @map("locked_by")
+  heartbeatAt DateTime? @map("heartbeat_at")
+  lastError   String?   @map("last_error")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@map("jobs")
+}
+
+model SensitivityResult {
+  runId     String   @id @map("run_id")
+  combos    Json     @map("combos")
+  summary   Json     @map("summary")
+  createdAt DateTime @default(now()) @map("created_at")
+  run       Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("sensitivity_results")
+}
+
+model AiExplanation {
+  id               String   @id @default(cuid()) @map("id")
+  ownerId          String   @map("owner_id")
+  kind             String   @map("kind")
+  refId            String   @map("ref_id")
+  inputHash        String   @map("input_hash")
+  model            String   @map("model")
+  text             String   @db.Text @map("text")
+  groundingWarning Boolean  @default(false) @map("grounding_warning")
+  createdAt        DateTime @default(now()) @map("created_at")
+  owner            User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId, kind, refId])
+  @@map("ai_explanations")
+}
