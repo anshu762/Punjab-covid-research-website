@@ -76,8 +76,8 @@ def handle_sensitivity_job(job: dict[str, Any]) -> None:
         execute("UPDATE jobs SET status = 'DONE', updated_at = now() WHERE id = %(jid)s", {"jid": job_id})
         logger.info("SENSITIVITY job %s for run %s completed successfully", job_id, run_id)
 
-    except Exception as exc:  # noqa: BLE001
-        logger.exception("SENSITIVITY job %s failed: %s", job_id, exc)
+    except Exception as exc:
+        logger.exception("SENSITIVITY job %s failed", job_id)
         err_ref = f"ERR-SENS-{uuid.uuid4().hex[:8].upper()}"
         execute(
             """

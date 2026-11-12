@@ -5,11 +5,12 @@ import io
 from typing import Any
 
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import numpy as np
 from datetime import datetime
+
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 
 
 def render_observed_and_fitted_figure(

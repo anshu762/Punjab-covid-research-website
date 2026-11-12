@@ -1,6 +1,5 @@
 """Tests for 27-combination sensitivity matrix and reversal detection."""
-import pytest
-from app.sensitivity import D_VALUES, RHO_VALUES, FS_VALUES, evaluate_27_combinations
+from app.sensitivity import D_VALUES, FS_VALUES, RHO_VALUES, evaluate_27_combinations
 
 
 def test_sensitivity_dimensions():

@@ -1,12 +1,8 @@
 """Tests for export generation, manifest security audit, formula neutralization, and figure DPI."""
-import hashlib
-import io
-import json
-import zipfile
 import pytest
 
+from app.exports.bundle import audit_manifest_security
 from app.exports.csv_builders import neutralize
-from app.exports.bundle import audit_manifest_security, sha256_bytes
 from app.exports.figures import render_observed_and_fitted_figure
 
 

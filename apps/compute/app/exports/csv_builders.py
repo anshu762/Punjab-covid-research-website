@@ -12,10 +12,8 @@ FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
 
 def neutralize(val: Any) -> Any:
     """Neutralize spreadsheet formulas in text cells by prepending single quote."""
-    if isinstance(val, str):
-        # Check if text starts with formula triggers
-        if val.startswith(FORMULA_PREFIXES):
-            return f"'{val}"
+    if isinstance(val, str) and val.startswith(FORMULA_PREFIXES):
+        return f"'{val}"
     return val
 
 

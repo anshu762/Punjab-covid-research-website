@@ -1,11 +1,11 @@
 """Tests for hypothetical forward scenario computation engine."""
-import pytest
 import numpy as np
+import pytest
 
 from app.scenarios.engine import (
-    run_scenario_simulation,
-    format_scenario_sentence,
     contains_forbidden_words,
+    format_scenario_sentence,
+    run_scenario_simulation,
 )
 
 

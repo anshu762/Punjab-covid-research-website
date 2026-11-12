@@ -4,9 +4,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
-import os
 import platform
-import sys
 import zipfile
 from datetime import UTC, datetime
 from typing import Any

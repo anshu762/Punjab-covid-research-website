@@ -5,9 +5,7 @@ import logging
 from collections.abc import Callable
 from typing import Any
 
-from app.evaluation.metrics import evaluate_selection_rules
-from app.evaluation.protocol import generate_evaluation_blocks
-from app.models.baselines import baseline_7day_mean, baseline_same_weekday
+from app.models.baselines import baseline_7day_mean
 from app.models.fit import fit_m1, fit_m2
 from app.models.forecast import forecast_from_fit
 
@@ -62,7 +60,7 @@ def run_single_combination(
             m1_fc = forecast_from_fit(m1_fit, days=7)
             m1_err = [abs(e - a) for e, a in zip(m1_fc.expected_cases, test_y)]
             m1_errors.extend(m1_err)
-        except Exception:  # noqa: BLE001
+        except Exception:  # noqa: BLE001, S110
             pass
 
         # Fit M2 with n_starts=6 and cp_search_starts=2
@@ -80,7 +78,7 @@ def run_single_combination(
             m2_fc = forecast_from_fit(m2_fit, days=7)
             m2_err = [abs(e - a) for e, a in zip(m2_fc.expected_cases, test_y)]
             m2_errors.extend(m2_err)
-        except Exception:  # noqa: BLE001
+        except Exception:  # noqa: BLE001, S110
             pass
 
     m1_mae = float(sum(m1_errors) / len(m1_errors)) if m1_errors else None
@@ -116,10 +114,8 @@ def evaluate_27_combinations(
     parent_verdict = parent_selection.get("verdict", "SUPPORTED")
 
     # Generate origins: every 7 days from day 60 up to len(series_obs) - 7
-    eval_origins: list[int] = []
     T = len(series_obs)
-    for orig in range(60, T - 6, 7):
-        eval_origins.append(orig)
+    eval_origins = list(range(60, T - 6, 7))
     if not eval_origins:
         eval_origins = [max(14, T - 7)]
 

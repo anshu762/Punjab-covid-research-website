@@ -101,8 +101,8 @@ def handle_scenario_job(job: dict[str, Any]) -> None:
         )
         logger.info("SCENARIO job %s for scenario %s completed successfully", job_id, scenario_id)
 
-    except Exception as exc:  # noqa: BLE001
-        logger.exception("SCENARIO job %s failed: %s", job_id, exc)
+    except Exception as exc:
+        logger.exception("SCENARIO job %s failed", job_id)
         err_ref = f"ERR-SCEN-{uuid.uuid4().hex[:8].upper()}"
         err_msg = str(exc)
 

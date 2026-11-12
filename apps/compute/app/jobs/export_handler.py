@@ -17,7 +17,9 @@ from app.exports.csv_builders import (
     build_metrics_csv,
     build_scenario_csv,
 )
-from app.exports.figures import render_observed_and_fitted_figure, render_scenario_figure
+from app.exports.figures import (
+    render_observed_and_fitted_figure,
+)
 from app.worker import register_handler, update_heartbeat
 
 logger = logging.getLogger("epilens.jobs.export")
@@ -90,7 +92,7 @@ def handle_export_job(job: dict[str, Any]) -> None:
         run_prefix = run_id[:8]
 
         if export_type == "BUNDLE_ZIP":
-            zip_bytes, manifest, checksum = build_reproducibility_bundle(
+            zip_bytes, manifest, _checksum = build_reproducibility_bundle(
                 run_row=run_row,
                 payload=payload,
                 dataset_row=dataset_row,
@@ -208,8 +210,8 @@ def handle_export_job(job: dict[str, Any]) -> None:
         execute("UPDATE jobs SET status = 'DONE', updated_at = now() WHERE id = %(jid)s", {"jid": job_id})
         logger.info("EXPORT job %s completed. File %s (%d bytes)", job_id, filename, file_size)
 
-    except Exception as exc:  # noqa: BLE001
-        logger.exception("EXPORT job %s failed: %s", job_id, exc)
+    except Exception as exc:
+        logger.exception("EXPORT job %s failed", job_id)
         err_ref = f"ERR-EXP-{uuid.uuid4().hex[:8].upper()}"
         execute(
             """
