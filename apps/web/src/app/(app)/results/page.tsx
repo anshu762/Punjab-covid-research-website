@@ -29,6 +29,7 @@ import {
   ShieldAlert,
   ArrowRight,
   TrendingUp,
+  DownloadCloud,
 } from "lucide-react";
 
 type TabKey = "observed" | "forecast" | "states" | "transmission" | "diagnostics";
@@ -291,11 +292,20 @@ function ResultsPageContent() {
           title="Analysis Results"
           description="Interactive charts, fitted parameters, 7-day validation scores, and uncertainty intervals."
           actions={
-            <RunSwitcher
-              runs={allRuns}
-              activeRunId={payload.run.id}
-              onSelectRun={handleSwitchRun}
-            />
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/runs?tab=downloads&run=${payload.run.id}`}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-surface hover:bg-surface-2 border border-border rounded-lg shadow-2xs transition"
+              >
+                <DownloadCloud className="w-3.5 h-3.5" />
+                <span>Export bundle</span>
+              </Link>
+              <RunSwitcher
+                runs={allRuns}
+                activeRunId={payload.run.id}
+                onSelectRun={handleSwitchRun}
+              />
+            </div>
           }
         />
 

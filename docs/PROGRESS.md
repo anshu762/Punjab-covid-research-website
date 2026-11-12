@@ -91,10 +91,10 @@
 - [x] Task 5 — Multi-run comparison modal (up to 3 runs, condition evaluation, ranking logic in `packages/shared/src/compare.ts`, tests)
 
 ### Checkpoint C — Download centre and exports
-- [ ] Task 6 — Export generation engine (`apps/compute/app/exports/`, CSV builders, server-rendered 300 DPI matplotlib PNG/SVG figures, BUNDLE_ZIP with SHA-256 manifest and no private paths)
-- [ ] Task 7 — Export & download API (tokenized streaming, 5-minute HMAC-signed token, ownership validation)
-- [ ] Task 8 — Download centre UI (tab on `/runs`, modal on `/results`, status polling, `aria-live` announcements)
-- [ ] Task 9 — Pytest, Vitest, and Playwright export test suite
+- [x] Task 6 — Export generation engine (`apps/compute/app/exports/`, CSV builders, server-rendered 300 DPI matplotlib PNG/SVG figures, BUNDLE_ZIP with SHA-256 manifest and no private paths)
+- [x] Task 7 — Export & download API (tokenized streaming, 5-minute HMAC-signed token, ownership validation)
+- [x] Task 8 — Download centre UI (tab on `/runs`, modal on `/results`, status polling, `aria-live` announcements)
+- [x] Task 9 — Pytest, Vitest, and Playwright export test suite
 
 ### Checkpoint D — Sensitivity analysis
 - [ ] Task 10 — Sensitivity job (`SENSITIVITY` handler, Python `app/sensitivity.py`, Prisma migration for `sensitivity_results`, 27 combinations, reversal flags)

@@ -1,16 +1,24 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { FolderDown, Layers, DownloadCloud } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { EmptyState } from "@/components/common/EmptyState";
 import { RunsTable } from "@/components/runs/RunsTable";
 import { RunCompareModal } from "@/components/runs/RunCompareModal";
+import { DownloadsCentre } from "@/components/runs/DownloadsCentre";
 import { useRunsTable } from "@/hooks/useRuns";
 import type { RunItem } from "@/hooks/useRuns";
 
 export default function RunsPage() {
-  const [activeTab, setActiveTab] = useState<"runs" | "downloads">("runs");
+  const searchParams = useSearchParams();
+  const urlTab = searchParams.get("tab");
+  const urlRunId = searchParams.get("run") || undefined;
+
+  const [activeTab, setActiveTab] = useState<"runs" | "downloads">(
+    urlTab === "downloads" ? "downloads" : "runs"
+  );
 
   // Filter and pagination state
   const [search, setSearch] = useState("");
@@ -152,17 +160,7 @@ export default function RunsPage() {
           </>
         )
       ) : (
-        <div id="downloads-centre-container" className="space-y-4">
-          <div className="p-8 text-center bg-surface border border-border rounded-[14px] text-muted text-xs">
-            <DownloadCloud className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-            <span className="font-semibold text-sm text-ink block mb-1">
-              Download Centre
-            </span>
-            <span>
-              Select an export from the list below or request figure bundles directly from any run.
-            </span>
-          </div>
-        </div>
+        <DownloadsCentre runs={runs} defaultRunId={urlRunId} />
       )}
     </div>
   );

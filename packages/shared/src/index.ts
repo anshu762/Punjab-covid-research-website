@@ -9,6 +9,7 @@ export * from "./schemas/run";
 export * from "./schemas/results";
 export type { ModelComparisonRow, BlockMetrics } from "./schemas/results";
 export * from "./schemas/scenario";
+export * from "./schemas/export";
 export * from "./scenarioText";
 export * from "./compare";
 export * from "./hash";
