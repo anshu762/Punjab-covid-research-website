@@ -1,9 +1,10 @@
 """Tests for compute API endpoints."""
 
 import jwt
+from fastapi.testclient import TestClient
+
 from app.main import app
 from app.settings import settings
-from fastapi.testclient import TestClient
 
 client = TestClient(app)
 

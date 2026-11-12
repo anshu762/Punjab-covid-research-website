@@ -1,6 +1,7 @@
 """Unit tests for CSV I/O, PII detection, and safe formula export."""
 
 import pytest
+
 from app.data.csv_io import (
     CsvValidationError,
     find_forbidden_pii_columns,

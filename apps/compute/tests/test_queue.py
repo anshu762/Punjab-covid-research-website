@@ -4,6 +4,7 @@ import threading
 from typing import Any
 
 import pytest
+
 from app.worker import HANDLERS, register_handler
 
 
