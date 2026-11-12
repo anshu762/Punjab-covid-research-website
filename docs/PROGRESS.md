@@ -114,8 +114,8 @@
 - [x] Task 3 — Landing page polish (OpenGraph, icon, robots, sitemap, cold-start compute UX)
 
 ### Checkpoint C — Security and reliability verification
-- [ ] Task 4 — Security checks (`docs/SECURITY_CHECKLIST.md`, table-driven auth & isolation tests, SSRF, formula injection, CSP headers)
-- [ ] Task 5 — Reliability checks (Neon suspend backoff, mid-run reconnect, idempotency, 2-job limit)
+- [x] Task 4 — Security checks (`docs/SECURITY_CHECKLIST.md`, table-driven auth & isolation tests, SSRF, formula injection, CSP headers)
+- [x] Task 5 — Reliability checks (Neon suspend backoff, mid-run reconnect, idempotency, 2-job limit)
 
 ### Checkpoint D — Full end-to-end verification vs the PRD
 - [ ] Task 6 — E2E test suite `e2e/full-workflow.spec.ts`
