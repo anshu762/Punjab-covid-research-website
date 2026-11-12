@@ -37,3 +37,11 @@ This document records deliberate architectural decisions, library API specifics,
 3. **Database Column and Table Parity**: All Prisma models use `@@map("plural_snake_case")` and all fields use `@map("snake_case")`. The exact schemas are cataloged in `docs/DB_TABLES.md` so that Python SQL queries directly mirror the database without schema translation overhead.
 4. **Isolated Demo Authentication**: Demo sessions auto-create an isolated user with an expiring TTL (24h) and trigger a background daily cleanup via `GET /api/cron/cleanup`.
 5. **Pure RK4 TypeScript Simulation**: The interactive landing page simulation uses a 4th-order Runge–Kutta numerical integrator with $dt = 0.5$ conserving $S + I + R = N$ strictly.
+6. **Phase 3 SIR Numerical Engine**:
+   - Model equations integrated in normalized state space $(S/N, I/N, R/N, C/N)$ with `scipy.integrate.solve_ivp(method="LSODA")` (falling back to `"RK45"`). Discontinuous $\beta$ for M2 integrated segment-by-segment at change-point day boundary.
+   - Expected daily reported cases: $\mu_d = \rho \cdot (C[d+1] - C[d])$. Negative binomial likelihood with parameter $k$ in log-space ($k = \exp(\theta_k)$).
+   - Multi-start optimization with seeded Latin Hypercube sampling over bounded log-parameter spaces.
+   - 13 rolling evaluation origins with retrospective prefix isolation: each origin normalizes only observations $\le \text{origin}$.
+   - Parametric bootstrap (200 replicates) with $\alpha=0.05$ percentiles (2.5%, 97.5%) and `reliable` flag when $\ge 180$ replicates converge.
+   - Shared result contract schema in `@epilens/shared/schemas/results.ts` guaranteeing type safety across Python compute, database JSON columns, and Next.js BFF handlers.
+   - Pure React 19 state synchronization in Model Setup UI: form inputs derive from dataset defaults with user overrides, avoiding synchronous `setState` in `useEffect`.

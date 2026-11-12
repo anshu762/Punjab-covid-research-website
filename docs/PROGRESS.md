@@ -31,25 +31,28 @@
 ## Phase 3 — SIR engine, evaluation protocol, bootstrap, run lifecycle, Model setup screen
 
 ### Checkpoint A — ODE model and likelihood (pure Python, no DB)
-- [ ] Task 1 — Package layout (`apps/compute/app/`)
-- [ ] Task 2 — `RunConfig` (`config.py`, Pydantic v2) and zod schema (`packages/shared/src/schemas/run.ts`)
-- [ ] Task 3 — ODE integration (`models/sir.py`)
-- [ ] Task 4 — Likelihood (`models/likelihood.py`)
-- [ ] Task 5 — Fitting (`models/fit.py`)
-- [ ] Task 6 — Baselines (`models/baselines.py`) and forecasting (`models/forecast.py`)
+- [x] Task 1 — Package layout (`apps/compute/app/`)
+- [x] Task 2 — `RunConfig` (`config.py`, Pydantic v2) and zod schema (`packages/shared/src/schemas/run.ts`)
+- [x] Task 3 — ODE integration (`models/sir.py`)
+- [x] Task 4 — Likelihood (`models/likelihood.py`)
+- [x] Task 5 — Fitting (`models/fit.py`)
+- [x] Task 6 — Baselines (`models/baselines.py`) and forecasting (`models/forecast.py`)
+
 
 ### Checkpoint B — Evaluation protocol, selection rules, uncertainty, diagnostics
-- [ ] Task 7 — Protocol (`evaluation/protocol.py`)
-- [ ] Task 8 — Metrics and selection rules (`evaluation/metrics.py`)
-- [ ] Task 9 — Uncertainty bootstrap (`uncertainty/bootstrap.py`)
-- [ ] Task 10 — Diagnostics (`diagnostics.py`)
+- [x] Task 7 — Protocol (`evaluation/protocol.py`)
+- [x] Task 8 — Metrics and selection rules (`evaluation/metrics.py`)
+- [x] Task 9 — Uncertainty bootstrap (`uncertainty/bootstrap.py`)
+- [x] Task 10 — Diagnostics (`diagnostics.py`)
+
 
 ### Checkpoint C — Runner, worker, persistence
-- [ ] Task 11 — Pytest test suite (Tasks 3–10 verification)
-- [ ] Task 12 — Runner (`runner.py`), Job handler (`jobs/run_handler.py`), CLI command, results schema (`packages/shared/src/schemas/results.ts`)
+- [x] Task 11 — Pytest test suite (Tasks 3–10 verification)
+- [x] Task 12 — Runner (`runner.py`), Job handler (`jobs/run_handler.py`), CLI command, results schema (`packages/shared/src/schemas/results.ts`)
+
 
 ### Checkpoint D — Web: run API and Model setup screen
-- [ ] Task 13 — Next.js run route handlers (`/api/runs/*`, Idempotency, caching, cancellation, results)
-- [ ] Task 14 — Model setup page `/model` (two-column layout, reactive controls, run progress card, status bar sync, stale banner)
-- [ ] Task 15 — Vitest, Playwright, acceptance verification & Phase 3 report
+- [x] Task 13 — Next.js run route handlers (`/api/runs/*`, Idempotency, caching, cancellation, results)
+- [x] Task 14 — Model setup page `/model` (two-column layout, reactive controls, run progress card, status bar sync, stale banner)
+- [x] Task 15 — Vitest, Playwright, acceptance verification & Phase 3 report
 

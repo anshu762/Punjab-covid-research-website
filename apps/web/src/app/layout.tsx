@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import { AuthModalProvider } from "@/components/auth/AuthModalProvider";
 import "./globals.css";
+
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,7 +35,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-surface text-ink font-sans">
         <AuthModalProvider>{children}</AuthModalProvider>
+        <Toaster position="top-right" richColors />
       </body>
+
     </html>
   );
 }

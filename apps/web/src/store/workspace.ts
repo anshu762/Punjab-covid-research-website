@@ -16,12 +16,14 @@ export interface WorkspaceState {
   dateRange: DateRange | null;
   activeRunId: string | null;
   activeRunStatus: string | null;
+  lastSubmittedConfigHash: string | null;
   modelSettingsDraft: Record<string, unknown>;
 
   // Actions
   setDataset: (id: string | null, name: string | null, isSynthetic?: boolean) => void;
   setDateRange: (range: DateRange | null) => void;
   setActiveRun: (id: string | null, status: string | null) => void;
+  setLastSubmittedConfigHash: (hash: string | null) => void;
   setModelSettingsDraft: (draft: Record<string, unknown>) => void;
   reset: () => void;
 }
@@ -36,6 +38,7 @@ const initialState = {
   },
   activeRunId: null,
   activeRunStatus: null,
+  lastSubmittedConfigHash: null,
   modelSettingsDraft: {},
 };
 
@@ -48,10 +51,13 @@ export const useWorkspaceStore = create<WorkspaceState>()(
       setDateRange: (dateRange) => set({ dateRange }),
       setActiveRun: (activeRunId, activeRunStatus) =>
         set({ activeRunId, activeRunStatus }),
+      setLastSubmittedConfigHash: (lastSubmittedConfigHash) =>
+        set({ lastSubmittedConfigHash }),
       setModelSettingsDraft: (modelSettingsDraft) =>
         set({ modelSettingsDraft }),
       reset: () => set(initialState),
     }),
+
     {
       name: "epilens-workspace-v1",
       storage: createJSONStorage(() => localStorage),
