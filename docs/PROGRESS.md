@@ -110,8 +110,8 @@
 - [x] Task 1 — Content and layout (14 sections, ToC scroll-spy, KaTeX equations, shared constants, "Ask about methods" QA card)
 
 ### Checkpoint B — UI consistency and bug-hunt pass
-- [ ] Task 2 — Automated audit script `scripts/ui-audit.js` + manual walkthrough (`docs/UI_AUDIT.md`)
-- [ ] Task 3 — Landing page polish (OpenGraph, icon, robots, sitemap, cold-start compute UX)
+- [x] Task 2 — Automated audit script `scripts/ui-audit.js` + manual walkthrough (`docs/UI_AUDIT.md`)
+- [x] Task 3 — Landing page polish (OpenGraph, icon, robots, sitemap, cold-start compute UX)
 
 ### Checkpoint C — Security and reliability verification
 - [ ] Task 4 — Security checks (`docs/SECURITY_CHECKLIST.md`, table-driven auth & isolation tests, SSRF, formula injection, CSP headers)

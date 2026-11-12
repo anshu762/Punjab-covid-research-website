@@ -126,12 +126,21 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
     }
   }
 
+  const [warmingUp, setWarmingUp] = useState(false);
+
   async function handleDemoLogin() {
     setDemoLoading(true);
+    setWarmingUp(false);
     setErrorMessage(null);
+
+    const warmTimer = setTimeout(() => {
+      setWarmingUp(true);
+    }, 1800);
+
     try {
       await startDemoSession();
     } catch (e: unknown) {
+      clearTimeout(warmTimer);
       if (e && typeof e === "object" && "digest" in e) {
         throw e;
       }
@@ -139,13 +148,14 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
         e instanceof Error ? e.message : "Failed to launch demo session. Please try again."
       );
       setDemoLoading(false);
+      setWarmingUp(false);
     }
   }
 
   return (
     <div className="relative w-full max-w-3xl bg-surface rounded-2xl border border-border shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 text-ink">
       {/* Left Column: Brand Context & Research Highlights (Landscape rectangle side) */}
-      <div className="relative bg-[#0B1F3A] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#132A4A] via-[#0B1F3A] to-[#071324] text-white p-6 sm:p-7 flex flex-col justify-between overflow-hidden md:col-span-5 border-b md:border-b-0 md:border-r border-white/10">
+      <div className="relative bg-navy-900 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-navy-800 via-navy-900 to-slate-950 text-white p-6 sm:p-7 flex flex-col justify-between overflow-hidden md:col-span-5 border-b md:border-b-0 md:border-r border-white/10">
         {/* Ambient high-tech background effects */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none opacity-60" />
         <div className="absolute -top-16 -left-16 w-56 h-56 bg-blue-500/25 rounded-full blur-3xl pointer-events-none" />
@@ -234,7 +244,7 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
         {/* Footer tag of left panel */}
         <div className="relative z-10 pt-3 mt-4 border-t border-white/10 hidden md:flex items-center justify-between">
           <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#22d3ee]"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(34,211,238,0.5)]"></span>
             <span>Open Science &bull; Punjab 2020&ndash;2021</span>
           </div>
           <span className="text-[9px] font-mono text-slate-400 uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/5 border border-white/10">v1.0 LTS</span>
@@ -503,11 +513,16 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
             className="w-full py-2.5 px-4 bg-surface-2 hover:bg-slate-100 text-ink border border-border rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
           >
             {demoLoading ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>{warmingUp ? "Warming up analysis engine..." : "Setting up guest session..."}</span>
+              </>
             ) : (
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span>Explore as Guest Demo User (No Registration)</span>
+              </>
             )}
-            <span>Explore as Guest Demo User (No Registration)</span>
           </button>
         </div>
       </div>

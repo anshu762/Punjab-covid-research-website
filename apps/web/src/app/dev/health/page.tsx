@@ -37,37 +37,30 @@ export default function DevHealthPage() {
   };
 
   return (
-    <div style={{ maxWidth: 640, margin: "40px auto", padding: 24, fontFamily: "sans-serif" }}>
-      <h1 style={{ fontSize: 24, fontWeight: "bold", marginBottom: 16 }}>
+    <div className="max-w-xl mx-auto my-10 p-6 font-sans">
+      <h1 className="text-2xl font-bold mb-4 text-ink">
         EpiLens Dev Diagnostics & Health
       </h1>
 
-      <div style={{ padding: 16, border: "1px solid #e2e8f0", borderRadius: 8, marginBottom: 16 }}>
-        <p><strong>Web Service (Next.js):</strong> {webHealth}</p>
-        <p><strong>Compute Service (FastAPI):</strong> {computeHealth}</p>
+      <div className="p-4 border border-border rounded-lg mb-4 bg-surface">
+        <p className="text-sm"><strong>Web Service (Next.js):</strong> {webHealth}</p>
+        <p className="text-sm"><strong>Compute Service (FastAPI):</strong> {computeHealth}</p>
       </div>
 
-      <div style={{ padding: 16, border: "1px solid #e2e8f0", borderRadius: 8 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>Postgres Job Queue Selftest</h2>
-        <p style={{ color: "#64748b", fontSize: 14, marginBottom: 12 }}>
+      <div className="p-4 border border-border rounded-lg bg-surface">
+        <h2 className="text-lg font-semibold mb-2 text-ink">Postgres Job Queue Selftest</h2>
+        <p className="text-sm text-muted mb-3">
           Enqueues a SELFTEST job via Next.js BFF &rarr; FastAPI compute service &rarr; Postgres worker.
         </p>
         <button
           onClick={handleRunSelftest}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#2563eb",
-            color: "#fff",
-            border: "none",
-            borderRadius: 6,
-            cursor: "pointer",
-          }}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
         >
           Run Selftest Job
         </button>
-        <div style={{ marginTop: 12, fontSize: 14 }}>
+        <div className="mt-3 text-sm text-ink">
           <strong>Status:</strong> {selftestStatus}
-          {jobId && <p style={{ fontSize: 12, color: "#64748b" }}>ID: {jobId}</p>}
+          {jobId && <p className="text-xs text-muted font-mono mt-1">ID: {jobId}</p>}
         </div>
       </div>
     </div>

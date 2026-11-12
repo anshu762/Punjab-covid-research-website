@@ -10,13 +10,32 @@ export function LandingHero() {
   const { openAuthModal } = useAuthModal();
   const shouldReduceMotion = useReducedMotion();
   const [demoLoading, setDemoLoading] = useState(false);
+  const [warmingUp, setWarmingUp] = useState(false);
+  const [retryNotice, setRetryNotice] = useState<string | null>(null);
 
   const handleStartDemo = async () => {
     setDemoLoading(true);
+    setWarmingUp(false);
+    setRetryNotice(null);
+
+    const warmTimer = setTimeout(() => {
+      setWarmingUp(true);
+    }, 1800);
+
+    const timeoutTimer = setTimeout(() => {
+      setDemoLoading(false);
+      setWarmingUp(false);
+      setRetryNotice("Resuming serverless compute took longer than expected. Please click to retry.");
+    }, 15000);
+
     try {
       await startDemoSession();
     } catch {
+      clearTimeout(warmTimer);
+      clearTimeout(timeoutTimer);
       setDemoLoading(false);
+      setWarmingUp(false);
+      setRetryNotice("Session setup encountered a delay. Click to retry.");
     }
   };
 
@@ -64,7 +83,7 @@ export function LandingHero() {
                 {demoLoading ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span>Preparing Demo Environment...</span>
+                    <span>{warmingUp ? "Warming up the analysis engine..." : "Preparing Demo Environment..."}</span>
                   </>
                 ) : (
                   <>
@@ -82,6 +101,12 @@ export function LandingHero() {
                 Sign In
               </button>
             </div>
+
+            {retryNotice && (
+              <p className="text-xs text-warning bg-amber-50 border border-amber-200 p-2.5 rounded-lg text-center lg:text-left">
+                {retryNotice}
+              </p>
+            )}
 
             {/* Trust Chips */}
             <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-muted">

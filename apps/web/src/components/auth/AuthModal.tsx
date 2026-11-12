@@ -45,7 +45,7 @@ export function AuthModal({ isOpen, onClose, initialMode = "signin" }: AuthModal
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#0B1F3A]/60 backdrop-blur-md cursor-pointer"
+            className="fixed inset-0 bg-navy-900/60 backdrop-blur-md cursor-pointer"
           />
 
           {/* Modal Container */}
