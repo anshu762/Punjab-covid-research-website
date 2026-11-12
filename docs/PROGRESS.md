@@ -68,11 +68,11 @@
 - [x] Task 5 — Model comparison table (4 rows, metrics, won blocks, reason chips, expandable 13 origins table)
 
 ### Checkpoint C — The five chart tabs (Plotly, from stored payload only)
-- [ ] Tab 1 — Observed and fitted cases (observed bars/markers, expected reported incidence, distinct fitting vs held-out evaluation period)
-- [ ] Tab 2 — Forecast validation (13-origin selector, training history, cutoff line, 7 observed, SIR + baselines, predictive interval)
-- [ ] Tab 3 — SIR states ("Latent model states", S/I/R toggles with S hidden by default, Persons/100k switch)
-- [ ] Tab 4 — Transmission dynamics (beta(t) step line with change date, R_eff(t) with R_eff = 1 reference line, assumption callout)
-- [ ] Tab 5 — Diagnostics (residuals over time, binned Pearson residuals bar chart, lag ACF bars 1-14 with limits, warnings, parameter profiles)
+- [x] Tab 1 — Observed and fitted cases (observed bars/markers, expected reported incidence, distinct fitting vs held-out evaluation period)
+- [x] Tab 2 — Forecast validation (13-origin selector, training history, cutoff line, 7 observed, SIR + baselines, predictive interval)
+- [x] Tab 3 — SIR states ("Latent model states", S/I/R toggles with S hidden by default, Persons/100k switch)
+- [x] Tab 4 — Transmission dynamics (beta(t) step line with change date, R_eff(t) with R_eff = 1 reference line, assumption callout)
+- [x] Tab 5 — Diagnostics (residuals over time, binned Pearson residuals bar chart, lag ACF bars 1-14 with limits, warnings, parameter profiles)
 
 ### Checkpoint D — Wiring, polish, tests
 - [ ] Task 6 — Overview wiring (latest analysis status, best forecast model, link to latest results)

@@ -2,10 +2,9 @@
 
 import React, { useState, useMemo } from "react";
 import { formatNumber, formatDisplayDate } from "@epilens/shared";
-import type { FitResultPayload, ModelComparisonRow, BlockMetrics } from "@epilens/shared";
+import type { FitResultPayload } from "@epilens/shared";
 import { downloadCsv } from "@/lib/downloadCsv";
 import {
-  Trophy,
   CheckCircle2,
   AlertCircle,
   ChevronDown,
@@ -33,14 +32,11 @@ export function ModelComparisonTable({ payload }: ModelComparisonTableProps) {
   const [sortField, setSortField] = useState<"finalMae" | "finalRmse" | "developmentMae" | "blocksWon">("finalMae");
   const [sortAsc, setSortAsc] = useState(true);
 
-  if (!evaluation) {
-    return null;
-  }
-
-  const { comparison, selection, blocks } = evaluation;
+  const comparison = evaluation?.comparison;
 
   // Build exactly 4 rows
   const modelRows = useMemo(() => {
+    if (!comparison) return [];
     return REQUIRED_MODELS.map(({ key, defaultLabel }) => {
       const found = comparison.find((r) => r.model === key);
       if (found) return found;
@@ -72,6 +68,12 @@ export function ModelComparisonTable({ payload }: ModelComparisonTableProps) {
       return sortAsc ? Number(valA) - Number(valB) : Number(valB) - Number(valA);
     });
   }, [modelRows, sortField, sortAsc]);
+
+  if (!evaluation) {
+    return null;
+  }
+
+  const { selection, blocks } = evaluation;
 
   function handleSort(field: "finalMae" | "finalRmse" | "developmentMae" | "blocksWon") {
     if (sortField === field) {

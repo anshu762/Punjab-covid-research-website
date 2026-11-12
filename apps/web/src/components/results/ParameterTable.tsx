@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { formatInt, formatNumber } from "@epilens/shared";
 import type { FitResultPayload } from "@epilens/shared";
-import { CheckCircle2, AlertTriangle, HelpCircle, Lock, Sliders, ShieldAlert, Sparkles } from "lucide-react";
+import { CheckCircle2, Lock, Sliders, ShieldAlert, Sparkles } from "lucide-react";
 
 interface ParameterTableProps {
   payload: FitResultPayload;

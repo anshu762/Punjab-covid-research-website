@@ -83,13 +83,11 @@ export function SummaryCards({ payload, onSelectDiagnosticsTab }: SummaryCardsPr
 
   // Improvement formatting
   let improvementDisplay: React.ReactNode = "—";
-  let improvementColor = "text-ink";
   if (improvement === null || improvement === undefined) {
     improvementDisplay = (
       <span className="text-xs font-medium text-muted">Undefined (baseline error is zero)</span>
     );
   } else if (improvement > 0) {
-    improvementColor = "text-emerald-700";
     improvementDisplay = (
       <span className="flex items-center gap-1 font-mono font-bold text-emerald-700">
         <TrendingDown className="w-4 h-4 text-emerald-600" />
@@ -98,7 +96,6 @@ export function SummaryCards({ payload, onSelectDiagnosticsTab }: SummaryCardsPr
       </span>
     );
   } else {
-    improvementColor = "text-rose-700";
     improvementDisplay = (
       <span className="flex items-center gap-1 font-mono font-bold text-rose-700">
         <TrendingUp className="w-4 h-4 text-rose-600" />

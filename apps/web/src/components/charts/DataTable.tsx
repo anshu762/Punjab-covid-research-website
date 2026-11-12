@@ -15,6 +15,7 @@ interface DataTableProps {
   columns: DataTableColumn[];
   data: Record<string, unknown>[];
   pageSize?: number;
+  defaultPageSize?: number;
   caption?: string;
 }
 
@@ -22,13 +23,15 @@ export function DataTable({
   columns,
   data,
   pageSize = 10,
+  defaultPageSize,
   caption,
 }: DataTableProps) {
+  const actualPageSize = defaultPageSize || pageSize;
   const [page, setPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
+  const totalPages = Math.max(1, Math.ceil(data.length / actualPageSize));
 
-  const startIdx = (page - 1) * pageSize;
-  const pageData = data.slice(startIdx, startIdx + pageSize);
+  const startIdx = (page - 1) * actualPageSize;
+  const pageData = data.slice(startIdx, startIdx + actualPageSize);
 
   return (
     <div className="w-full border border-border rounded-xl bg-surface overflow-hidden">
