@@ -117,6 +117,7 @@ export const BlockMetricsSchema = z.object({
   rmse: z.record(z.string(), z.number().nullable()),
   totalError: z.record(z.string(), z.number().nullable()),
 });
+export type BlockMetrics = z.infer<typeof BlockMetricsSchema>;
 
 export const ModelComparisonRowSchema = z.object({
   model: z.string(),
@@ -131,6 +132,7 @@ export const ModelComparisonRowSchema = z.object({
   status: z.enum(["ok", "failed"]),
   reason: z.string().nullable(),
 });
+export type ModelComparisonRow = z.infer<typeof ModelComparisonRowSchema>;
 
 export const SelectionSummarySchema = z.object({
   selectedSir: z.enum(["M1", "M2"]),

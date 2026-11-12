@@ -10,5 +10,6 @@ export * from "./schemas/results";
 export * from "./hash";
 export * from "./stats";
 export * from "./pngDpi";
+export * from "./fixtures/results.fixture";
 
 

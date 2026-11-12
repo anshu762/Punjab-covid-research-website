@@ -63,9 +63,9 @@
 - [x] Task 2 — Chart helpers (`seriesStyles.ts`, `figureExport.ts` with 300 DPI `setPngDpi`, toolbar additions)
 
 ### Checkpoint B — Summary, parameters, comparison
-- [ ] Task 3 — Summary cards (Evaluated 4 StatCards + verdict text + retrospective note vs Fit-only card)
-- [ ] Task 4 — Parameter table (fixed/fitted/assumed badges, bootstrap intervals, convergence line)
-- [ ] Task 5 — Model comparison table (4 rows, metrics, won blocks, reason chips, expandable 13 origins table)
+- [x] Task 3 — Summary cards (Evaluated 4 StatCards + verdict text + retrospective note vs Fit-only card)
+- [x] Task 4 — Parameter table (fixed/fitted/assumed badges, bootstrap intervals, convergence line)
+- [x] Task 5 — Model comparison table (4 rows, metrics, won blocks, reason chips, expandable 13 origins table)
 
 ### Checkpoint C — The five chart tabs (Plotly, from stored payload only)
 - [ ] Tab 1 — Observed and fitted cases (observed bars/markers, expected reported incidence, distinct fitting vs held-out evaluation period)
