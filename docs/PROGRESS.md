@@ -75,8 +75,8 @@
 - [x] Tab 5 — Diagnostics (residuals over time, binned Pearson residuals bar chart, lag ACF bars 1-14 with limits, warnings, parameter profiles)
 
 ### Checkpoint D — Wiring, polish, tests
-- [ ] Task 6 — Overview wiring (latest analysis status, best forecast model, link to latest results)
-- [ ] Task 7 — Run list shortcuts in `/model`
-- [ ] Task 8 — Unit tests (PNG DPI, summary metrics, comparison table row builder, profile line), component tests, E2E tests, axe accessibility
+- [x] Task 6 — Overview wiring (latest analysis status, best forecast model, link to latest results)
+- [x] Task 7 — Run list shortcuts in `/model`
+- [x] Task 8 — Unit tests (PNG DPI, summary metrics, comparison table row builder, profile line), component tests, E2E tests, axe accessibility
 
 
