@@ -20,6 +20,7 @@ import { TabForecastValidation } from "@/components/results/tabs/TabForecastVali
 import { TabSirStates } from "@/components/results/tabs/TabSirStates";
 import { TabTransmission } from "@/components/results/tabs/TabTransmission";
 import { TabDiagnostics } from "@/components/results/tabs/TabDiagnostics";
+import { SensitivityPanel } from "@/components/results/SensitivityPanel";
 import {
   BarChart2,
   Calendar,
@@ -387,6 +388,12 @@ function ResultsPageContent() {
             {activeTab === "transmission" && <TabTransmission payload={payload} />}
             {activeTab === "diagnostics" && <TabDiagnostics payload={payload} />}
           </div>
+
+          {/* Advanced Parameter Sensitivity (27 Combinations) */}
+          <SensitivityPanel
+            runId={payload.run.id}
+            isEvaluated={payload.run.mode === "EVALUATE"}
+          />
         </div>
       </div>
     </RunIdProvider>

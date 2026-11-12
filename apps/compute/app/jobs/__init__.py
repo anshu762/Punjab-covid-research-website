@@ -2,4 +2,5 @@
 import app.jobs.run_handler  # noqa: F401
 import app.jobs.scenario_handler  # noqa: F401
 import app.jobs.export_handler  # noqa: F401
+import app.jobs.sensitivity_handler  # noqa: F401
 

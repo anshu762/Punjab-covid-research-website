@@ -97,8 +97,8 @@
 - [x] Task 9 — Pytest, Vitest, and Playwright export test suite
 
 ### Checkpoint D — Sensitivity analysis
-- [ ] Task 10 — Sensitivity job (`SENSITIVITY` handler, Python `app/sensitivity.py`, Prisma migration for `sensitivity_results`, 27 combinations, reversal flags)
-- [ ] Task 11 — Sensitivity UI (collapsed "Advanced sensitivity" section on `/results`, 27-row table, reversal markers, CSV download, note on reduced settings)
+- [x] Task 10 — Sensitivity job (`SENSITIVITY` handler, Python `app/sensitivity.py`, Prisma migration for `sensitivity_results`, 27 combinations, reversal flags)
+- [x] Task 11 — Sensitivity UI (collapsed "Advanced sensitivity" section on `/results`, 27-row table, reversal markers, CSV download, note on reduced settings)
 
 ### Checkpoint E — OpenRouter AI explainer (optional, strictly grounded)
 - [ ] Task 12 — Server route `POST /api/ai/explain` (compact stored JSON context only, system prompt forbidding causal/impact claims, grounding regex verification, `ai_explanations` table, rate limit)

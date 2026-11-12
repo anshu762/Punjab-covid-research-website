@@ -100,6 +100,7 @@ model User {
   scenarios     Scenario[]
   exports       Export[]
   files         StoredFile[]
+  aiExplanations AiExplanation[]
 
   @@map("users")
 }
@@ -242,6 +243,7 @@ model Run {
   scenarios      Scenario[]
   exports        Export[]
   files          StoredFile[]
+  sensitivityResult SensitivityResult?
 
   @@unique([ownerId, idempotencyKey])
   @@index([ownerId, createdAt])
@@ -337,4 +339,30 @@ model Job {
 
   @@index([status, createdAt])
   @@map("jobs")
+}
+
+model SensitivityResult {
+  runId     String   @id @map("run_id")
+  combos    Json     @map("combos")
+  summary   Json     @map("summary")
+  createdAt DateTime @default(now()) @map("created_at")
+  run       Run      @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@map("sensitivity_results")
+}
+
+model AiExplanation {
+  id               String   @id @default(cuid()) @map("id")
+  ownerId          String   @map("owner_id")
+  kind             String   @map("kind")
+  refId            String   @map("ref_id")
+  inputHash        String   @map("input_hash")
+  model            String   @map("model")
+  text             String   @db.Text @map("text")
+  groundingWarning Boolean  @default(false) @map("grounding_warning")
+  createdAt        DateTime @default(now()) @map("created_at")
+  owner            User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId, kind, refId])
+  @@map("ai_explanations")
 }
