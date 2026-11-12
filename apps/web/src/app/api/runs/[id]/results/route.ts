@@ -62,6 +62,7 @@ export const GET = apiHandler(
         codeVersion: run.codeVersion,
         seed: run.seed,
         config: run.config,
+        configHash: run.configHash,
         dataset: run.dataset,
       },
       payload: run.fitResult.payload,

@@ -56,3 +56,27 @@
 - [x] Task 14 — Model setup page `/model` (two-column layout, reactive controls, run progress card, status bar sync, stale banner)
 - [x] Task 15 — Vitest, Playwright, acceptance verification & Phase 3 report
 
+## Phase 4 — Results screen: summary, parameters, five chart tabs, model comparison, figure export, Overview wiring
+
+### Checkpoint A — Data access and shared helpers
+- [x] Task 1 — Results hooks, page shell, run identity bar, switcher, and assumptions panel
+- [x] Task 2 — Chart helpers (`seriesStyles.ts`, `figureExport.ts` with 300 DPI `setPngDpi`, toolbar additions)
+
+### Checkpoint B — Summary, parameters, comparison
+- [ ] Task 3 — Summary cards (Evaluated 4 StatCards + verdict text + retrospective note vs Fit-only card)
+- [ ] Task 4 — Parameter table (fixed/fitted/assumed badges, bootstrap intervals, convergence line)
+- [ ] Task 5 — Model comparison table (4 rows, metrics, won blocks, reason chips, expandable 13 origins table)
+
+### Checkpoint C — The five chart tabs (Plotly, from stored payload only)
+- [ ] Tab 1 — Observed and fitted cases (observed bars/markers, expected reported incidence, distinct fitting vs held-out evaluation period)
+- [ ] Tab 2 — Forecast validation (13-origin selector, training history, cutoff line, 7 observed, SIR + baselines, predictive interval)
+- [ ] Tab 3 — SIR states ("Latent model states", S/I/R toggles with S hidden by default, Persons/100k switch)
+- [ ] Tab 4 — Transmission dynamics (beta(t) step line with change date, R_eff(t) with R_eff = 1 reference line, assumption callout)
+- [ ] Tab 5 — Diagnostics (residuals over time, binned Pearson residuals bar chart, lag ACF bars 1-14 with limits, warnings, parameter profiles)
+
+### Checkpoint D — Wiring, polish, tests
+- [ ] Task 6 — Overview wiring (latest analysis status, best forecast model, link to latest results)
+- [ ] Task 7 — Run list shortcuts in `/model`
+- [ ] Task 8 — Unit tests (PNG DPI, summary metrics, comparison table row builder, profile line), component tests, E2E tests, axe accessibility
+
+

@@ -78,24 +78,85 @@ export function useRun(runId: string | null) {
   });
 }
 
-export function useRunResults(runId: string | null) {
-  return useQuery({
+export interface ForecastRowItem {
+  id: number;
+  model: string;
+  originDate: string;
+  targetDate: string;
+  split: "development" | "final";
+  estimate: number;
+  lower: number | null;
+  upper: number | null;
+  intervalUnavailableReason: string | null;
+  actual: number;
+}
+
+export interface RunResultsMetadata {
+  displayName: string;
+  mode: "FIT" | "EVALUATE";
+  modelType: "M1" | "M2";
+  status: string;
+  completedAt: string | null;
+  codeVersion: string;
+  seed: number;
+  config: RunConfig;
+  configHash?: string;
+  dataset: {
+    id: string;
+    name: string;
+    isSynthetic: boolean;
+    version: number;
+  };
+}
+
+export interface RunResultsResponse {
+  runId: string;
+  metadata: RunResultsMetadata;
+  payload: FitResultPayload;
+  parameters: Record<string, unknown>;
+  assumptions: Record<string, unknown>;
+  convergence: Record<string, unknown>;
+  boundaryHits: Array<Record<string, unknown>>;
+  changePoint: Record<string, unknown> | null;
+  forecastRows: ForecastRowItem[];
+}
+
+export class ResultsFetchError extends Error {
+  statusCode: number;
+  errorCode: string;
+
+  constructor(message: string, statusCode: number, errorCode = "ERROR") {
+    super(message);
+    this.name = "ResultsFetchError";
+    this.statusCode = statusCode;
+    this.errorCode = errorCode;
+  }
+}
+
+export function useRunResults(runId: string | null, isCompleted = true) {
+  return useQuery<RunResultsResponse, ResultsFetchError>({
     queryKey: ["run-results", runId],
     queryFn: async () => {
-      if (!runId) throw new Error("No run ID");
+      if (!runId) throw new ResultsFetchError("No run ID provided", 400);
       const res = await fetch(`/api/runs/${runId}/results`);
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || "Failed to fetch run results");
+        throw new ResultsFetchError(
+          errorData.error?.message || `Failed to fetch run results (${res.status})`,
+          res.status,
+          errorData.error?.code || "ERROR"
+        );
       }
-      return res.json() as Promise<{
-        runId: string;
-        metadata: Record<string, unknown>;
-        payload: FitResultPayload;
-        forecastRows: Array<Record<string, unknown>>;
-      }>;
+      return (await res.json()) as RunResultsResponse;
     },
-    enabled: Boolean(runId),
+    enabled: Boolean(runId) && isCompleted,
+    retry: (failureCount, error) => {
+      // Do not retry 403 (forbidden), 404 (not found), or 409 (not completed)
+      if (error.statusCode === 403 || error.statusCode === 404 || error.statusCode === 409) {
+        return false;
+      }
+      return failureCount < 2;
+    },
   });
 }
 

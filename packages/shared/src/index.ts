@@ -9,5 +9,6 @@ export * from "./schemas/run";
 export * from "./schemas/results";
 export * from "./hash";
 export * from "./stats";
+export * from "./pngDpi";
 
 

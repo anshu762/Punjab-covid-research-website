@@ -62,9 +62,6 @@ export function LandingNavbar() {
           <a href="#rigor" className="hover:text-ink transition-colors">
             Rigor
           </a>
-          <a href="#stack" className="hover:text-ink transition-colors">
-            Stack
-          </a>
         </nav>
 
         {/* CTA Buttons */}
@@ -137,13 +134,6 @@ export function LandingNavbar() {
               className="px-2 py-1.5 hover:bg-slate-50 rounded"
             >
               Rigor
-            </a>
-            <a
-              href="#stack"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-2 py-1.5 hover:bg-slate-50 rounded"
-            >
-              Stack
             </a>
           </nav>
           <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">

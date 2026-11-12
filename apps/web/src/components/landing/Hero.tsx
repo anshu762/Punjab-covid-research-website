@@ -142,6 +142,18 @@ export function LandingHero() {
                     viewBox="0 0 320 180"
                     preserveAspectRatio="none"
                   >
+                    {/* Horizontal Threshold Reference Line */}
+                    <line
+                      x1="10"
+                      y1="110"
+                      x2="310"
+                      y2="110"
+                      stroke="#94a3b8"
+                      strokeWidth="1"
+                      strokeDasharray="4,3"
+                      strokeOpacity="0.5"
+                    />
+
                     <motion.path
                       d="M 10 160 Q 90 120 150 50 Q 210 30 260 80 Q 300 120 310 140 L 310 165 Q 260 110 210 70 Q 150 80 90 140 Z"
                       fill="#93c5fd"
@@ -188,25 +200,27 @@ export function LandingHero() {
                   animate={
                     shouldReduceMotion
                       ? {}
-                      : { y: [-4, 4, -4] }
+                      : { y: [-3, 3, -3] }
                   }
                   transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-16 right-8 px-2.5 py-1 rounded-md bg-navy-900 text-white text-[10px] font-mono shadow-md border border-slate-700 pointer-events-none"
+                  className="absolute top-14 right-6 z-20 px-2.5 py-1 rounded-md bg-navy-900/95 text-white text-[10px] font-mono shadow-md border border-slate-600 backdrop-blur-xs pointer-events-none flex items-center gap-1.5"
                 >
-                  Origin: 31 Aug &rarr; 7-day test
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span>Origin: 31 Aug &rarr; 7-day test</span>
                 </motion.div>
 
-                {/* Floating Indicator Chip 2: R_eff */}
+                {/* Floating Indicator Chip 2: R_eff Threshold Line (Elevated above bars with z-20) */}
                 <motion.div
                   animate={
                     shouldReduceMotion
                       ? {}
-                      : { y: [4, -4, 4] }
+                      : { y: [3, -3, 3] }
                   }
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute bottom-12 left-10 px-2.5 py-1 rounded-md bg-blue-600 text-white text-[10px] font-mono shadow-md pointer-events-none"
+                  className="absolute top-14 left-6 z-20 px-2.5 py-1 rounded-md bg-blue-600/95 text-white text-[10px] font-mono shadow-md border border-blue-400/30 backdrop-blur-xs pointer-events-none flex items-center gap-1.5"
                 >
-                  R_eff = 1.0 (Threshold line)
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
+                  <span>R_eff = 1.0 (Threshold line)</span>
                 </motion.div>
               </div>
 

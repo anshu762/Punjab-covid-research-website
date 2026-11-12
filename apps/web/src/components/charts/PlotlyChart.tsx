@@ -6,6 +6,8 @@ import { CHART_THEME } from "./chartTheme";
 export interface PlotlyChartRef {
   resetZoom: () => void;
   relayout: (update: Record<string, unknown>) => void;
+  getDiv: () => HTMLDivElement | null;
+  getPlotlyInstance: () => any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 interface PlotlyChartProps {
@@ -39,6 +41,8 @@ export const PlotlyChart = forwardRef<PlotlyChartRef, PlotlyChartProps>(function
         plotlyInstance.relayout(containerRef.current, update);
       }
     },
+    getDiv: () => containerRef.current,
+    getPlotlyInstance: () => plotlyInstance,
   }));
 
   // Dynamically load Plotly in browser
