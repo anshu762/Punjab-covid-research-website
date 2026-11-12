@@ -8,14 +8,15 @@ import { verifyGrounding } from "@/lib/ai/grounding";
 import { NextResponse, type NextRequest } from "next/server";
 
 const ExplainRequestSchema = z.object({
-  kind: z.enum(["results", "scenario", "dataset"]),
+  kind: z.enum(["results", "scenario", "dataset", "methods_qa"]),
   refId: z.string().min(1, "refId is required"),
+  question: z.string().max(500).optional(),
 });
 
 export const POST = apiHandler(async (req: NextRequest) => {
   const user = await requireUser();
   const body = await req.json();
-  const { kind, refId } = ExplainRequestSchema.parse(body);
+  const { kind, refId, question } = ExplainRequestSchema.parse(body);
 
   // 1. Rate limiting: max 10 explanations per hour per user
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
@@ -34,8 +35,8 @@ export const POST = apiHandler(async (req: NextRequest) => {
     );
   }
 
-  // 2. Build compact context JSON strictly from stored numbers
-  const { context, summaryFallback } = await buildContextForKind(kind, refId);
+  // 2. Build compact context JSON strictly from stored numbers / methods
+  const { context, summaryFallback } = await buildContextForKind(kind, refId, question);
   const contextStr = JSON.stringify(context);
   const inputHash = crypto.createHash("sha256").update(contextStr).digest("hex");
 

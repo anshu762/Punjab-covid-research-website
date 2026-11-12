@@ -104,5 +104,28 @@
 - [x] Task 12 — Server route `POST /api/ai/explain` (compact stored JSON context only, system prompt forbidding causal/impact claims, grounding regex verification, `ai_explanations` table, rate limit)
 - [x] Task 13 — AI UI (`AiExplainerCard` on `/results`, `/scenarios`, data quality, persistent disclaimer badge, grounding warning)
 
+## Phase 6 — Methods page, UI consistency & bug-hunt pass, security, full verification, deployment, portfolio assets
+
+### Checkpoint A — Methods page (`/methods`)
+- [x] Task 1 — Content and layout (14 sections, ToC scroll-spy, KaTeX equations, shared constants, "Ask about methods" QA card)
+
+### Checkpoint B — UI consistency and bug-hunt pass
+- [ ] Task 2 — Automated audit script `scripts/ui-audit.js` + manual walkthrough (`docs/UI_AUDIT.md`)
+- [ ] Task 3 — Landing page polish (OpenGraph, icon, robots, sitemap, cold-start compute UX)
+
+### Checkpoint C — Security and reliability verification
+- [ ] Task 4 — Security checks (`docs/SECURITY_CHECKLIST.md`, table-driven auth & isolation tests, SSRF, formula injection, CSP headers)
+- [ ] Task 5 — Reliability checks (Neon suspend backoff, mid-run reconnect, idempotency, 2-job limit)
+
+### Checkpoint D — Full end-to-end verification vs the PRD
+- [ ] Task 6 — E2E test suite `e2e/full-workflow.spec.ts`
+- [ ] Task 7 — Backend verification summary (`pytest -q`, mathematical invariants)
+- [ ] Task 8 — PRD traceability matrix `docs/TRACEABILITY.md`
+
+### Checkpoint E — Deployment and portfolio assets
+- [ ] Task 9 — Deploy configs (`vercel.json`, `Dockerfile`, `.github/workflows/ci.yml`, `docs/DEPLOY.md`, `scripts/smoke.sh`)
+- [ ] Task 10 — Portfolio assets (`README.md`, `docs/CASE_STUDY.md`, `docs/DEMO_SCRIPT.md`, version tag v1.0.0)
+
+
 
 

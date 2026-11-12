@@ -13,9 +13,45 @@ STRICT CONSTRAINTS (Violating these will invalidate the output):
 6. Keep the response concise, factual, and divided into 2-3 readable paragraphs.`;
 
 export async function buildContextForKind(
-  kind: "results" | "scenario" | "dataset",
-  refId: string
+  kind: "results" | "scenario" | "dataset" | "methods_qa",
+  refId: string,
+  question?: string
 ): Promise<{ context: Record<string, unknown>; summaryFallback: string }> {
+  if (kind === "methods_qa") {
+    const { METHOD_SECTIONS } = await import("@/content/methods");
+    const matchedSection = METHOD_SECTIONS.find((s) => s.id === refId) || METHOD_SECTIONS[0];
+    const qLower = (question || "").toLowerCase();
+
+    // Find most relevant section if refId is generic "methods"
+    let targetSection = matchedSection;
+    if (refId === "methods" && question) {
+      for (const section of METHOD_SECTIONS) {
+        if (
+          section.title.toLowerCase().includes(qLower) ||
+          section.content.some((c) => c.toLowerCase().includes(qLower))
+        ) {
+          targetSection = section;
+          break;
+        }
+      }
+    }
+
+    const context = {
+      sectionId: targetSection?.id,
+      sectionTitle: targetSection?.title,
+      summary: targetSection?.summary,
+      content: targetSection?.content,
+      question: question || "Explain this methodology section.",
+    };
+
+    const summaryFallback =
+      `Regarding "${targetSection?.title || "Methodology"}": ${targetSection?.summary || ""} ` +
+      `${targetSection?.content[0] || ""} ` +
+      `Note: All EpiLens models distinguish observed reported cases from latent infections and do not provide policy or medical advice.`;
+
+    return { context, summaryFallback };
+  }
+
   if (kind === "results") {
     const run = await prisma.run.findUnique({
       where: { id: refId },

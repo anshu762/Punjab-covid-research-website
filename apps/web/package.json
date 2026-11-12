@@ -22,6 +22,7 @@
     "clsx": "2.1.1",
     "framer-motion": "12.38.0",
     "jose": "5.9.6",
+    "katex": "0.16.21",
     "lucide-react": "1.16.0",
     "next": "16.4.6",
     "next-auth": "5.0.0-beta.25",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",
     "@types/bcryptjs": "2.4.6",
+    "@types/katex": "0.16.7",
     "@types/node": "20.19.43",
     "@types/plotly.js-basic-dist-min": "2.12.3",
     "@types/react": "19.3.0",

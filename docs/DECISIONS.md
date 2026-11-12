@@ -23,6 +23,7 @@ This document records deliberate architectural decisions, library API specifics,
 - **python-multipart**: 0.0.33
 - **psycopg / psycopg-pool**: 3.3.8 / 3.3.3
 - **PyJWT**: 2.15.1
+- **katex / @types/katex**: 0.16.21 / 0.16.7
 - **numpy**: 2.5.4
 - **scipy**: 1.18.1
 - **pandas**: 3.1.1

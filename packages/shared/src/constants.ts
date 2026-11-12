@@ -54,3 +54,42 @@ export const EVAL_PROTOCOL = {
 
 export const ARCHIVE_ALLOWLIST = ["data.covid19india.org"] as const;
 export const METHODS_SOURCE_URL = "https://data.covid19india.org/documentation/csv/";
+
+export const DEFAULT_POPULATION_PROVENANCE = {
+  value: 30_141_373,
+  geography: "Punjab, India",
+  year: 2020,
+  sourceUrl: "https://censusindia.gov.in/",
+} as const;
+
+export const CLEANING_RULES = {
+  negativeCorrectionWindowDays: 14,
+  minTrainingDaysForEvaluation: 42,
+} as const;
+
+export const EVALUATION_RULES = {
+  m2ImprovementThresholdPct: 10,
+  m2MinBlocksWonDev: 6,
+  devBlocksTotal: 9,
+  finalImprovementThresholdPct: 10,
+  finalBlocksWonRequired: 3,
+  finalBlocksTotal: 4,
+} as const;
+
+export const BOOTSTRAP_RULES = {
+  totalReplicates: 200,
+  minReliableSuccessfulReplicates: 180,
+} as const;
+
+export const SENSITIVITY_GRID = {
+  durations: [5, 7, 10] as const,
+  reportingFractions: [0.10, 0.20, 0.50] as const,
+  susceptibleFractions: [0.85, 0.95, 0.99] as const,
+  totalCombinations: 27,
+} as const;
+
+export const OPTIMIZATION_SHORTCUTS = {
+  warmStartsEnabled: true,
+  sensitivityReducedStarts: 5,
+  primaryStarts: 20,
+} as const;
