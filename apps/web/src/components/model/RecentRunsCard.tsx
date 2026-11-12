@@ -57,7 +57,7 @@ export function RecentRunsCard({ onSelectRun, selectedRunId }: RecentRunsCardPro
               <div className="flex items-center gap-1.5 shrink-0">
                 {r.status === "COMPLETED" ? (
                   <Link
-                    href={`/results?runId=${r.id}`}
+                    href={`/results?run=${r.id}`}
                     className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200"
                   >
                     <span>Results</span>

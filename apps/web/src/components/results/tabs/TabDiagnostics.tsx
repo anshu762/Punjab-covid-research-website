@@ -7,6 +7,7 @@ import { PlotlyChart, type PlotlyChartRef } from "@/components/charts/PlotlyChar
 import { ChartCard } from "@/components/charts/ChartCard";
 import { DataTable, type DataTableColumn } from "@/components/charts/DataTable";
 import { CHART_THEME } from "@/components/charts/chartTheme";
+import { exportFigure } from "@/components/charts/figureExport";
 import { downloadCsv } from "@/lib/downloadCsv";
 import {
   CheckCircle2,

@@ -12,6 +12,8 @@ import { CHART_THEME } from "@/components/charts/chartTheme";
 import { downloadCsv } from "@/lib/downloadCsv";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useDatasets, useDataset, useObservations } from "@/hooks/useDatasets";
+import { useRuns, useRunResults } from "@/hooks/useRuns";
+import { RunStatusPill } from "@/components/common/RunStatusPill";
 import {
   calculateTrailing7DayMean,
   formatInt,
@@ -22,10 +24,10 @@ import {
   Calendar,
   Activity,
   ArrowRight,
-  TrendingUp,
   AlertCircle,
-  ShieldCheck,
   CheckCircle2,
+  Trophy,
+  Clock,
 } from "lucide-react";
 
 export default function OverviewPage() {
@@ -47,6 +49,20 @@ export default function OverviewPage() {
     all: true,
   });
   const observations = useMemo(() => obsData?.observations || [], [obsData?.observations]);
+
+  // Runs queries for overview summary cards
+  const { data: runsData } = useRuns(false);
+  const runs = useMemo(() => runsData || [], [runsData]);
+  const newestRun = runs[0];
+  const latestCompletedRun = useMemo(() => runs.find((r) => r.status === "COMPLETED"), [runs]);
+  const latestCompletedEvalRun = useMemo(
+    () => runs.find((r) => r.status === "COMPLETED" && r.mode === "EVALUATE"),
+    [runs]
+  );
+  const { data: evalResultsData } = useRunResults(
+    latestCompletedEvalRun?.id || null,
+    Boolean(latestCompletedEvalRun)
+  );
 
   // Derived metrics
   const metrics = useMemo(() => {
@@ -259,81 +275,126 @@ export default function OverviewPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Link
               href="/data"
               className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-border bg-surface text-ink hover:bg-surface-2 transition"
             >
-              Manage Data
+              Open Data
             </Link>
             <Link
               href="/model"
-              className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1.5 transition"
+              className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-border bg-surface text-ink hover:bg-surface-2 transition"
             >
-              Fit SIR Models <ArrowRight className="w-3.5 h-3.5" />
+              Configure Model
             </Link>
+            {latestCompletedRun ? (
+              <Link
+                href={`/results?run=${latestCompletedRun.id}`}
+                className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1.5 shadow-2xs transition"
+              >
+                <span>View Latest Results</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            ) : (
+              <Link
+                href="/model"
+                className="px-4 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex items-center gap-1.5 shadow-2xs transition"
+              >
+                <span>Fit SIR Models</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            )}
           </div>
         </div>
       )}
 
-      {/* 4 StatCards */}
+      {/* 4 Summary StatCards strictly per PRD §1 and Phase 4 Task 6 */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {/* Card 1: Total Cases */}
+        {/* Card 1: Dataset Coverage */}
         <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
           <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
-            <Activity className="w-3.5 h-3.5 text-blue-600" /> Total Confirmed Cases
-          </span>
-          <span className="text-xl font-bold font-mono text-ink block">
-            {metrics ? formatInt(metrics.totalRawCases) : "—"}
-          </span>
-          <span className="text-[11px] text-muted block">Cumulative reported</span>
-        </div>
-
-        {/* Card 2: Peak Cases */}
-        <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
-          <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
-            <TrendingUp className="w-3.5 h-3.5 text-blue-600" /> Peak Daily Incidence
-          </span>
-          <span className="text-xl font-bold font-mono text-ink block">
-            {metrics ? formatInt(metrics.peakCount) : "—"}
-          </span>
-          <span className="text-[11px] text-muted block">
-            {metrics?.peakDate ? `Recorded on ${formatDisplayDate(metrics.peakDate)}` : "—"}
-          </span>
-        </div>
-
-        {/* Card 3: Resolved Corrections */}
-        <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
-          <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> Negative Adjustments
-          </span>
-          <span className="text-xl font-bold font-mono text-ink block">
-            {dataset?.qualitySummary
-              ? `${formatInt(dataset.qualitySummary.corrections.length)} events`
-              : "0 events"}
-          </span>
-          <span className="text-[11px] text-muted block">
-            {dataset?.qualitySummary
-              ? `${formatInt(dataset.qualitySummary.correction_magnitude)} cases redistributed`
-              : "No negative adjustments"}
-          </span>
-        </div>
-
-        {/* Card 4: Temporal Continuity */}
-        <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
-          <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
-            <Calendar className="w-3.5 h-3.5 text-blue-600" /> Daily Continuity
+            <Calendar className="w-3.5 h-3.5 text-blue-600" /> Dataset Coverage
           </span>
           <span className="text-xl font-bold font-mono text-ink block">
             {observations.length} days
           </span>
-          <span className="text-[11px] text-muted block">
+          <span className="text-[11px] text-muted block truncate">
             {observations.length > 0
               ? `${formatDisplayDate(observations[0].date)} – ${formatDisplayDate(
                   observations[observations.length - 1].date
                 )}`
               : "—"}
           </span>
+        </div>
+
+        {/* Card 2: Total Confirmed Cases */}
+        <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
+          <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
+            <Activity className="w-3.5 h-3.5 text-blue-600" /> Total Reported Cases
+          </span>
+          <span className="text-xl font-bold font-mono text-ink block">
+            {metrics ? formatInt(metrics.totalRawCases) : "—"}
+          </span>
+          <span className="text-[11px] text-muted block truncate">
+            {metrics?.peakDate ? `Peak: ${formatInt(metrics.peakCount)} cases` : "Cumulative reported"}
+          </span>
+        </div>
+
+        {/* Card 3: Latest Analysis Status */}
+        <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
+          <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
+            <Clock className="w-3.5 h-3.5 text-blue-600" /> Latest Analysis Status
+          </span>
+          {newestRun ? (
+            <div className="space-y-1 pt-0.5">
+              <div className="flex items-center gap-2">
+                <RunStatusPill status={newestRun.status} />
+              </div>
+              <span className="text-xs font-semibold text-ink block truncate" title={newestRun.displayName}>
+                {newestRun.displayName}
+              </span>
+              <span className="text-[11px] text-muted block">
+                {newestRun.completedAt
+                  ? formatDisplayDate(newestRun.completedAt.slice(0, 10))
+                  : formatDisplayDate(newestRun.createdAt.slice(0, 10))}
+              </span>
+            </div>
+          ) : (
+            <div className="pt-1">
+              <span className="text-base font-bold text-muted block">No runs</span>
+              <span className="text-[11px] text-muted block">Configure in Model setup</span>
+            </div>
+          )}
+        </div>
+
+        {/* Card 4: Best Forecast Model */}
+        <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
+          <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
+            <Trophy className="w-3.5 h-3.5 text-blue-600" /> Best Forecast Model
+          </span>
+          {evalResultsData?.payload?.evaluation ? (
+            <div className="space-y-0.5 pt-0.5">
+              <span className="text-base font-bold text-ink block">
+                {evalResultsData.payload.evaluation.selection.selectedSir === "M2"
+                  ? "Change-point SIR (M2)"
+                  : "Constant SIR (M1)"}
+              </span>
+              <span className="text-[11px] text-emerald-700 font-medium block truncate">
+                {evalResultsData.payload.evaluation.selection.verdictText}
+              </span>
+              <span className="text-[10px] text-muted block font-mono">
+                vs {evalResultsData.payload.evaluation.selection.selectedBaseline}
+              </span>
+            </div>
+          ) : (
+            <div className="pt-1">
+              <span className="text-base font-bold text-muted block">Not evaluated</span>
+              <span className="text-[11px] text-muted block">
+                Run 7-day forecast evaluation
+              </span>
+            </div>
+          )}
         </div>
       </div>
 
