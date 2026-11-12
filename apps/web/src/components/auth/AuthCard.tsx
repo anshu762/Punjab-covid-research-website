@@ -145,62 +145,99 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
   return (
     <div className="relative w-full max-w-3xl bg-surface rounded-2xl border border-border shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 text-ink">
       {/* Left Column: Brand Context & Research Highlights (Landscape rectangle side) */}
-      <div className="relative bg-gradient-to-br from-[#0B1F3A] via-[#12294A] to-[#0B1F3A] text-white p-6 sm:p-7 flex flex-col justify-between overflow-hidden md:col-span-5 border-b md:border-b-0 md:border-r border-border/20">
-        {/* Ambient decorative glow */}
-        <div className="absolute -top-12 -left-12 w-48 h-48 bg-blue-600/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative bg-[#0B1F3A] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#132A4A] via-[#0B1F3A] to-[#071324] text-white p-6 sm:p-7 flex flex-col justify-between overflow-hidden md:col-span-5 border-b md:border-b-0 md:border-r border-white/10">
+        {/* Ambient high-tech background effects */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none opacity-60" />
+        <div className="absolute -top-16 -left-16 w-56 h-56 bg-blue-500/25 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 -right-16 w-56 h-56 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 space-y-4">
-          {/* Status badge */}
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/15 border border-blue-400/25 text-[11px] font-mono text-blue-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Punjab COVID-19</span>
+          {/* Micro status badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/25 backdrop-blur-md shadow-[0_0_15px_rgba(37,99,235,0.2)]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            </span>
+            <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-blue-200">
+              Punjab COVID-19
+            </span>
           </div>
 
           <div>
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm shrink-0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 via-blue-600 to-navy-900 border border-blue-300/40 flex items-center justify-center text-white shadow-[0_0_20px_rgba(37,99,235,0.4)] shrink-0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
                   <path d="M3 12h4l3 8 4-16 3 8h4" />
                 </svg>
               </div>
-              <h2 className="text-lg font-bold tracking-tight text-white">EpiLens</h2>
+              <h2 className="text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-blue-200">
+                EpiLens
+              </h2>
             </div>
-            <p className="mt-2 text-xs text-slate-300 leading-relaxed">
+            <p className="mt-2.5 text-xs text-slate-300/90 leading-relaxed font-normal">
               Epidemiology workbench for compartmental SIR models, forecast evaluation, and reproducible science.
             </p>
           </div>
 
-          {/* Research feature highlights */}
-          <div className="pt-2 space-y-2.5 hidden sm:block">
-            <div className="flex items-start gap-2.5 text-xs text-slate-200">
-              <Activity className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-semibold text-white">Dual SIR Models</span>
-                <p className="text-[11px] text-slate-400">Scipy RK45 ODE solver with constant & change-point &tau;.</p>
+          {/* Research feature cards */}
+          <div className="pt-1.5 space-y-2.5 hidden sm:block">
+            {/* Feature 1 */}
+            <div className="group p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-blue-400/30 transition-all duration-200 backdrop-blur-xs flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-blue-300 shrink-0 shadow-[0_0_12px_rgba(59,130,246,0.2)] mt-0.5">
+                <Activity className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-white tracking-tight">Dual SIR Models</span>
+                  <span className="text-[9px] font-mono font-medium px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/25">M1 / M2</span>
+                </div>
+                <p className="text-[11px] text-slate-300/85 leading-snug mt-0.5">
+                  Scipy RK45 ODE solver with constant &amp; change-point &tau;.
+                </p>
               </div>
             </div>
-            <div className="flex items-start gap-2.5 text-xs text-slate-200">
-              <BarChart2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-semibold text-white">Empirical Baselines</span>
-                <p className="text-[11px] text-slate-400">7-day rolling trailing mean & coverage strip evaluation.</p>
+
+            {/* Feature 2 */}
+            <div className="group p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-cyan-400/30 transition-all duration-200 backdrop-blur-xs flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center text-cyan-300 shrink-0 shadow-[0_0_12px_rgba(6,182,212,0.2)] mt-0.5">
+                <BarChart2 className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-white tracking-tight">Empirical Baselines</span>
+                  <span className="text-[9px] font-mono font-medium px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/25">ROLLING 7D</span>
+                </div>
+                <p className="text-[11px] text-slate-300/85 leading-snug mt-0.5">
+                  7-day rolling trailing mean &amp; coverage strip evaluation.
+                </p>
               </div>
             </div>
-            <div className="flex items-start gap-2.5 text-xs text-slate-200">
-              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-              <div>
-                <span className="font-semibold text-white">Deterministic & Isolated</span>
-                <p className="text-[11px] text-slate-400">Owner-isolated sessions with CSV & audit exports.</p>
+
+            {/* Feature 3 */}
+            <div className="group p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-emerald-400/30 transition-all duration-200 backdrop-blur-xs flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0 shadow-[0_0_12px_rgba(16,185,129,0.2)] mt-0.5">
+                <ShieldCheck className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-white tracking-tight">Deterministic &amp; Isolated</span>
+                  <span className="text-[9px] font-mono font-medium px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/25">ISOLATED</span>
+                </div>
+                <p className="text-[11px] text-slate-300/85 leading-snug mt-0.5">
+                  Owner-isolated sessions with CSV &amp; audit exports.
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 pt-4 mt-4 border-t border-white/10 hidden md:block">
-          <p className="text-[11px] text-slate-400 font-mono">
-            Open Science &bull; Punjab 2020&ndash;2021
-          </p>
+        {/* Footer tag of left panel */}
+        <div className="relative z-10 pt-3 mt-4 border-t border-white/10 hidden md:flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-[11px] font-mono text-slate-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_6px_#22d3ee]"></span>
+            <span>Open Science &bull; Punjab 2020&ndash;2021</span>
+          </div>
+          <span className="text-[9px] font-mono text-slate-400 uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/5 border border-white/10">v1.0 LTS</span>
         </div>
       </div>
 

@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "EpiLens — Punjab COVID-19 Research Workbench",
   description:
     "Private research workbench for Punjab COVID-19 data: SIR model fitting, forecast evaluation, scenarios, and reproducible exports.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
