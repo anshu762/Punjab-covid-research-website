@@ -101,8 +101,8 @@
 - [x] Task 11 — Sensitivity UI (collapsed "Advanced sensitivity" section on `/results`, 27-row table, reversal markers, CSV download, note on reduced settings)
 
 ### Checkpoint E — OpenRouter AI explainer (optional, strictly grounded)
-- [ ] Task 12 — Server route `POST /api/ai/explain` (compact stored JSON context only, system prompt forbidding causal/impact claims, grounding regex verification, `ai_explanations` table, rate limit)
-- [ ] Task 13 — AI UI (`AiExplainerCard` on `/results`, `/scenarios`, data quality, persistent disclaimer badge, grounding warning)
+- [x] Task 12 — Server route `POST /api/ai/explain` (compact stored JSON context only, system prompt forbidding causal/impact claims, grounding regex verification, `ai_explanations` table, rate limit)
+- [x] Task 13 — AI UI (`AiExplainerCard` on `/results`, `/scenarios`, data quality, persistent disclaimer badge, grounding warning)
 
 
 

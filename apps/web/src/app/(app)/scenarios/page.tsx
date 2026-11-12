@@ -24,6 +24,7 @@ import { ScenarioControls } from "@/components/scenarios/ScenarioControls";
 import { ScenarioCharts } from "@/components/scenarios/ScenarioCharts";
 import { ScenarioSummary } from "@/components/scenarios/ScenarioSummary";
 import { ScenarioHistory } from "@/components/scenarios/ScenarioHistory";
+import { AiExplainerCard } from "@/components/ai/AiExplainerCard";
 
 export default function ScenariosPage() {
   const router = useRouter();
@@ -301,6 +302,8 @@ export default function ScenariosPage() {
                   }
                   runId={activeRunId || "unknown"}
                 />
+
+                <AiExplainerCard kind="scenario" refId={activeScenario.id} />
               </>
             )}
 

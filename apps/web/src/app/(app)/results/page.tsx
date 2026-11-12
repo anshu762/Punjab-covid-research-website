@@ -21,6 +21,7 @@ import { TabSirStates } from "@/components/results/tabs/TabSirStates";
 import { TabTransmission } from "@/components/results/tabs/TabTransmission";
 import { TabDiagnostics } from "@/components/results/tabs/TabDiagnostics";
 import { SensitivityPanel } from "@/components/results/SensitivityPanel";
+import { AiExplainerCard } from "@/components/ai/AiExplainerCard";
 import {
   BarChart2,
   Calendar,
@@ -394,6 +395,9 @@ function ResultsPageContent() {
             runId={payload.run.id}
             isEvaluated={payload.run.mode === "EVALUATE"}
           />
+
+          {/* Strictly Grounded Plain-Language AI Explainer */}
+          <AiExplainerCard kind="results" refId={payload.run.id} />
         </div>
       </div>
     </RunIdProvider>
