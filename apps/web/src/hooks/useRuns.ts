@@ -36,8 +36,29 @@ export interface RunItem {
   dataset?: {
     id: string;
     name: string;
+    version?: number;
     isSynthetic: boolean;
   };
+  fitResult?: {
+    payload?: unknown;
+  } | null;
+}
+
+export interface UseRunsOptions {
+  activeOnly?: boolean;
+  search?: string;
+  mode?: "FIT" | "EVALUATE";
+  modelType?: "M1" | "M2";
+  page?: number;
+  limit?: number;
+}
+
+export interface RunsListResponse {
+  runs: RunItem[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 export function isTerminalStatus(status?: string | null): boolean {
@@ -54,6 +75,29 @@ export function useRuns(activeOnly = false) {
       }
       const data = await res.json();
       return data.runs;
+    },
+  });
+}
+
+export function useRunsTable(options: UseRunsOptions = {}) {
+  const { activeOnly, search, mode, modelType, page = 1, limit = 10 } = options;
+
+  return useQuery({
+    queryKey: ["runs-table", { activeOnly, search, mode, modelType, page, limit }],
+    queryFn: async (): Promise<RunsListResponse> => {
+      const params = new URLSearchParams();
+      if (activeOnly) params.set("active", "true");
+      if (search) params.set("search", search);
+      if (mode) params.set("mode", mode);
+      if (modelType) params.set("modelType", modelType);
+      params.set("page", String(page));
+      params.set("limit", String(limit));
+
+      const res = await fetch(`/api/runs?${params.toString()}`);
+      if (!res.ok) {
+        throw new Error("Failed to load runs table");
+      }
+      return (await res.json()) as RunsListResponse;
     },
   });
 }

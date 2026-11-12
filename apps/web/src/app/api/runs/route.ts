@@ -15,6 +15,11 @@ export const GET = apiHandler(async (req: NextRequest) => {
   const user = await requireUser();
   const { searchParams } = new URL(req.url);
   const activeOnly = searchParams.get("active") === "true";
+  const search = searchParams.get("search")?.trim();
+  const mode = searchParams.get("mode");
+  const modelType = searchParams.get("modelType");
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
+  const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "10", 10)));
 
   const ACTIVE_STATUSES = [
     "QUEUED",
@@ -25,35 +30,73 @@ export const GET = apiHandler(async (req: NextRequest) => {
     "EXPORTING",
   ] as const;
 
-  const runs = await prisma.run.findMany({
-    where: {
-      ownerId: user.id,
-      ...(activeOnly ? { status: { in: [...ACTIVE_STATUSES] } } : {}),
-    },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      displayName: true,
-      mode: true,
-      modelType: true,
-      status: true,
-      stage: true,
-      progressDone: true,
-      progressTotal: true,
-      createdAt: true,
-      startedAt: true,
-      completedAt: true,
-      configHash: true,
-      cacheKey: true,
-      hasFit: true,
-      evaluated: true,
-      errorReference: true,
-      errorMessage: true,
-    },
-    take: activeOnly ? 5 : 20,
-  });
+  const whereClause: Prisma.RunWhereInput = {
+    ownerId: user.id,
+    ...(activeOnly ? { status: { in: [...ACTIVE_STATUSES] } } : {}),
+    ...(search
+      ? {
+          displayName: {
+            contains: search,
+            mode: "insensitive" as Prisma.QueryMode,
+          },
+        }
+      : {}),
+    ...(mode === "FIT" || mode === "EVALUATE" ? { mode } : {}),
+    ...(modelType === "M1" || modelType === "M2" ? { modelType } : {}),
+  };
 
-  return NextResponse.json({ runs });
+  const [total, runs] = await Promise.all([
+    prisma.run.count({ where: whereClause }),
+    prisma.run.findMany({
+      where: whereClause,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        displayName: true,
+        mode: true,
+        modelType: true,
+        status: true,
+        stage: true,
+        progressDone: true,
+        progressTotal: true,
+        createdAt: true,
+        startedAt: true,
+        completedAt: true,
+        configHash: true,
+        cacheKey: true,
+        hasFit: true,
+        evaluated: true,
+        errorReference: true,
+        errorMessage: true,
+        config: true,
+        dataset: {
+          select: {
+            id: true,
+            name: true,
+            version: true,
+            isSynthetic: true,
+          },
+        },
+        fitResult: {
+          select: {
+            payload: true,
+          },
+        },
+      },
+      skip: activeOnly ? 0 : (page - 1) * limit,
+      take: activeOnly ? 5 : limit,
+    }),
+  ]);
+
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  return NextResponse.json({
+    runs,
+    total,
+    page,
+    limit,
+    totalPages,
+  });
 });
 
 export const POST = apiHandler(async (req: NextRequest) => {

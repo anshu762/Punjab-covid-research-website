@@ -87,8 +87,8 @@
 - [x] Task 3 — Scenario explorer page `/scenarios` (controls, locked summary, charts, summary cards, stale banner, parent run traceability)
 
 ### Checkpoint B — Saved runs and compare
-- [ ] Task 4 — `/runs` page (TanStack Table, server-side search, pagination, status pills, actions: reopen without refit, rename, duplicate settings, delete cascade)
-- [ ] Task 5 — Multi-run comparison modal (up to 3 runs, condition evaluation, ranking logic in `packages/shared/src/compare.ts`, tests)
+- [x] Task 4 — `/runs` page (TanStack Table, server-side search, pagination, status pills, actions: reopen without refit, rename, duplicate settings, delete cascade)
+- [x] Task 5 — Multi-run comparison modal (up to 3 runs, condition evaluation, ranking logic in `packages/shared/src/compare.ts`, tests)
 
 ### Checkpoint C — Download centre and exports
 - [ ] Task 6 — Export generation engine (`apps/compute/app/exports/`, CSV builders, server-rendered 300 DPI matplotlib PNG/SVG figures, BUNDLE_ZIP with SHA-256 manifest and no private paths)
