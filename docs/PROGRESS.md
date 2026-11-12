@@ -79,4 +79,30 @@
 - [x] Task 7 — Run list shortcuts in `/model`
 - [x] Task 8 — Unit tests (PNG DPI, summary metrics, comparison table row builder, profile line), component tests, E2E tests, axe accessibility
 
+## Phase 5 — Scenario explorer, Saved runs & compare, Download centre, Sensitivity, OpenRouter AI explainer
+
+### Checkpoint A — Scenario engine and Scenario explorer
+- [x] Task 1 — Scenario computation (Python `app/scenarios/engine.py`, pure + tested, paired bootstrap, deterministic template sentence)
+- [x] Task 2 — Scenario API (`POST /api/scenarios`, `GET /api/scenarios/[id]`, `DELETE /api/scenarios/[id]`, shared zod schemas)
+- [x] Task 3 — Scenario explorer page `/scenarios` (controls, locked summary, charts, summary cards, stale banner, parent run traceability)
+
+### Checkpoint B — Saved runs and compare
+- [ ] Task 4 — `/runs` page (TanStack Table, server-side search, pagination, status pills, actions: reopen without refit, rename, duplicate settings, delete cascade)
+- [ ] Task 5 — Multi-run comparison modal (up to 3 runs, condition evaluation, ranking logic in `packages/shared/src/compare.ts`, tests)
+
+### Checkpoint C — Download centre and exports
+- [ ] Task 6 — Export generation engine (`apps/compute/app/exports/`, CSV builders, server-rendered 300 DPI matplotlib PNG/SVG figures, BUNDLE_ZIP with SHA-256 manifest and no private paths)
+- [ ] Task 7 — Export & download API (tokenized streaming, 5-minute HMAC-signed token, ownership validation)
+- [ ] Task 8 — Download centre UI (tab on `/runs`, modal on `/results`, status polling, `aria-live` announcements)
+- [ ] Task 9 — Pytest, Vitest, and Playwright export test suite
+
+### Checkpoint D — Sensitivity analysis
+- [ ] Task 10 — Sensitivity job (`SENSITIVITY` handler, Python `app/sensitivity.py`, Prisma migration for `sensitivity_results`, 27 combinations, reversal flags)
+- [ ] Task 11 — Sensitivity UI (collapsed "Advanced sensitivity" section on `/results`, 27-row table, reversal markers, CSV download, note on reduced settings)
+
+### Checkpoint E — OpenRouter AI explainer (optional, strictly grounded)
+- [ ] Task 12 — Server route `POST /api/ai/explain` (compact stored JSON context only, system prompt forbidding causal/impact claims, grounding regex verification, `ai_explanations` table, rate limit)
+- [ ] Task 13 — AI UI (`AiExplainerCard` on `/results`, `/scenarios`, data quality, persistent disclaimer badge, grounding warning)
+
+
 
