@@ -105,10 +105,26 @@ def verify_internal_secret(x_internal_secret: str | None = Header(default=None, 
         )
 
 
+@app.get("/")
+def root() -> dict[str, Any]:
+    """Root endpoint for Railway / browser health check and status verification."""
+    return {
+        "status": "healthy",
+        "service": "EpiLens Compute Microservice",
+        "code_revision": settings.CODE_REVISION,
+        "message": "Compute engine is operational and ready.",
+    }
+
+
 @app.get("/health")
-def health() -> dict[str, bool]:
-    """Lightweight liveness check (does not touch database)."""
-    return {"ok": True}
+def health() -> dict[str, Any]:
+    """Lightweight liveness check for Railway / Docker orchestrators."""
+    return {
+        "status": "healthy",
+        "ok": True,
+        "service": "epilens-compute",
+        "code_revision": settings.CODE_REVISION,
+    }
 
 
 @app.get("/health/db")
