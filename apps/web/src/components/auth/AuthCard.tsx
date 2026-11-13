@@ -16,8 +16,11 @@ import {
   BarChart2,
   ShieldCheck,
 } from "lucide-react";
-import { loginWithCredentials, signUpUser } from "@/actions/auth";
-import { launchDemoSession } from "@/lib/client-auth";
+import {
+  loginWithCredentialsClient,
+  registerUserClient,
+  launchDemoSession,
+} from "@/lib/client-auth";
 import { formatUserError } from "@/lib/error-formatter";
 
 export interface AuthCardProps {
@@ -53,23 +56,16 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
     setIsLoading(true);
 
     try {
-      const res = await loginWithCredentials({ email, password });
-      if (res?.error) {
+      const res = await loginWithCredentialsClient(email, password);
+      if (!res.success && res.error) {
         setErrorMessage(res.error);
         setIsLoading(false);
       }
     } catch (err: unknown) {
-      if (err && typeof err === "object" && "digest" in err) {
-        throw err;
-      }
-      const { message, isDeploymentSkew } = formatUserError(
+      const { message } = formatUserError(
         err,
         "Invalid email or password. Please verify your credentials."
       );
-      if (isDeploymentSkew) {
-        window.location.reload();
-        return;
-      }
       setErrorMessage(message);
       setIsLoading(false);
     }
@@ -103,38 +99,31 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
     setIsLoading(true);
 
     try {
-      const result = await signUpUser({
+      const result = await registerUserClient({
         name,
         email,
         password,
         confirmPassword,
       });
 
-      if (result.error) {
+      if (!result.success && result.error) {
         setErrorMessage(result.error);
         setIsLoading(false);
         return;
       }
 
       // Automatically sign in upon registration
-      const loginRes = await loginWithCredentials({ email, password });
-      if (loginRes?.error) {
+      const loginRes = await loginWithCredentialsClient(email, password);
+      if (!loginRes.success && loginRes.error) {
         setSuccessMessage("Account created successfully! Please sign in with your credentials.");
         setMode("signin");
         setIsLoading(false);
       }
     } catch (err: unknown) {
-      if (err && typeof err === "object" && "digest" in err) {
-        throw err;
-      }
-      const { message, isDeploymentSkew } = formatUserError(
+      const { message } = formatUserError(
         err,
         "Failed to create account. Please try again."
       );
-      if (isDeploymentSkew) {
-        window.location.reload();
-        return;
-      }
       setErrorMessage(message);
       setIsLoading(false);
     }
