@@ -93,7 +93,15 @@ export async function loginWithCredentials(input: LoginInput): Promise<AuthActio
  * Start an isolated one-click guest demo session.
  */
 export async function startDemoSession() {
-  return signIn("demo", { redirectTo: "/overview" });
+  try {
+    return await signIn("demo", { redirectTo: "/overview" });
+  } catch (error) {
+    if (error && typeof error === "object" && "digest" in error) {
+      throw error;
+    }
+    console.error("Demo session startup error:", error);
+    throw new Error("Unable to initialize demo session. Please refresh the page and try again.");
+  }
 }
 
 /**

@@ -16,7 +16,9 @@ import {
   BarChart2,
   ShieldCheck,
 } from "lucide-react";
-import { loginWithCredentials, signUpUser, startDemoSession } from "@/actions/auth";
+import { loginWithCredentials, signUpUser } from "@/actions/auth";
+import { launchDemoSession } from "@/lib/client-auth";
+import { formatUserError } from "@/lib/error-formatter";
 
 export interface AuthCardProps {
   initialMode?: "signin" | "signup";
@@ -60,9 +62,15 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
       if (err && typeof err === "object" && "digest" in err) {
         throw err;
       }
-      setErrorMessage(
-        err instanceof Error ? err.message : "Invalid email or password. Please verify your credentials."
+      const { message, isDeploymentSkew } = formatUserError(
+        err,
+        "Invalid email or password. Please verify your credentials."
       );
+      if (isDeploymentSkew) {
+        window.location.reload();
+        return;
+      }
+      setErrorMessage(message);
       setIsLoading(false);
     }
   }
@@ -119,9 +127,15 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
       if (err && typeof err === "object" && "digest" in err) {
         throw err;
       }
-      setErrorMessage(
-        err instanceof Error ? err.message : "Failed to create account. Please try again."
+      const { message, isDeploymentSkew } = formatUserError(
+        err,
+        "Failed to create account. Please try again."
       );
+      if (isDeploymentSkew) {
+        window.location.reload();
+        return;
+      }
+      setErrorMessage(message);
       setIsLoading(false);
     }
   }
@@ -138,15 +152,24 @@ export function AuthCard({ initialMode = "signin", onClose, isModal = false }: A
     }, 1800);
 
     try {
-      await startDemoSession();
+      const result = await launchDemoSession();
+      if (!result.success && result.error) {
+        clearTimeout(warmTimer);
+        setErrorMessage(result.error);
+        setDemoLoading(false);
+        setWarmingUp(false);
+      }
     } catch (e: unknown) {
       clearTimeout(warmTimer);
-      if (e && typeof e === "object" && "digest" in e) {
-        throw e;
-      }
-      setErrorMessage(
-        e instanceof Error ? e.message : "Failed to launch demo session. Please try again."
+      const { message, isDeploymentSkew } = formatUserError(
+        e,
+        "Failed to launch demo session. Please try again."
       );
+      if (isDeploymentSkew) {
+        window.location.reload();
+        return;
+      }
+      setErrorMessage(message);
       setDemoLoading(false);
       setWarmingUp(false);
     }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { startDemoSession } from "@/actions/auth";
+import { launchDemoSession } from "@/lib/client-auth";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
 
 export function LandingNavbar() {
@@ -23,7 +23,7 @@ export function LandingNavbar() {
   const handleStartDemo = async () => {
     setDemoLoading(true);
     try {
-      await startDemoSession();
+      await launchDemoSession();
     } catch {
       setDemoLoading(false);
     }

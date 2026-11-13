@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Shield, Sparkles } from "lucide-react";
 import React, { useState } from "react";
-import { startDemoSession } from "@/actions/auth";
+import { launchDemoSession } from "@/lib/client-auth";
 import { useAuthModal } from "@/components/auth/AuthModalProvider";
 
 export function LandingHero() {
@@ -29,7 +29,14 @@ export function LandingHero() {
     }, 15000);
 
     try {
-      await startDemoSession();
+      const res = await launchDemoSession();
+      if (!res.success && res.error) {
+        clearTimeout(warmTimer);
+        clearTimeout(timeoutTimer);
+        setDemoLoading(false);
+        setWarmingUp(false);
+        setRetryNotice(res.error);
+      }
     } catch {
       clearTimeout(warmTimer);
       clearTimeout(timeoutTimer);
