@@ -17,6 +17,13 @@ COPY data/ ./data/
 
 RUN chown -R epilens:epilens /app
 
+# Ensure misconfigured PaaS start commands (like pnpm/npm) gracefully launch uvicorn
+RUN printf '#!/bin/sh\nexec uvicorn app.main:app --host 0.0.0.0 --port "${PORT:-8000}"\n' > /usr/local/bin/pnpm \
+    && chmod +x /usr/local/bin/pnpm \
+    && ln -sf /usr/local/bin/pnpm /usr/local/bin/npm \
+    && ln -sf /usr/local/bin/pnpm /usr/local/bin/npx \
+    && ln -sf /usr/local/bin/pnpm /usr/local/bin/yarn
+
 USER epilens
 
 EXPOSE 8000
