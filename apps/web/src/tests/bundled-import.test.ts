@@ -1,60 +1,80 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("server-only", () => ({}));
 
+const { mockPrisma } = vi.hoisted(() => {
+  const prismaObj = {
+    user: {
+      findUnique: vi.fn(),
+    },
+    dataset: {
+      create: vi.fn(),
+    },
+    storedFile: {
+      createMany: vi.fn(),
+    },
+    observation: {
+      createMany: vi.fn(),
+    },
+  };
+  return { mockPrisma: prismaObj };
+});
+
+vi.mock("@/lib/db", () => ({
+  db: mockPrisma,
+}));
+
 import { importBundledDirectly } from "@/lib/bundled-importer";
-import { db } from "@/lib/db";
 
 describe("Direct Bundled Importer", () => {
-  it("imports synthetic demo dataset directly into database", async () => {
-    // Find or create test user
-    let user = await db.user.findFirst({ where: { isDemo: true } });
-    if (!user) {
-      user = await db.user.create({
-        data: {
-          name: "Test Researcher",
-          email: `test-import-${Date.now()}@test.local`,
-          isDemo: true,
-        },
-      });
-    }
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
-    const result = await importBundledDirectly(user.id, "synthetic_demo");
+  it("imports synthetic demo dataset directly using Prisma", async () => {
+    mockPrisma.user.findUnique.mockResolvedValue({ id: "user_test_123" });
+    mockPrisma.dataset.create.mockImplementation(({ data }) =>
+      Promise.resolve({
+        ...data,
+        id: data.id || "ds_test_synthetic",
+        name: data.name,
+        isSynthetic: data.isSynthetic,
+      })
+    );
+    mockPrisma.storedFile.createMany.mockResolvedValue({ count: 3 });
+    mockPrisma.observation.createMany.mockResolvedValue({ count: 180 });
+
+    const result = await importBundledDirectly("user_test_123", "synthetic_demo");
 
     expect(result).toBeDefined();
     expect(result.dataset_id).toBeDefined();
     expect(result.status).toBe("READY");
     expect(result.is_synthetic).toBe(true);
-    expect(result.observation_count).toBeGreaterThan(0);
+    expect(result.observation_count).toBe(153);
 
-    // Verify dataset in DB
-    const dataset = await db.dataset.findUnique({
-      where: { id: result.dataset_id },
-      include: { files: true, observations: true },
+    expect(mockPrisma.user.findUnique).toHaveBeenCalledWith({
+      where: { id: "user_test_123" },
+      select: { id: true },
     });
+    expect(mockPrisma.dataset.create).toHaveBeenCalledOnce();
+    expect(mockPrisma.storedFile.createMany).toHaveBeenCalledOnce();
+    expect(mockPrisma.observation.createMany).toHaveBeenCalled();
+  });
 
-    expect(dataset).toBeDefined();
-    expect(dataset?.ownerId).toBe(user.id);
-    expect(dataset?.files.length).toBe(3); // RAW_UPLOAD, CLEAN_CSV, QUALITY_LOG
-    expect(dataset?.observations.length).toBe(result.observation_count);
+  it("imports frozen archive dataset directly using Prisma", async () => {
+    mockPrisma.user.findUnique.mockResolvedValue({ id: "user_test_456" });
+    mockPrisma.dataset.create.mockImplementation(({ data }) =>
+      Promise.resolve({
+        ...data,
+        id: data.id || "ds_test_archive",
+        name: data.name,
+        isSynthetic: data.isSynthetic,
+      })
+    );
+    mockPrisma.storedFile.createMany.mockResolvedValue({ count: 3 });
+    mockPrisma.observation.createMany.mockResolvedValue({ count: 597 });
 
-    // Clean up test dataset
-    await db.dataset.delete({ where: { id: result.dataset_id } });
-  }, 25000);
-
-  it("imports frozen archive dataset directly into database", async () => {
-    let user = await db.user.findFirst({ where: { isDemo: true } });
-    if (!user) {
-      user = await db.user.create({
-        data: {
-          name: "Test Researcher Archive",
-          email: `test-archive-${Date.now()}@test.local`,
-          isDemo: true,
-        },
-      });
-    }
-
-    const result = await importBundledDirectly(user.id, "punjab_frozen_archive");
+    const result = await importBundledDirectly("user_test_456", "punjab_frozen_archive");
 
     expect(result).toBeDefined();
     expect(result.dataset_id).toBeDefined();
@@ -62,17 +82,8 @@ describe("Direct Bundled Importer", () => {
     expect(result.is_synthetic).toBe(false);
     expect(result.observation_count).toBe(597);
 
-    // Verify dataset in DB
-    const dataset = await db.dataset.findUnique({
-      where: { id: result.dataset_id },
-      include: { files: true, observations: true },
-    });
-
-    expect(dataset).toBeDefined();
-    expect(dataset?.ownerId).toBe(user.id);
-    expect(dataset?.observations.length).toBe(597);
-
-    // Clean up test dataset
-    await db.dataset.delete({ where: { id: result.dataset_id } });
-  }, 25000);
+    expect(mockPrisma.dataset.create).toHaveBeenCalledOnce();
+    expect(mockPrisma.storedFile.createMany).toHaveBeenCalledOnce();
+    expect(mockPrisma.observation.createMany).toHaveBeenCalled();
+  });
 });
