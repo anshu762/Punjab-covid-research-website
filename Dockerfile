@@ -9,20 +9,13 @@ WORKDIR /app
 # Create non-root system user
 RUN useradd -u 1001 -m -s /bin/sh epilens
 
-COPY apps/compute/requirements.txt ./requirements.txt
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY apps/compute/app/ ./app/
 COPY apps/compute/data/ ./data/
 
 RUN chown -R epilens:epilens /app
-
-# Ensure misconfigured PaaS start commands (like pnpm/npm) gracefully launch uvicorn
-RUN printf '#!/bin/sh\nexec uvicorn app.main:app --host 0.0.0.0 --port "${PORT:-8000}"\n' > /usr/local/bin/pnpm \
-    && chmod +x /usr/local/bin/pnpm \
-    && ln -sf /usr/local/bin/pnpm /usr/local/bin/npm \
-    && ln -sf /usr/local/bin/pnpm /usr/local/bin/npx \
-    && ln -sf /usr/local/bin/pnpm /usr/local/bin/yarn
 
 USER epilens
 
