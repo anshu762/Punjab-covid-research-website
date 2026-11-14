@@ -129,7 +129,7 @@ export function SummaryCards({ payload, onSelectDiagnosticsTab }: SummaryCardsPr
       )}
 
       {/* 4 StatCards Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Final MAE */}
         <div className="bg-surface p-4 sm:p-5 rounded-2xl border border-border shadow-2xs space-y-1">
           <span className="text-xs text-muted flex items-center gap-1.5 font-medium">

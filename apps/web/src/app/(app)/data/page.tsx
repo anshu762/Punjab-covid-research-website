@@ -174,7 +174,7 @@ export default function DataPage() {
       {/* Top Source Tabs */}
       <div className="bg-surface rounded-2xl border border-border shadow-2xs p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => {
                 setActiveTab("bundled");

@@ -39,7 +39,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-surface text-ink font-sans">
+      <body className="min-h-full flex flex-col bg-surface text-ink font-sans overflow-x-hidden">
         <AuthModalProvider>{children}</AuthModalProvider>
         <Toaster position="top-right" richColors />
       </body>

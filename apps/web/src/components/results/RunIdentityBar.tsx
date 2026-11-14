@@ -74,14 +74,14 @@ export function RunIdentityBar({
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <span className="text-base font-bold text-ink">{metadata.displayName}</span>
-          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-surface-2 border border-border text-xs text-muted">
-            <span className="font-mono text-ink text-[11px]">{runId}</span>
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-surface-2 border border-border text-xs text-muted max-w-full">
+            <span className="font-mono text-ink text-[11px] truncate max-w-[130px] sm:max-w-none">{runId}</span>
             <button
               type="button"
               onClick={handleCopy}
               title="Copy full Run ID"
               aria-label="Copy full Run ID"
-              className="p-0.5 hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded transition"
+              className="p-0.5 hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded transition shrink-0"
             >
               {copied ? (
                 <Check className="w-3.5 h-3.5 text-emerald-600" />
@@ -91,13 +91,13 @@ export function RunIdentityBar({
             </button>
           </div>
           {metadata.dataset?.isSynthetic && (
-            <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-50 text-amber-700 rounded-md border border-amber-200">
+            <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-50 text-amber-700 rounded-md border border-amber-200 shrink-0">
               Demo data
             </span>
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200">
             {metadata.mode === "EVALUATE" ? "7-Day Forecast Evaluation" : "Model Fit Only"}
           </span>

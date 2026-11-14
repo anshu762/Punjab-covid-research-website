@@ -123,12 +123,12 @@ export function UploadStepper({ onSuccess, onCancel }: UploadStepperProps) {
   return (
     <div className="bg-surface rounded-2xl border border-border shadow-xs overflow-hidden">
       {/* Stepper Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface-2">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-6 py-4 border-b border-border bg-surface-2">
         <div className="flex items-center gap-2">
           <FileSpreadsheet className="w-5 h-5 text-blue-600" />
           <h3 className="font-semibold text-ink text-sm sm:text-base">Upload Observation CSV</h3>
         </div>
-        <div className="flex items-center gap-2 text-xs font-medium text-muted">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-medium text-muted">
           <span className={`px-2.5 py-1 rounded-full ${step === 1 ? "bg-blue-600 text-white" : "bg-border text-ink"}`}>
             1. Upload
           </span>

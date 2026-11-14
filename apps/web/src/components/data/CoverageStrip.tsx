@@ -99,9 +99,9 @@ export function CoverageStrip({ observations, className = "" }: CoverageStripPro
 
         {/* Hover detail tooltip */}
         {hoveredObs && (
-          <div className="mt-1.5 p-2 bg-navy-900 text-white text-xs rounded-md shadow-md flex items-center justify-between animate-in fade-in duration-100">
+          <div className="mt-1.5 p-2 bg-navy-900 text-white text-xs rounded-md shadow-md flex flex-wrap items-center justify-between gap-2 animate-in fade-in duration-100">
             <span className="font-mono font-medium">{hoveredObs.date}</span>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <span className="flex items-center gap-1.5">
                 <span
                   className="w-2 h-2 rounded-full"

@@ -175,9 +175,9 @@ export function InteractiveSirPlayground() {
               />
 
               {/* Quick Presets for R0 */}
-              <div className="flex items-center justify-between gap-1 pt-0.5">
+              <div className="flex flex-wrap items-center justify-between gap-1.5 pt-0.5">
                 <span className="text-[10px] text-muted font-mono">Presets:</span>
-                <div className="flex gap-1.5">
+                <div className="flex flex-wrap gap-1.5">
                   <button
                     type="button"
                     onClick={() => setR0(1.2)}
@@ -265,9 +265,9 @@ export function InteractiveSirPlayground() {
               />
 
               {/* Quick Presets for Duration */}
-              <div className="flex items-center justify-between gap-1 pt-0.5">
+              <div className="flex flex-wrap items-center justify-between gap-1.5 pt-0.5">
                 <span className="text-[10px] text-muted font-mono">Presets:</span>
-                <div className="flex gap-1.5">
+                <div className="flex flex-wrap gap-1.5">
                   <button
                     type="button"
                     onClick={() => setDuration(5)}
@@ -306,7 +306,7 @@ export function InteractiveSirPlayground() {
             </div>
 
             {/* Action Buttons & Math Pills */}
-            <div className="md:col-span-2 flex flex-col justify-between items-end gap-3 h-full">
+            <div className="md:col-span-2 flex flex-row md:flex-col justify-between items-start md:items-end gap-3 h-full">
               <div className="flex items-center gap-2">
                 <button
                   type="button"

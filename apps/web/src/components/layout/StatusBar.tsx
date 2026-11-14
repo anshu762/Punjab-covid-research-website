@@ -35,8 +35,8 @@ export function StatusBar({ isDemoUser = false }: StatusBarProps) {
           </span>
         </div>
 
-        {/* Date range indicator */}
-        <div className="flex items-center gap-1.5 text-xs text-slate-700 bg-surface-2 px-2.5 py-1 rounded-md border border-border shrink-0">
+        {/* Date range indicator (shown on sm+ screens) */}
+        <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-700 bg-surface-2 px-2.5 py-1 rounded-md border border-border shrink-0">
           <Calendar className="w-3.5 h-3.5 text-muted" />
           <span className="font-mono">{formattedDates}</span>
         </div>

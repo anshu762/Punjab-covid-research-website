@@ -331,7 +331,7 @@ export default function ModelSetupPage() {
                 label="Analysis Mode"
                 tooltip="Fit mode calibrates the chosen model over the entire range. Evaluate mode runs the 13-block rolling forecast protocol."
               />
-              <div className="grid grid-cols-2 gap-3 mt-1.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
                 <button
                   type="button"
                   onClick={() => setMode("FIT")}
@@ -384,7 +384,7 @@ export default function ModelSetupPage() {
                   </span>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-3 mt-1.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
                   <button
                     type="button"
                     onClick={() => setModelType("M1")}
@@ -430,7 +430,7 @@ export default function ModelSetupPage() {
                 label="Date Range"
                 tooltip="Select starting and ending dates for calibration or evaluation."
               />
-              <div className="grid grid-cols-2 gap-3 mt-1.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
                 <div>
                   <label htmlFor="start-date" className="block text-[11px] text-muted mb-1">
                     Start Date
@@ -476,14 +476,14 @@ export default function ModelSetupPage() {
                 label="Population (N)"
                 tooltip="Jurisdictional total population for scale invariance in the ODE."
               />
-              <div className="flex items-center gap-3 mt-1.5">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5">
                 <input
                   type="number"
                   value={populationValue}
                   onChange={(e) => setPopulationOverride(Number(e.target.value))}
                   min={1}
                   step={100000}
-                  className="w-48 text-xs font-mono bg-surface border border-border rounded-lg px-3 py-2 text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none"
+                  className="w-full sm:w-48 text-xs font-mono bg-surface border border-border rounded-lg px-3 py-2 text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none"
                 />
                 <div className="text-[11px] text-muted flex items-center gap-1.5 truncate">
                   <span>Ref: {activeDataset?.populationGeography || "Punjab"} ({activeDataset?.populationReferenceYear || 2020})</span>
@@ -773,7 +773,7 @@ export default function ModelSetupPage() {
 
             {/* Action Buttons */}
             <div className="pt-3 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={handleLaunchRun}

@@ -108,7 +108,7 @@ export function DataTable({
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-4 py-2.5 bg-surface border-t border-border text-xs text-muted">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-surface border-t border-border text-xs text-muted">
           <span>
             Showing {startIdx + 1} to {Math.min(startIdx + pageSize, data.length)} of{" "}
             {data.length} rows

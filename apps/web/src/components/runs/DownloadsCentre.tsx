@@ -134,7 +134,7 @@ export function DownloadsCentre({ runs, defaultRunId }: DownloadsCentreProps) {
               value={selectedRunId}
               onChange={(e) => setSelectedRunId(e.target.value)}
               disabled={completedRuns.length === 0}
-              className="text-xs font-medium text-ink bg-surface border border-border rounded-lg px-3 py-2 min-w-[280px] focus:ring-2 focus:ring-blue-600 focus:outline-none"
+              className="text-xs font-medium text-ink bg-surface border border-border rounded-lg px-3 py-2 w-full sm:w-auto sm:min-w-[280px] focus:ring-2 focus:ring-blue-600 focus:outline-none"
             >
               {completedRuns.length === 0 ? (
                 <option value="">No completed runs available</option>

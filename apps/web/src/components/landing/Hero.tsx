@@ -157,7 +157,7 @@ export function LandingHero() {
               {/* Chart Mock Interior */}
               <div className="p-6 bg-white relative min-h-[320px]">
                 {/* Micro Toolbar */}
-                <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-2 border-b border-slate-100">
                   <div className="text-xs font-semibold text-ink">
                     M1 Constant SIR vs Reported Cases
                   </div>

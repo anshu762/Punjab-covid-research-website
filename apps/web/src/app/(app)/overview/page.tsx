@@ -310,7 +310,7 @@ export default function OverviewPage() {
       )}
 
       {/* 4 Summary StatCards strictly per PRD §1 and Phase 4 Task 6 */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Dataset Coverage */}
         <div className="bg-surface p-4 rounded-xl border border-border shadow-2xs space-y-1">
           <span className="text-xs text-muted flex items-center gap-1.5 font-medium">
