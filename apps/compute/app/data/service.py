@@ -85,27 +85,7 @@ def create_upload_dataset(user_id: str, filename: str, content: bytes) -> dict[s
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            # 1. Insert stored_file
-            cur.execute(
-                """
-                INSERT INTO stored_files (
-                    id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at
-                ) VALUES (
-                    %(id)s, %(owner_id)s, %(dataset_id)s, 'RAW_UPLOAD', %(filename)s, 'text/csv', %(size_bytes)s, %(sha256)s, %(content)s, now()
-                )
-                """,
-                {
-                    "id": raw_file_id,
-                    "owner_id": user_id,
-                    "dataset_id": dataset_id,
-                    "filename": clean_name,
-                    "size_bytes": len(content),
-                    "sha256": sha256,
-                    "content": content,
-                },
-            )
-
-            # 2. Insert dataset
+            # 1. Insert dataset (must precede stored_files for FK constraint)
             cur.execute(
                 """
                 INSERT INTO datasets (
@@ -129,6 +109,26 @@ def create_upload_dataset(user_id: str, filename: str, content: bytes) -> dict[s
                     "sha256": sha256,
                     "raw_file_id": raw_file_id,
                     "pop_val": PUNJAB_CENSUS_2011_POPULATION,
+                },
+            )
+
+            # 2. Insert stored_file
+            cur.execute(
+                """
+                INSERT INTO stored_files (
+                    id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at
+                ) VALUES (
+                    %(id)s, %(owner_id)s, %(dataset_id)s, 'RAW_UPLOAD', %(filename)s, 'text/csv', %(size_bytes)s, %(sha256)s, %(content)s, now()
+                )
+                """,
+                {
+                    "id": raw_file_id,
+                    "owner_id": user_id,
+                    "dataset_id": dataset_id,
+                    "filename": clean_name,
+                    "size_bytes": len(content),
+                    "sha256": sha256,
+                    "content": content,
                 },
             )
         conn.commit()
@@ -419,56 +419,7 @@ def import_bundled(user_id: str, source_key: str) -> dict[str, Any]:
 
     with get_connection() as conn:
         with conn.cursor() as cur:
-            # 1. Insert stored raw file
-            cur.execute(
-                """
-                INSERT INTO stored_files (id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at)
-                VALUES (%(id)s, %(owner_id)s, %(dataset_id)s, 'RAW_UPLOAD', %(filename)s, 'text/csv', %(size)s, %(sha256)s, %(content)s, now())
-                """,
-                {
-                    "id": raw_file_id,
-                    "owner_id": user_id,
-                    "dataset_id": dataset_id,
-                    "filename": clean_name,
-                    "size": len(content),
-                    "sha256": sha256,
-                    "content": content,
-                },
-            )
-
-            # 2. Insert clean CSV
-            cur.execute(
-                """
-                INSERT INTO stored_files (id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at)
-                VALUES (%(id)s, %(owner_id)s, %(dataset_id)s, 'CLEAN_CSV', 'clean_observations.csv', 'text/csv', %(size)s, %(sha256)s, %(content)s, now())
-                """,
-                {
-                    "id": clean_file_id,
-                    "owner_id": user_id,
-                    "dataset_id": dataset_id,
-                    "size": len(clean_csv_bytes),
-                    "sha256": hashlib.sha256(clean_csv_bytes).hexdigest(),
-                    "content": clean_csv_bytes,
-                },
-            )
-
-            # 3. Insert log
-            cur.execute(
-                """
-                INSERT INTO stored_files (id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at)
-                VALUES (%(id)s, %(owner_id)s, %(dataset_id)s, 'QUALITY_LOG', 'quality_log.json', 'application/json', %(size)s, %(sha256)s, %(content)s, now())
-                """,
-                {
-                    "id": log_file_id,
-                    "owner_id": user_id,
-                    "dataset_id": dataset_id,
-                    "size": len(log_json_bytes),
-                    "sha256": hashlib.sha256(log_json_bytes).hexdigest(),
-                    "content": log_json_bytes,
-                },
-            )
-
-            # 4. Insert dataset
+            # 1. Insert dataset (must precede stored_files and observations for FK constraint)
             cur.execute(
                 """
                 INSERT INTO datasets (
@@ -502,6 +453,55 @@ def import_bundled(user_id: str, source_key: str) -> dict[str, Any]:
                     "quality_summary": json.dumps(summary_dict),
                     "pop_val": source["population"],
                     "pop_url": "https://censusindia.gov.in/",
+                },
+            )
+
+            # 2. Insert stored raw file
+            cur.execute(
+                """
+                INSERT INTO stored_files (id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at)
+                VALUES (%(id)s, %(owner_id)s, %(dataset_id)s, 'RAW_UPLOAD', %(filename)s, 'text/csv', %(size)s, %(sha256)s, %(content)s, now())
+                """,
+                {
+                    "id": raw_file_id,
+                    "owner_id": user_id,
+                    "dataset_id": dataset_id,
+                    "filename": clean_name,
+                    "size": len(content),
+                    "sha256": sha256,
+                    "content": content,
+                },
+            )
+
+            # 3. Insert clean CSV
+            cur.execute(
+                """
+                INSERT INTO stored_files (id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at)
+                VALUES (%(id)s, %(owner_id)s, %(dataset_id)s, 'CLEAN_CSV', 'clean_observations.csv', 'text/csv', %(size)s, %(sha256)s, %(content)s, now())
+                """,
+                {
+                    "id": clean_file_id,
+                    "owner_id": user_id,
+                    "dataset_id": dataset_id,
+                    "size": len(clean_csv_bytes),
+                    "sha256": hashlib.sha256(clean_csv_bytes).hexdigest(),
+                    "content": clean_csv_bytes,
+                },
+            )
+
+            # 4. Insert log
+            cur.execute(
+                """
+                INSERT INTO stored_files (id, owner_id, dataset_id, kind, filename, mime_type, size_bytes, sha256, content, created_at)
+                VALUES (%(id)s, %(owner_id)s, %(dataset_id)s, 'QUALITY_LOG', 'quality_log.json', 'application/json', %(size)s, %(sha256)s, %(content)s, now())
+                """,
+                {
+                    "id": log_file_id,
+                    "owner_id": user_id,
+                    "dataset_id": dataset_id,
+                    "size": len(log_json_bytes),
+                    "sha256": hashlib.sha256(log_json_bytes).hexdigest(),
+                    "content": log_json_bytes,
                 },
             )
 
