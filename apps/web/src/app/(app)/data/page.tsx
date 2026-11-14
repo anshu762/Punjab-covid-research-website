@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { CoverageStrip } from "@/components/data/CoverageStrip";
 import { UploadStepper } from "@/components/data/UploadStepper";
 import { PopulationModal } from "@/components/data/PopulationModal";
+import { DemoBadge } from "@/components/common/DemoBadge";
 import { DataTable, type DataTableColumn } from "@/components/charts/DataTable";
 import {
   useDatasets,
@@ -69,9 +70,11 @@ export default function DataPage() {
   // Mutations
   const importMutation = useImportBundled();
   const deleteMutation = useDeleteDataset();
+  const [importingSource, setImportingSource] = useState<string | null>(null);
 
   // Handlers
   async function handleLoadBundled(key: "punjab_frozen_archive" | "synthetic_demo") {
+    setImportingSource(key);
     try {
       const res = await importMutation.mutateAsync(key);
       setDataset(res.dataset_id, res.name, res.is_synthetic);
@@ -80,6 +83,8 @@ export default function DataPage() {
       }
     } catch (err) {
       console.error("Failed to import bundled dataset", err);
+    } finally {
+      setImportingSource(null);
     }
   }
 
@@ -176,6 +181,7 @@ export default function DataPage() {
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
           <div className="flex flex-wrap items-center gap-2">
             <button
+              type="button"
               onClick={() => {
                 setActiveTab("bundled");
                 setShowUploadStepper(false);
@@ -189,6 +195,7 @@ export default function DataPage() {
               <Database className="w-4 h-4" /> Bundled Punjab Archive
             </button>
             <button
+              type="button"
               onClick={() => {
                 setActiveTab("upload");
                 setShowUploadStepper(true);
@@ -200,6 +207,7 @@ export default function DataPage() {
               <Upload className="w-4 h-4" /> Upload CSV
             </button>
             <button
+              type="button"
               onClick={() => {
                 setActiveTab("demo");
                 setShowUploadStepper(false);
@@ -244,7 +252,7 @@ export default function DataPage() {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-ink">Punjab COVID-19 Archive</span>
-                <span className="px-2 py-0.5 text-[10px] font-semibold bg-blue-50 text-blue-700 rounded-md border border-blue-200">
+                <span className="badge badge-blue">
                   PB Official Snapshot
                 </span>
               </div>
@@ -255,16 +263,17 @@ export default function DataPage() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => handleLoadBundled("punjab_frozen_archive")}
-              disabled={importMutation.isPending}
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 transition shrink-0"
+              disabled={Boolean(importingSource)}
+              className="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 transition shrink-0 shadow-xs"
             >
-              {importMutation.isPending ? (
+              {importingSource === "punjab_frozen_archive" ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <RefreshCw className="w-3.5 h-3.5" />
               )}
-              Load Frozen Archive
+              <span>{importingSource === "punjab_frozen_archive" ? "Loading Archive…" : "Load Frozen Archive"}</span>
             </button>
           </div>
         )}
@@ -288,9 +297,7 @@ export default function DataPage() {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-semibold text-ink">Synthetic Punjab Demo Dataset</span>
-                <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-50 text-amber-700 rounded-md border border-amber-200">
-                  Seed 42
-                </span>
+                <DemoBadge label="Synthetic (Seed 42)" />
               </div>
               <p className="text-xs text-muted max-w-2xl">
                 A deterministic, realistic bell-shaped epidemic wave with weekly reporting cycles and Poisson dispersion.
@@ -298,16 +305,17 @@ export default function DataPage() {
               </p>
             </div>
             <button
+              type="button"
               onClick={() => handleLoadBundled("synthetic_demo")}
-              disabled={importMutation.isPending}
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 flex items-center gap-2 transition shrink-0"
+              disabled={Boolean(importingSource)}
+              className="px-4 py-2 text-xs font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 disabled:opacity-50 flex items-center gap-2 transition shrink-0 shadow-xs"
             >
-              {importMutation.isPending ? (
+              {importingSource === "synthetic_demo" ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <Sparkles className="w-3.5 h-3.5" />
               )}
-              Load Synthetic Demo
+              <span>{importingSource === "synthetic_demo" ? "Generating Wave…" : "Load Synthetic Demo"}</span>
             </button>
           </div>
         )}
@@ -325,6 +333,7 @@ export default function DataPage() {
                   <Users className="w-3.5 h-3.5 text-blue-600" /> Population Provenance
                 </span>
                 <button
+                  type="button"
                   onClick={() => setIsPopulationModalOpen(true)}
                   className="text-blue-600 hover:text-blue-700 font-semibold text-[11px]"
                 >
@@ -553,18 +562,22 @@ export default function DataPage() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <button
+              type="button"
               onClick={() => handleLoadBundled("punjab_frozen_archive")}
-              disabled={importMutation.isPending}
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+              disabled={Boolean(importingSource)}
+              className="px-4 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition flex items-center gap-2 disabled:opacity-50 shadow-xs"
             >
-              Load Frozen Archive
+              {importingSource === "punjab_frozen_archive" && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+              <span>{importingSource === "punjab_frozen_archive" ? "Loading Archive…" : "Load Frozen Archive"}</span>
             </button>
             <button
+              type="button"
               onClick={() => handleLoadBundled("synthetic_demo")}
-              disabled={importMutation.isPending}
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition"
+              disabled={Boolean(importingSource)}
+              className="px-4 py-2 text-xs font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition flex items-center gap-2 disabled:opacity-50 shadow-xs"
             >
-              Load Synthetic Demo
+              {importingSource === "synthetic_demo" && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+              <span>{importingSource === "synthetic_demo" ? "Generating Wave…" : "Load Synthetic Demo"}</span>
             </button>
           </div>
         </div>

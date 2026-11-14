@@ -10,9 +10,9 @@ import {
   ChevronUp,
   ExternalLink,
   Info,
-  CheckCircle2,
   Layers,
   Sparkles,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -27,6 +27,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { StaleBanner } from "@/components/common/StaleBanner";
 import { InlineError } from "@/components/common/InlineError";
 import { FieldHelp } from "@/components/common/FieldHelp";
+import { DemoBadge } from "@/components/common/DemoBadge";
 import { SettingsSummaryCard } from "@/components/model/SettingsSummaryCard";
 import { RecentRunsCard } from "@/components/model/RecentRunsCard";
 import { RunProgress } from "@/components/model/RunProgress";
@@ -278,11 +279,7 @@ export default function ModelSetupPage() {
               <span className="text-xs font-semibold uppercase tracking-wider text-muted">
                 Active Dataset
               </span>
-              {activeDataset?.isSynthetic && (
-                <span className="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 font-semibold px-1.5 py-0.2 rounded">
-                  Synthetic
-                </span>
-              )}
+              {activeDataset?.isSynthetic && <DemoBadge label="Synthetic" />}
             </div>
             <p className="text-sm font-semibold text-ink">
               {activeDataset ? activeDataset.name : isDatasetsLoading ? "Loading..." : "No dataset selected"}
@@ -335,17 +332,23 @@ export default function ModelSetupPage() {
                 <button
                   type="button"
                   onClick={() => setMode("FIT")}
-                  className={`p-3 rounded-lg border text-left transition-all ${
+                  className={`p-3.5 rounded-xl border text-left transition-all ${
                     mode === "FIT"
-                      ? "border-blue-600 bg-blue-50/50 shadow-xs"
-                      : "border-border hover:bg-surface-2"
+                      ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-600/30"
+                      : "border-border hover:bg-surface-2 hover:border-slate-300"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-xs text-ink">Fit Selected Period</span>
-                    {mode === "FIT" && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
+                    <div
+                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                        mode === "FIT" ? "border-blue-600 bg-blue-600" : "border-slate-300 bg-white"
+                      }`}
+                    >
+                      {mode === "FIT" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                    </div>
                   </div>
-                  <p className="text-[11px] text-muted mt-1">
+                  <p className="text-[11px] text-muted mt-1 leading-relaxed">
                     Calibrate parameters (β, I₀, k) across the selected date window.
                   </p>
                 </button>
@@ -353,17 +356,23 @@ export default function ModelSetupPage() {
                 <button
                   type="button"
                   onClick={() => setMode("EVALUATE")}
-                  className={`p-3 rounded-lg border text-left transition-all ${
+                  className={`p-3.5 rounded-xl border text-left transition-all ${
                     mode === "EVALUATE"
-                      ? "border-blue-600 bg-blue-50/50 shadow-xs"
-                      : "border-border hover:bg-surface-2"
+                      ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-600/30"
+                      : "border-border hover:bg-surface-2 hover:border-slate-300"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-xs text-ink">Evaluate 7-Day Forecasts</span>
-                    {mode === "EVALUATE" && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
+                    <div
+                      className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                        mode === "EVALUATE" ? "border-blue-600 bg-blue-600" : "border-slate-300 bg-white"
+                      }`}
+                    >
+                      {mode === "EVALUATE" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                    </div>
                   </div>
-                  <p className="text-[11px] text-muted mt-1">
+                  <p className="text-[11px] text-muted mt-1 leading-relaxed">
                     13-block chronological evaluation comparing M1, M2 & baselines.
                   </p>
                 </button>
@@ -388,17 +397,23 @@ export default function ModelSetupPage() {
                   <button
                     type="button"
                     onClick={() => setModelType("M1")}
-                    className={`p-3 rounded-lg border text-left transition-all ${
+                    className={`p-3.5 rounded-xl border text-left transition-all ${
                       modelType === "M1"
-                        ? "border-blue-600 bg-blue-50/50 shadow-xs"
-                        : "border-border hover:bg-surface-2"
+                        ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-600/30"
+                        : "border-border hover:bg-surface-2 hover:border-slate-300"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-xs text-ink">Constant SIR (M1)</span>
-                      {modelType === "M1" && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                          modelType === "M1" ? "border-blue-600 bg-blue-600" : "border-slate-300 bg-white"
+                        }`}
+                      >
+                        {modelType === "M1" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                      </div>
                     </div>
-                    <p className="text-[11px] text-muted mt-1">
+                    <p className="text-[11px] text-muted mt-1 leading-relaxed">
                       Fixed contact rate β throughout the entire window.
                     </p>
                   </button>
@@ -406,17 +421,23 @@ export default function ModelSetupPage() {
                   <button
                     type="button"
                     onClick={() => setModelType("M2")}
-                    className={`p-3 rounded-lg border text-left transition-all ${
+                    className={`p-3.5 rounded-xl border text-left transition-all ${
                       modelType === "M2"
-                        ? "border-blue-600 bg-blue-50/50 shadow-xs"
-                        : "border-border hover:bg-surface-2"
+                        ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-600/30"
+                        : "border-border hover:bg-surface-2 hover:border-slate-300"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-xs text-ink">Change-Point SIR (M2)</span>
-                      {modelType === "M2" && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center transition-colors ${
+                          modelType === "M2" ? "border-blue-600 bg-blue-600" : "border-slate-300 bg-white"
+                        }`}
+                      >
+                        {modelType === "M2" && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                      </div>
                     </div>
-                    <p className="text-[11px] text-muted mt-1">
+                    <p className="text-[11px] text-muted mt-1 leading-relaxed">
                       Searches for optimal transmission shift (β₁ → β₂).
                     </p>
                   </button>
@@ -783,15 +804,19 @@ export default function ModelSetupPage() {
                     Boolean(activeRun) ||
                     activeDataset?.status !== "READY"
                   }
-                  className="btn btn-primary px-5 py-2.5 text-xs font-semibold flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+                  className="px-5 py-2.5 text-xs font-semibold rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition-colors"
                 >
-                  <Play className="w-3.5 h-3.5 fill-current" />
+                  {createRunMutation.isPending ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                  )}
                   <span>
                     {createRunMutation.isPending
-                      ? "Queueing..."
+                      ? "Queueing Run…"
                       : mode === "FIT"
-                      ? "Fit Selected Period"
-                      : "Evaluate 7-Day Forecasts"}
+                      ? "Launch Model Calibration"
+                      : "Launch Forecast Evaluation"}
                   </span>
                 </button>
 
