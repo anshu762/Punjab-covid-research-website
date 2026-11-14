@@ -6,7 +6,21 @@ import json
 from pathlib import Path
 from typing import Any
 
-DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
+def find_data_dir() -> Path:
+    candidates = [
+        Path(__file__).resolve().parent.parent.parent / "data",
+        Path(__file__).resolve().parent.parent / "data",
+        Path.cwd() / "data",
+        Path.cwd() / "apps" / "compute" / "data",
+        Path("/app/data"),
+    ]
+    for c in candidates:
+        if (c / "punjab_covid_pb_frozen.csv").exists():
+            return c
+    return candidates[0]
+
+
+DATA_DIR = find_data_dir()
 
 PUNJAB_CENSUS_2011_POPULATION = 27_743_338
 PUNJAB_POPULATION_PROVENANCE = "Official Census of India 2011 state total for Punjab"

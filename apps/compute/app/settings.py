@@ -25,7 +25,7 @@ class Settings(BaseSettings):
         description="Comma-separated allowed origins for CORS",
     )
     CODE_REVISION: str = Field(
-        default="dev",
+        default="v1.0.1-fk-fix",
         description="Git commit SHA or semantic build version",
     )
     WORKER_CONCURRENCY: int = Field(

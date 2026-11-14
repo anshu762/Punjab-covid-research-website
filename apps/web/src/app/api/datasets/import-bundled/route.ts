@@ -20,7 +20,11 @@ export const POST = apiHandler(async (req: NextRequest) => {
 
   if (!res.ok) {
     const errorJson = await res.json().catch(() => ({}));
-    throw new HttpError(res.status, "IMPORT_FAILED", errorJson.detail || "Import failed");
+    const message =
+      errorJson.detail ||
+      errorJson.error?.message ||
+      "Import failed";
+    throw new HttpError(res.status, "IMPORT_FAILED", message);
   }
 
   const data = await res.json();

@@ -77,7 +77,7 @@ async def request_id_and_error_middleware(request: Request, call_next) -> Respon
         response: Response = await call_next(request)
         response.headers["x-request-id"] = request_id
         return response
-    except Exception:
+    except Exception as exc:
         err_ref = f"err_{uuid.uuid4().hex[:8]}"
         logger.exception("Unhandled error in compute service (ref: %s)", err_ref)
         return JSONResponse(
@@ -85,7 +85,7 @@ async def request_id_and_error_middleware(request: Request, call_next) -> Respon
             content={
                 "error": {
                     "code": "INTERNAL_SERVER_ERROR",
-                    "message": f"Compute internal error. Reference: {err_ref}",
+                    "message": f"Compute error: {type(exc).__name__}: {str(exc)} (ref: {err_ref})",
                     "request_id": request_id,
                 }
             },
@@ -272,8 +272,14 @@ def internal_import_bundled(
     """Import bundled Punjab archive or synthetic demo data for a user."""
     try:
         return import_bundled(user_id=payload.user_id, source_key=payload.source_key)
-    except ValueError as exc:
+    except (ValueError, FileNotFoundError) as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("Failed to import bundled dataset: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"{type(exc).__name__}: {str(exc)}",
+        ) from exc
 
 
 class FetchArchivePayload(BaseModel):
