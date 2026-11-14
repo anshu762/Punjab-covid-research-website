@@ -20,7 +20,7 @@ export function StatusBar({ isDemoUser = false }: StatusBarProps) {
       : "—";
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between h-14 px-4 sm:px-6 bg-surface border-b border-border shadow-xs">
+    <header className="sticky top-14 md:top-0 z-30 flex items-center justify-between h-14 px-4 sm:px-6 bg-surface border-b border-border shadow-xs">
       <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-1">
         <span className="font-semibold text-sm tracking-tight text-ink shrink-0 hidden sm:inline">
           EpiLens

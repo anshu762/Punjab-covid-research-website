@@ -86,9 +86,9 @@ export function AppShell({ children, user }: AppShellProps) {
       </a>
 
       {/* Desktop Fixed Left Navigation (260px) */}
-      <aside className="hidden md:flex flex-col w-[260px] bg-navy-900 border-r border-navy-800 shrink-0 select-none">
+      <aside className="hidden md:flex flex-col w-[260px] bg-navy-900 border-r border-navy-800 shrink-0 select-none sticky top-0 h-screen self-start z-20">
         {/* Brand / Logo */}
-        <div className="flex items-center gap-2.5 h-14 px-5 border-b border-navy-800">
+        <div className="flex items-center gap-2.5 h-14 px-5 border-b border-navy-800 shrink-0">
           <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-xs">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
               <path d="M3 12h4l3 8 4-16 3 8h4" />
@@ -105,12 +105,12 @@ export function AppShell({ children, user }: AppShellProps) {
         </div>
 
         {/* Links */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto min-h-0">
           <NavLinksList pathname={pathname} />
         </div>
 
         {/* User Menu at Bottom */}
-        <div className="p-4 border-t border-navy-800 bg-navy-900/60">
+        <div className="p-4 border-t border-navy-800 bg-navy-900/60 shrink-0">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2.5 overflow-hidden">
               <div className="w-8 h-8 rounded-full bg-navy-800 border border-slate-700 flex items-center justify-center text-slate-300 shrink-0">
