@@ -23,7 +23,6 @@ import { useWorkspaceStore } from "@/store/workspace";
 import { formatDisplayDate } from "@epilens/shared";
 import { RunStatusPill } from "@/components/common/RunStatusPill";
 import { DemoBadge } from "@/components/common/DemoBadge";
-import { CopyButton } from "@/components/common/CopyButton";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import Link from "next/link";
 
@@ -279,9 +278,8 @@ export function RunsTable({
                                 <Edit2 className="w-3 h-3" />
                               </button>
                             </div>
-                            <div className="flex items-center gap-1 text-[11px] font-mono text-muted">
-                              <span>{run.id.slice(0, 8)}</span>
-                              <CopyButton value={run.id} label="Copy ID" />
+                            <div className="text-[11px] text-muted font-sans">
+                              {formatDisplayDate(run.createdAt.slice(0, 10))}
                             </div>
                           </div>
                         )}

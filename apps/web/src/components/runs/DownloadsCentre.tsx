@@ -15,6 +15,7 @@ import {
 import { toast } from "sonner";
 import type { RunItem } from "@/hooks/useRuns";
 import type { ExportType } from "@epilens/shared";
+import { formatDisplayDate } from "@epilens/shared";
 import { useRunExports, useCreateExport } from "@/hooks/useExports";
 import { CopyButton } from "@/components/common/CopyButton";
 import { DemoBadge } from "@/components/common/DemoBadge";
@@ -163,8 +164,10 @@ export function DownloadsCentre({ runs, defaultRunId }: DownloadsCentreProps) {
             </div>
             <div className="h-6 w-px bg-border" />
             <div>
-              <span className="text-[10px] uppercase font-sans text-slate-400 block">Run ID</span>
-              <span className="text-ink">{selectedRun.id.slice(0, 8)}…</span>
+              <span className="text-[10px] uppercase font-sans text-slate-400 block">Completed</span>
+              <span className="text-ink font-sans">
+                {selectedRun.completedAt ? formatDisplayDate(selectedRun.completedAt.slice(0, 10)) : "—"}
+              </span>
             </div>
           </div>
         )}

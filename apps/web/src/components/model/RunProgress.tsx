@@ -20,6 +20,7 @@ import Link from "next/link";
 import { type RunItem, useCancelRun, useRenameRun } from "@/hooks/useRuns";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { CopyButton } from "@/components/common/CopyButton";
+import { DemoBadge } from "@/components/common/DemoBadge";
 import { formatUserError } from "@/lib/error-formatter";
 
 interface RunProgressProps {
@@ -119,13 +120,13 @@ export function RunProgress({ run, onEditSettings, onRunAnother }: RunProgressPr
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted">
-              Analysis Run
+            <span className="text-xs font-semibold text-muted">
+              Analysis Execution
             </span>
-            <span className="font-mono text-xs bg-surface-2 text-slate-700 px-2 py-0.5 rounded border border-border">
-              {run.id}
+            <span className="h-6 inline-flex items-center px-2.5 text-xs font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+              {run.mode === "FIT" ? `Fit (${run.modelType})` : "13-Origin Evaluation"}
             </span>
-            <CopyButton value={run.id} label="Copy ID" />
+            {run.dataset?.isSynthetic && <DemoBadge label="Synthetic" />}
           </div>
 
           {/* Editable Display Name */}

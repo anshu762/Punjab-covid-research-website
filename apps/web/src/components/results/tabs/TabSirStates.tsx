@@ -275,7 +275,7 @@ export function TabSirStates({ payload }: TabSirStatesProps) {
         tableAlternative={<DataTable columns={tableColumns} data={tableRows} defaultPageSize={15} />}
         footer={
           <>
-            <span>Run {payload.run.id.slice(0, 8)}</span>
+            <span>{payload.run.modelType === "M2" ? "Change-point SIR (M2)" : "Constant SIR (M1)"}</span>
             <span>Total Population: {formatInt(N)}</span>
             <span>Mode: {unitLabel}</span>
           </>

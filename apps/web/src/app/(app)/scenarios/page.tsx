@@ -224,7 +224,7 @@ export default function ScenariosPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         {/* Left Controls Column (4 cols on lg, 5 on md) */}
-        <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6">
+        <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6 min-w-0 max-w-full">
           <ScenarioControls
             runs={runs}
             selectedRunId={activeRunId}
@@ -249,7 +249,7 @@ export default function ScenariosPage() {
         </div>
 
         {/* Right Main Display Panel (8 cols on lg, 7 on md) */}
-        <div className="md:col-span-7 lg:col-span-8 flex flex-col gap-6">
+        <div className="md:col-span-7 lg:col-span-8 flex flex-col gap-6 min-w-0 max-w-full">
           {/* Active Simulation Loading State */}
           {activeScenario &&
             (activeScenario.status === "QUEUED" ||

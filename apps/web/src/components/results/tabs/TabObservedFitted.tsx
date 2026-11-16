@@ -255,9 +255,9 @@ export function TabObservedFitted({ payload }: TabObservedFittedProps) {
       tableAlternative={<DataTable columns={tableColumns} data={tableRows} pageSize={15} />}
       footer={
         <>
-          <span>Run {payload.run.id.slice(0, 8)}</span>
+          <span>{payload.run.modelType === "M2" ? "Change-point SIR (M2)" : "Constant SIR (M1)"}</span>
           <span>{dates[0]} – {dates[dates.length - 1]}</span>
-          <span>{payload.run.modelType} ({payload.run.mode})</span>
+          <span>{payload.run.mode}</span>
         </>
       }
     >

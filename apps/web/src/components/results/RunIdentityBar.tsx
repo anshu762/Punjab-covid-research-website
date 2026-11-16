@@ -1,9 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { formatDisplayDate } from "@epilens/shared";
 import type { RunResultsMetadata } from "@/hooks/useRuns";
-import { Copy, Check, Database, Calendar, Tag, GitCommit, Hash, Cpu } from "lucide-react";
+import { Database, Calendar, Tag, GitCommit, Hash, Cpu } from "lucide-react";
 
 const RunIdContext = createContext<string | null>(null);
 
@@ -39,23 +39,10 @@ interface RunIdentityBarProps {
 }
 
 export function RunIdentityBar({
-  runId,
   metadata,
   startDate,
   endDate,
 }: RunIdentityBarProps) {
-  const [copied, setCopied] = useState(false);
-
-  async function handleCopy() {
-    try {
-      await navigator.clipboard.writeText(runId);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback
-    }
-  }
-
   const dateRangeStr =
     startDate && endDate
       ? `${formatDisplayDate(startDate)} – ${formatDisplayDate(endDate)}`
@@ -74,34 +61,18 @@ export function RunIdentityBar({
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border">
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <span className="text-base font-bold text-ink">{metadata.displayName}</span>
-          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-surface-2 border border-border text-xs text-muted max-w-full">
-            <span className="font-mono text-ink text-[11px] truncate max-w-[130px] sm:max-w-none">{runId}</span>
-            <button
-              type="button"
-              onClick={handleCopy}
-              title="Copy full Run ID"
-              aria-label="Copy full Run ID"
-              className="p-0.5 hover:text-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 rounded transition shrink-0"
-            >
-              {copied ? (
-                <Check className="w-3.5 h-3.5 text-emerald-600" />
-              ) : (
-                <Copy className="w-3.5 h-3.5 text-muted hover:text-ink" />
-              )}
-            </button>
-          </div>
           {metadata.dataset?.isSynthetic && (
-            <span className="px-2 py-0.5 text-[10px] font-semibold bg-amber-50 text-amber-700 rounded-md border border-amber-200 shrink-0">
-              Demo data
+            <span className="h-6 inline-flex items-center px-2.5 text-xs font-medium bg-amber-50 text-amber-800 rounded-full border border-amber-200 shrink-0">
+              Synthetic Demo
             </span>
           )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="h-6 inline-flex items-center px-2.5 text-xs font-semibold rounded-md bg-blue-50 text-blue-700 border border-blue-200">
             {metadata.mode === "EVALUATE" ? "7-Day Forecast Evaluation" : "Model Fit Only"}
           </span>
-          <span className="px-2.5 py-0.5 text-xs font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+          <span className="h-6 inline-flex items-center px-2.5 text-xs font-semibold rounded-md bg-slate-100 text-slate-700 border border-slate-200">
             {metadata.modelType === "M2" ? "Change-point SIR (M2)" : "Constant SIR (M1)"}
           </span>
         </div>

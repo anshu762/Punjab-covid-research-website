@@ -188,7 +188,7 @@ function ResultsPageContent() {
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-blue-600 animate-ping" />
             <h3 className="text-sm font-bold text-ink">
-              Analysis in progress: {activeRun.displayName} ({activeRun.id.slice(0, 8)})
+              Analysis in progress: {activeRun.displayName}
             </h3>
           </div>
           <p className="text-xs text-muted">

@@ -48,7 +48,7 @@ export default function DataPage() {
   const [page, setPage] = useState(1);
 
   // Queries
-  const { data: datasetsData } = useDatasets();
+  const { data: datasetsData, isLoading: isLoadingDatasets } = useDatasets();
   const datasets = datasetsData?.datasets || [];
 
   // Active dataset
@@ -326,7 +326,21 @@ export default function DataPage() {
       </div>
 
       {/* Active Dataset Inspection */}
-      {activeDataset ? (
+      {importingSource || isLoadingDatasets || (currentDatasetId && !activeDataset) ? (
+        <div className="p-12 text-center bg-surface rounded-2xl border border-border shadow-2xs space-y-4">
+          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto">
+            <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+          </div>
+          <div className="space-y-1">
+            <h3 className="font-semibold text-ink text-base">
+              {importingSource ? "Importing and Validating Dataset…" : "Loading Dataset Observations…"}
+            </h3>
+            <p className="text-xs text-muted max-w-md mx-auto">
+              Parsing time-series records, validating continuity, and preparing data quality report.
+            </p>
+          </div>
+        </div>
+      ) : activeDataset ? (
         <div className="space-y-6">
           {/* Metadata & Provenance Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -23,7 +23,7 @@ export function RecentRunsCard({ onSelectRun, selectedRunId }: RecentRunsCardPro
 
   return (
     <div className="bg-surface rounded-[14px] border border-border p-5 shadow-xs space-y-3">
-      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted pb-1 border-b border-border">
+      <div className="flex items-center gap-2 text-xs font-semibold text-muted pb-1 border-b border-border">
         <History className="w-3.5 h-3.5" />
         <span>Recent Analysis Runs</span>
       </div>
@@ -45,10 +45,8 @@ export function RecentRunsCard({ onSelectRun, selectedRunId }: RecentRunsCardPro
                   <span className="font-semibold text-ink truncate">{r.displayName}</span>
                   <RunStatusPill status={r.status} />
                 </div>
-                <div className="flex items-center gap-2 text-muted text-[11px]">
-                  <span className="font-mono">{r.id.slice(0, 10)}</span>
-                  <span>•</span>
-                  <span>{r.mode}</span>
+                <div className="flex items-center gap-2 text-muted text-xs">
+                  <span>{r.mode === "FIT" ? `Fit (${r.modelType})` : "13-Origin Evaluation"}</span>
                   <span>•</span>
                   <span>{createdDate}</span>
                 </div>

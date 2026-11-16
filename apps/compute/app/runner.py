@@ -370,9 +370,9 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
 
             # Fast evaluation settings: warm-start multi-start for rolling origins
             # Final model fit (lines below) retains full config.advanced.nStarts
-            eval_n_starts = min(config.advanced.nStarts, 3)
-            eval_cp_search_starts = min(config.advanced.cpSearchStarts, 2)
-            eval_bootstrap_replicates = min(config.advanced.bootstrapReplicates, 20)
+            eval_n_starts = min(config.advanced.nStarts, 2)
+            eval_cp_search_starts = 1
+            eval_bootstrap_replicates = min(config.advanced.bootstrapReplicates, 15)
 
             for b in blocks:
                 check_cancellation(run_id)

@@ -439,9 +439,9 @@ export function TabForecastValidation({ payload, forecastRows }: TabForecastVali
           </div>
 
           <span
-            className={`px-2 py-0.5 text-[10px] font-bold rounded-md border ${
+            className={`h-6 inline-flex items-center px-2.5 text-xs font-medium rounded-full border shrink-0 ${
               selectedOriginIndex >= 9
-                ? "bg-purple-50 text-purple-700 border-purple-200"
+                ? "bg-cyan-50 text-cyan-800 border-cyan-200"
                 : "bg-slate-100 text-slate-700 border-slate-200"
             }`}
           >
@@ -472,7 +472,7 @@ export function TabForecastValidation({ payload, forecastRows }: TabForecastVali
         tableAlternative={<DataTable columns={tableColumns} data={miniTableRows} defaultPageSize={7} />}
         footer={
           <>
-            <span>Run {payload.run.id.slice(0, 8)}</span>
+            <span>{payload.run.modelType === "M2" ? "Change-point SIR (M2)" : "Constant SIR (M1)"}</span>
             <span>Origin: {selectedOrigin}</span>
             <span>Block {selectedOriginIndex + 1} of 13</span>
           </>

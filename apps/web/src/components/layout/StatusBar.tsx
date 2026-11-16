@@ -28,7 +28,7 @@ export function StatusBar({ isDemoUser = false }: StatusBarProps) {
         <span className="text-slate-300 hidden sm:inline">|</span>
 
         {/* Dataset indicator */}
-        <div className="flex items-center gap-1.5 text-xs text-slate-700 bg-surface-2 px-2.5 py-1 rounded-md border border-border shrink-0">
+        <div className="h-6 inline-flex items-center gap-1.5 text-xs text-slate-700 bg-surface-2 px-2.5 rounded-full border border-border shrink-0">
           <Database className="w-3.5 h-3.5 text-muted" />
           <span className="font-medium truncate max-w-[140px] sm:max-w-[200px]">
             {datasetName || "No dataset selected"}
@@ -36,7 +36,7 @@ export function StatusBar({ isDemoUser = false }: StatusBarProps) {
         </div>
 
         {/* Date range indicator (shown on sm+ screens) */}
-        <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-700 bg-surface-2 px-2.5 py-1 rounded-md border border-border shrink-0">
+        <div className="hidden sm:inline-flex h-6 items-center gap-1.5 text-xs text-slate-700 bg-surface-2 px-2.5 rounded-full border border-border shrink-0">
           <Calendar className="w-3.5 h-3.5 text-muted" />
           <span className="font-mono">{formattedDates}</span>
         </div>
