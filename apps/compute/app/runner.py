@@ -4,13 +4,13 @@ from __future__ import annotations
 import logging
 import time
 import uuid
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime
 from typing import Any
 
 import numpy as np
 
 from app.config import RunConfig, get_code_version
-from app.data.cleaning import Obs, normalize
+from app.data.cleaning import RawRecord, normalize
 from app.db import execute, fetch_all, fetch_one, get_connection
 from app.diagnostics import (
     assess_diagnostics_status,
@@ -91,11 +91,11 @@ def _map_error_message(exc: Exception) -> tuple[str, str]:
     error_ref = f"ERR-{uuid.uuid4().hex[:8].upper()}"
     if isinstance(exc, OptimizationFailed):
         msg = (
-            "The optimiser could not find a valid fit. "
+            "The optimiser could not find a valid fit within the specified bounds. "
             "Try widening the β bounds, lowering the infectious duration, or changing the seed."
         )
     elif "population_provenance_missing" in str(exc):
-        msg = "Empirical fitting is blocked until population provenance is provided."
+        msg = "Empirical fitting is blocked until population provenance is provided. Please configure population in the Data module."
     elif isinstance(exc, ValueError):
         msg = f"Invalid analysis configuration: {exc}"
     else:
@@ -373,18 +373,18 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
 
                 # Slice raw prefix <= origin
                 prefix_raw = [
-                    Obs(
-                        date=r["date"],
-                        new_confirmed_raw=r["new_confirmed_raw"],
-                        quality_flag=r["quality_flag"],
+                    RawRecord(
+                        date=date.fromisoformat(r["date"]),
+                        value=int(r["new_confirmed_raw"]) if r["new_confirmed_raw"] is not None else 0,
+                        row_number=idx,
                     )
-                    for r in obs_rows
-                    if r["date"] <= b.origin
+                    for idx, r in enumerate(obs_rows, start=2)
+                    if b.training_start <= r["date"] <= b.origin
                 ]
                 # Normalize prefix independently
                 norm_res = normalize(prefix_raw)
                 prefix_dates = [o.date for o in norm_res.observations]
-                prefix_y = np.array([float(o.new_confirmed_analysis or 0) for o in norm_res.observations])
+                prefix_y = np.array([float(o.analysis or 0) for o in norm_res.observations])
 
                 # Actual targets
                 target_actuals = [full_date_to_actual.get(td, 0.0) for td in b.target_dates]

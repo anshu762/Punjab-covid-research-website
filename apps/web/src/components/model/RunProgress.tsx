@@ -11,11 +11,16 @@ import {
   ArrowRight,
   RotateCw,
   Loader2,
+  Sliders,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import Link from "next/link";
 import { type RunItem, useCancelRun, useRenameRun } from "@/hooks/useRuns";
 import { ConfirmDialog } from "@/components/common/ConfirmDialog";
 import { CopyButton } from "@/components/common/CopyButton";
+import { formatUserError } from "@/lib/error-formatter";
 
 interface RunProgressProps {
   run: RunItem;
@@ -47,6 +52,7 @@ export function RunProgress({ run, onEditSettings, onRunAnother }: RunProgressPr
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameDraft, setNameDraft] = useState(run.displayName);
   const [localSeconds, setLocalSeconds] = useState(run.elapsedSeconds || 0);
+  const [showTechDetails, setShowTechDetails] = useState(false);
 
   const cancelMutation = useCancelRun();
   const renameMutation = useRenameRun();
@@ -219,32 +225,95 @@ export function RunProgress({ run, onEditSettings, onRunAnother }: RunProgressPr
           </div>
         </div>
       ) : run.status === "FAILED" ? (
-        <div className="p-5 rounded-xl bg-red-50 border border-red-200 space-y-4">
-          <div className="flex items-start gap-3 text-red-900">
-            <AlertCircle className="w-5 h-5 text-danger shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <h3 className="font-semibold text-sm">Analysis failed</h3>
-              <p className="text-xs text-red-800 leading-relaxed">
-                {run.errorMessage || "An unexpected error occurred during optimization."}
+        <div className="p-5 rounded-xl bg-red-50/70 border border-red-200 space-y-4">
+          <div className="flex items-start gap-3 text-red-950">
+            <div className="w-9 h-9 rounded-lg bg-red-100 border border-red-200 flex items-center justify-center text-danger shrink-0 mt-0.5">
+              <AlertCircle className="w-5 h-5" />
+            </div>
+            <div className="space-y-1 flex-1 min-w-0">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="font-semibold text-sm text-red-950">
+                  Analysis Could Not Complete
+                </h3>
+                <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-800 border border-red-200">
+                  Failed at: {stages[Math.max(0, currentStageIndex)]?.label || run.stage}
+                </span>
+              </div>
+              <p className="text-xs text-red-900 leading-relaxed pt-1">
+                {formatUserError(run.errorMessage).message}
               </p>
-              {run.errorReference && (
-                <div className="flex items-center gap-2 pt-1 font-mono text-xs text-red-700">
-                  <span>Reference: {run.errorReference}</span>
-                  <CopyButton value={run.errorReference} label="Copy reference" />
-                </div>
-              )}
             </div>
           </div>
 
-          {onEditSettings && (
-            <div className="pt-1">
+          {/* User-friendly actionable suggestions */}
+          <div className="rounded-lg bg-white/80 border border-red-200/60 p-3.5 space-y-2 text-xs">
+            <div className="flex items-center gap-1.5 font-medium text-slate-800">
+              <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+              <span>Recommended actions to resolve this:</span>
+            </div>
+            <ul className="list-disc list-inside space-y-1 text-slate-600 pl-1 leading-relaxed">
+              <li>
+                <strong className="font-medium text-slate-700">Widen Parameter Bounds:</strong> If fitting failed, widen the β transmission rate bounds or initial infectious bounds.
+              </li>
+              <li>
+                <strong className="font-medium text-slate-700">Check Date Coverage:</strong> Ensure your selected date range spans at least 42 days of continuous daily data.
+              </li>
+              <li>
+                <strong className="font-medium text-slate-700">Try Standard Fit:</strong> If evaluating rolling origins, run a single &quot;Fit model&quot; first to inspect baseline convergence.
+              </li>
+            </ul>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {onEditSettings && (
               <button
                 type="button"
                 onClick={onEditSettings}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-surface text-slate-800 border border-border rounded-md text-xs font-medium hover:bg-surface-2"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium shadow-xs transition-colors"
               >
-                <span>Edit settings & retry</span>
+                <Sliders className="w-3.5 h-3.5" />
+                <span>Edit Settings &amp; Retry</span>
               </button>
+            )}
+            {onRunAnother && (
+              <button
+                type="button"
+                onClick={onRunAnother}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-surface hover:bg-surface-2 text-slate-700 border border-border rounded-lg text-xs font-medium transition-colors"
+              >
+                <RotateCw className="w-3.5 h-3.5 text-muted" />
+                <span>Start New Analysis</span>
+              </button>
+            )}
+            {run.errorReference && (
+              <button
+                type="button"
+                onClick={() => setShowTechDetails((prev) => !prev)}
+                className="ml-auto inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 hover:text-slate-800 transition-colors"
+              >
+                <span>Technical details</span>
+                {showTechDetails ? (
+                  <ChevronUp className="w-3.5 h-3.5" />
+                ) : (
+                  <ChevronDown className="w-3.5 h-3.5" />
+                )}
+              </button>
+            )}
+          </div>
+
+          {/* Collapsible technical diagnostics */}
+          {showTechDetails && run.errorReference && (
+            <div className="p-3 bg-red-100/50 rounded-lg border border-red-200 text-xs space-y-1.5 font-mono text-slate-700">
+              <div className="flex items-center justify-between">
+                <span>Reference: <strong className="text-red-900">{run.errorReference}</strong></span>
+                <CopyButton value={run.errorReference} label="Copy reference" />
+              </div>
+              {run.errorMessage && (
+                <p className="text-[11px] text-slate-600 break-all leading-normal">
+                  Details: {run.errorMessage}
+                </p>
+              )}
             </div>
           )}
         </div>
