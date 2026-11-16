@@ -30,6 +30,20 @@ export const GET = apiHandler(async (req: NextRequest) => {
     "EXPORTING",
   ] as const;
 
+  // Reconcile any orphaned runs where cancelRequested was set but status didn't update
+  await prisma.run.updateMany({
+    where: {
+      ownerId: user.id,
+      cancelRequested: true,
+      status: { notIn: ["COMPLETED", "FAILED", "CANCELLED"] },
+    },
+    data: {
+      status: "CANCELLED",
+      stage: "cancelled",
+      completedAt: new Date(),
+    },
+  });
+
   const whereClause: Prisma.RunWhereInput = {
     ownerId: user.id,
     ...(activeOnly ? { status: { in: [...ACTIVE_STATUSES] } } : {}),

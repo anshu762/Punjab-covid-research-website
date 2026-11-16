@@ -31,18 +31,31 @@ export const POST = apiHandler(
       );
     }
 
-    await prisma.run.update({
-      where: { id: runId },
-      data: { cancelRequested: true },
-    });
+    await prisma.$transaction([
+      prisma.run.update({
+        where: { id: runId },
+        data: {
+          cancelRequested: true,
+          status: "CANCELLED",
+          stage: "cancelled",
+          completedAt: new Date(),
+          errorMessage: "Cancelled by user",
+        },
+      }),
+      prisma.job.updateMany({
+        where: { refId: runId, status: { in: ["QUEUED", "RUNNING"] } },
+        data: { status: "CANCELLED" },
+      }),
+    ]);
 
-    // Notify compute worker to abort tasks promptly
+    // Notify compute worker to abort running tasks promptly
     await wakeWorker();
 
     return NextResponse.json({
       runId,
       cancelRequested: true,
-      message: "Cancellation requested. The run will terminate at the next task checkpoint.",
+      status: "CANCELLED",
+      message: "Run cancelled successfully.",
     });
   }
 );

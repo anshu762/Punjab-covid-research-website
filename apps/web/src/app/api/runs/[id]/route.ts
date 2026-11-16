@@ -40,6 +40,33 @@ export const GET = apiHandler(
     }
     assertOwner(run.ownerId, user);
 
+    // Self-healing reconciliation: if run was cancel-requested or worker job is dead
+    if (!["COMPLETED", "FAILED", "CANCELLED"].includes(run.status)) {
+      if (run.cancelRequested) {
+        run.status = "CANCELLED";
+        run.stage = "cancelled";
+        await prisma.run.update({
+          where: { id: runId },
+          data: { status: "CANCELLED", stage: "cancelled", completedAt: new Date() },
+        });
+      } else {
+        const job = await prisma.job.findFirst({
+          where: { refId: runId, type: "RUN" },
+          orderBy: { createdAt: "desc" },
+        });
+        if (job && (job.status === "FAILED" || job.status === "CANCELLED")) {
+          const newStatus = job.status === "FAILED" ? "FAILED" : "CANCELLED";
+          run.status = newStatus;
+          run.stage = newStatus.toLowerCase();
+          run.errorMessage = job.lastError || (newStatus === "FAILED" ? "Execution stopped unexpectedly" : "Cancelled");
+          await prisma.run.update({
+            where: { id: runId },
+            data: { status: newStatus, stage: run.stage, errorMessage: run.errorMessage, completedAt: new Date() },
+          });
+        }
+      }
+    }
+
     // Cold-start safety: if run has been QUEUED for > 10s, wake the worker again
     if (run.status === "QUEUED") {
       const queuedDurationMs = Date.now() - new Date(run.createdAt).getTime();
