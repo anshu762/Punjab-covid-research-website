@@ -36,21 +36,27 @@
 - [x] Task 3 — ODE integration (`models/sir.py`)
 - [x] Task 4 — Likelihood (`models/likelihood.py`)
 - [x] Task 5 — Fitting (`models/fit.py`)
-- [x] Task 6 — Baselines (`models/baselines.py`) and forecasting (`models/forecast.py`)
-
-
+- [x] Task 6 — Baselines (`models/baselines.py`) and forecasting (`models/forecast.py`)### Post-Launch Fixes & Production Hardening
+- [x] Fix 1 — Bundled datasets fallback via direct Prisma importer (`apps/web/src/lib/bundled-importer.ts`)
+- [x] Fix 2 — Railway Dockerfile startup shims for PaaS compatibility
+- [x] Fix 3 — Evaluation protocol prefix normalization (`RawRecord` normalization fix in `apps/compute/app/runner.py`)
+- [x] Fix 4 — User-friendly error formatting across website and model runner (`apps/web/src/lib/error-formatter.ts`, `RunProgress.tsx`)
 ### Checkpoint B — Evaluation protocol, selection rules, uncertainty, diagnostics
 - [x] Task 7 — Protocol (`evaluation/protocol.py`)
 - [x] Task 8 — Metrics and selection rules (`evaluation/metrics.py`)
 - [x] Task 9 — Uncertainty bootstrap (`uncertainty/bootstrap.py`)
-- [x] Task 10 — Diagnostics (`diagnostics.py`)
-
-
+- [x] Task 10 — Diagnostics (`diagnostics.py`)### Post-Launch Fixes & Production Hardening
+- [x] Fix 1 — Bundled datasets fallback via direct Prisma importer (`apps/web/src/lib/bundled-importer.ts`)
+- [x] Fix 2 — Railway Dockerfile startup shims for PaaS compatibility
+- [x] Fix 3 — Evaluation protocol prefix normalization (`RawRecord` normalization fix in `apps/compute/app/runner.py`)
+- [x] Fix 4 — User-friendly error formatting across website and model runner (`apps/web/src/lib/error-formatter.ts`, `RunProgress.tsx`)
 ### Checkpoint C — Runner, worker, persistence
 - [x] Task 11 — Pytest test suite (Tasks 3–10 verification)
-- [x] Task 12 — Runner (`runner.py`), Job handler (`jobs/run_handler.py`), CLI command, results schema (`packages/shared/src/schemas/results.ts`)
-
-
+- [x] Task 12 — Runner (`runner.py`), Job handler (`jobs/run_handler.py`), CLI command, results schema (`packages/shared/src/schemas/results.ts`)### Post-Launch Fixes & Production Hardening
+- [x] Fix 1 — Bundled datasets fallback via direct Prisma importer (`apps/web/src/lib/bundled-importer.ts`)
+- [x] Fix 2 — Railway Dockerfile startup shims for PaaS compatibility
+- [x] Fix 3 — Evaluation protocol prefix normalization (`RawRecord` normalization fix in `apps/compute/app/runner.py`)
+- [x] Fix 4 — User-friendly error formatting across website and model runner (`apps/web/src/lib/error-formatter.ts`, `RunProgress.tsx`)
 ### Checkpoint D — Web: run API and Model setup screen
 - [x] Task 13 — Next.js run route handlers (`/api/runs/*`, Idempotency, caching, cancellation, results)
 - [x] Task 14 — Model setup page `/model` (two-column layout, reactive controls, run progress card, status bar sync, stale banner)
@@ -124,8 +130,10 @@
 
 ### Checkpoint E — Deployment and portfolio assets
 - [x] Task 9 — Deploy configs (`vercel.json`, `Dockerfile`, `.github/workflows/ci.yml`, `docs/DEPLOY.md`, `scripts/smoke.sh`)
-- [x] Task 10 — Portfolio assets (`README.md`, `docs/CASE_STUDY.md`, `docs/DEMO_SCRIPT.md`, version tag v1.0.0)
-
-
+- [x] Task 10 — Portfolio assets (`README.md`, `docs/CASE_STUDY.md`, `docs/DEMO_SCRIPT.md`, version tag v1.0.0)### Post-Launch Fixes & Production Hardening
+- [x] Fix 1 — Bundled datasets fallback via direct Prisma importer (`apps/web/src/lib/bundled-importer.ts`)
+- [x] Fix 2 — Railway Dockerfile startup shims for PaaS compatibility
+- [x] Fix 3 — Evaluation protocol prefix normalization (`RawRecord` normalization fix in `apps/compute/app/runner.py`)
+- [x] Fix 4 — User-friendly error formatting across website and model runner (`apps/web/src/lib/error-formatter.ts`, `RunProgress.tsx`)
 
 
