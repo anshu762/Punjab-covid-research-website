@@ -92,12 +92,9 @@ export default function MethodsPage() {
       />
 
       {/* Two-Column Layout */}
-      <div className="flex flex-col md:flex-row gap-8 items-start">
-        {/* Sticky Table of Contents */}
-        <MethodsTableOfContents />
-
-        {/* Main Content Body */}
-        <main className="flex-1 min-w-0 space-y-8" id="methods-content">
+      <div className="flex flex-col lg:flex-row gap-8 items-start relative">
+        {/* Main Content Body (Left on Desktop) */}
+        <main className="flex-1 min-w-0 space-y-8 order-2 lg:order-1" id="methods-content">
           {/* Methods QA Box */}
           <MethodsQaCard />
 
@@ -332,6 +329,11 @@ export default function MethodsPage() {
             </div>
           </div>
         </main>
+
+        {/* Desktop Sticky Table of Contents (Right Side) */}
+        <aside className="w-full lg:w-72 shrink-0 order-1 lg:order-2 sticky top-20 self-start z-10">
+          <MethodsTableOfContents />
+        </aside>
       </div>
     </div>
   );

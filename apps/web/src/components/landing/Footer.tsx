@@ -25,7 +25,7 @@ export function LandingFooter() {
       {/* Final CTA Band */}
       <div className="border-b border-navy-800 py-16 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center space-y-6">
-          <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
             Ready to explore Punjab&apos;s epidemiological dynamics?
           </h3>
           <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">

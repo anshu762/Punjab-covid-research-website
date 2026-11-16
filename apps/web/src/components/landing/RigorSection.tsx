@@ -78,7 +78,7 @@ export function RigorSection() {
               <div className="text-xs font-mono uppercase tracking-wider text-blue-400 font-semibold mb-1">
                 Continuous-Time Formulation
               </div>
-              <h4 className="text-lg font-bold">Kermack–McKendrick Governing System</h4>
+              <h4 className="text-lg font-bold text-white">Kermack–McKendrick Governing System</h4>
               <p className="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
                 Solved numerically with Runge–Kutta (solve_ivp) at daily boundaries with strict parameter bounds and negative binomial dispersion.
               </p>

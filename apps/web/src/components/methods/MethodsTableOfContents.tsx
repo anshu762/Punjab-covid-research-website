@@ -42,7 +42,7 @@ export function MethodsTableOfContents() {
   return (
     <>
       {/* Mobile Collapsible Drawer */}
-      <div className="md:hidden mb-6 p-3 bg-surface rounded-xl border border-border shadow-xs">
+      <div className="lg:hidden p-3 bg-surface rounded-xl border border-border shadow-xs">
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -51,7 +51,7 @@ export function MethodsTableOfContents() {
         >
           <div className="flex items-center gap-2">
             <List className="w-4 h-4 text-blue-600" />
-            <span>Table of Contents</span>
+            <span>Methodology Index</span>
           </div>
           <ChevronDown
             className={`w-4 h-4 text-muted transition-transform duration-200 ${
@@ -80,37 +80,35 @@ export function MethodsTableOfContents() {
         )}
       </div>
 
-      {/* Desktop Sticky Sidebar */}
-      <aside className="hidden md:block w-64 shrink-0">
-        <div className="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto p-4 bg-surface rounded-xl border border-border shadow-xs">
-          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
-            <List className="w-4 h-4 text-blue-600" />
-            <h3 className="text-xs font-bold text-ink uppercase tracking-wider">
-              Methodology Index
-            </h3>
-          </div>
-          <nav className="flex flex-col gap-1 text-xs" aria-label="Methods Navigation">
-            {METHOD_SECTIONS.map((section) => {
-              const isActive = activeId === section.id;
-              return (
-                <button
-                  key={section.id}
-                  type="button"
-                  onClick={() => handleLinkClick(section.id)}
-                  aria-current={isActive ? "location" : undefined}
-                  className={`text-left px-2.5 py-2 rounded-lg transition-all text-[12px] leading-snug ${
-                    isActive
-                      ? "bg-blue-50 text-blue-700 font-semibold border-l-2 border-blue-600 pl-2 shadow-2xs"
-                      : "text-slate-600 hover:text-ink hover:bg-surface-2"
-                  }`}
-                >
-                  {section.shortTitle}
-                </button>
-              );
-            })}
-          </nav>
+      {/* Desktop Sticky Sidebar Panel */}
+      <div className="hidden lg:block max-h-[calc(100vh-6.5rem)] overflow-y-auto p-4 bg-surface rounded-xl border border-border shadow-xs">
+        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+          <List className="w-4 h-4 text-blue-600" />
+          <h3 className="text-xs font-bold text-ink uppercase tracking-wider">
+            Methodology Index
+          </h3>
         </div>
-      </aside>
+        <nav className="flex flex-col gap-1 text-xs" aria-label="Methods Navigation">
+          {METHOD_SECTIONS.map((section) => {
+            const isActive = activeId === section.id;
+            return (
+              <button
+                key={section.id}
+                type="button"
+                onClick={() => handleLinkClick(section.id)}
+                aria-current={isActive ? "location" : undefined}
+                className={`text-left px-2.5 py-2 rounded-lg transition-all text-[12px] leading-snug cursor-pointer ${
+                  isActive
+                    ? "bg-blue-50 text-blue-700 font-semibold border-l-2 border-blue-600 pl-2 shadow-2xs"
+                    : "text-slate-600 hover:text-ink hover:bg-surface-2"
+                }`}
+              >
+                {section.shortTitle}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
     </>
   );
 }
