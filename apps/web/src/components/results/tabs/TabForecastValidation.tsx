@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/common/EmptyState";
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Calendar,
 } from "lucide-react";
 
@@ -393,24 +394,27 @@ export function TabForecastValidation({ payload, forecastRows }: TabForecastVali
             <Calendar className="w-3.5 h-3.5 text-blue-600" /> Origin:
           </span>
 
-          <label htmlFor="origin-select" className="sr-only">
-            Select evaluation origin
-          </label>
-          <select
-            id="origin-select"
-            value={selectedOriginIndex}
-            onChange={(e) => setSelectedOriginIndex(Number(e.target.value))}
-            className="text-xs font-semibold text-ink bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
-          >
-            {origins.map((orig, idx) => {
-              const split = idx < 9 ? "Dev" : "Final";
-              return (
-                <option key={orig} value={idx}>
-                  Block {idx + 1}: {orig} [{split}]
-                </option>
-              );
-            })}
-          </select>
+          <div className="relative inline-flex items-center">
+            <label htmlFor="origin-select" className="sr-only">
+              Select evaluation origin
+            </label>
+            <select
+              id="origin-select"
+              value={selectedOriginIndex}
+              onChange={(e) => setSelectedOriginIndex(Number(e.target.value))}
+              className="appearance-none pl-3 pr-8 py-1.5 text-xs font-semibold text-ink bg-surface-2 border border-border rounded-lg shadow-2xs hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+            >
+              {origins.map((orig, idx) => {
+                const split = idx < 9 ? "Dev" : "Final";
+                return (
+                  <option key={orig} value={idx}>
+                    Block {idx + 1}: {orig} [{split}]
+                  </option>
+                );
+              })}
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+          </div>
 
           {/* Prev / Next Buttons */}
           <div className="inline-flex items-center gap-1">

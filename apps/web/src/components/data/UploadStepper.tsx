@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Upload, ArrowRight, ArrowLeft, CheckCircle2, AlertTriangle, Loader2, FileSpreadsheet } from "lucide-react";
+import { Upload, ArrowRight, ArrowLeft, CheckCircle2, AlertTriangle, Loader2, FileSpreadsheet, ChevronDown } from "lucide-react";
 import { useWorkspaceStore } from "@/store/workspace";
 import { useConfirmDataset } from "@/hooks/useDatasets";
 import { DEFAULT_DATE_RANGE } from "@epilens/shared";
@@ -218,19 +218,22 @@ export function UploadStepper({ onSuccess, onCancel }: UploadStepperProps) {
                 <label className="block text-xs font-semibold text-ink mb-1">
                   Date Column <span className="text-danger">*</span>
                 </label>
-                <select
-                  value={dateCol}
-                  onChange={(e) => setDateCol(e.target.value)}
-                  className="w-full text-xs rounded-lg border border-border px-3 py-2 bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
-                >
-                  <option value="">Select column...</option>
-                  {uploadResult.headers.map((h) => (
-                    <option key={h} value={h}>
-                      {h}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-[11px] text-muted">ISO YYYY-MM-DD or DD-MM-YYYY</span>
+                <div className="relative">
+                  <select
+                    value={dateCol}
+                    onChange={(e) => setDateCol(e.target.value)}
+                    className="w-full appearance-none pl-3 pr-8 py-2 text-xs font-semibold rounded-lg border border-border bg-surface text-ink shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+                  >
+                    <option value="">Select column...</option>
+                    {uploadResult.headers.map((h) => (
+                      <option key={h} value={h}>
+                        {h}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+                </div>
+                <span className="text-[11px] text-muted mt-1 block">ISO YYYY-MM-DD or DD-MM-YYYY</span>
               </div>
 
               {/* Confirmed cases column */}
@@ -238,19 +241,22 @@ export function UploadStepper({ onSuccess, onCancel }: UploadStepperProps) {
                 <label className="block text-xs font-semibold text-ink mb-1">
                   New Confirmed Cases <span className="text-danger">*</span>
                 </label>
-                <select
-                  value={countCol}
-                  onChange={(e) => setCountCol(e.target.value)}
-                  className="w-full text-xs rounded-lg border border-border px-3 py-2 bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
-                >
-                  <option value="">Select column...</option>
-                  {uploadResult.headers.map((h) => (
-                    <option key={h} value={h}>
-                      {h}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-[11px] text-muted">Daily integers (negative = correction)</span>
+                <div className="relative">
+                  <select
+                    value={countCol}
+                    onChange={(e) => setCountCol(e.target.value)}
+                    className="w-full appearance-none pl-3 pr-8 py-2 text-xs font-semibold rounded-lg border border-border bg-surface text-ink shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+                  >
+                    <option value="">Select column...</option>
+                    {uploadResult.headers.map((h) => (
+                      <option key={h} value={h}>
+                        {h}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+                </div>
+                <span className="text-[11px] text-muted mt-1 block">Daily integers (negative = correction)</span>
               </div>
 
               {/* Region column */}
@@ -258,19 +264,22 @@ export function UploadStepper({ onSuccess, onCancel }: UploadStepperProps) {
                 <label className="block text-xs font-semibold text-ink mb-1">
                   Region Code <span className="text-muted">(Optional)</span>
                 </label>
-                <select
-                  value={regionCol}
-                  onChange={(e) => setRegionCol(e.target.value)}
-                  className="w-full text-xs rounded-lg border border-border px-3 py-2 bg-surface focus:outline-none focus:ring-2 focus:ring-blue-600"
-                >
-                  <option value="">None (Assume all PB)</option>
-                  {uploadResult.headers.map((h) => (
-                    <option key={h} value={h}>
-                      {h}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-[11px] text-muted">Must be PB (Punjab)</span>
+                <div className="relative">
+                  <select
+                    value={regionCol}
+                    onChange={(e) => setRegionCol(e.target.value)}
+                    className="w-full appearance-none pl-3 pr-8 py-2 text-xs font-semibold rounded-lg border border-border bg-surface text-ink shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+                  >
+                    <option value="">None (Assume all PB)</option>
+                    {uploadResult.headers.map((h) => (
+                      <option key={h} value={h}>
+                        {h}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+                </div>
+                <span className="text-[11px] text-muted mt-1 block">Must be PB (Punjab)</span>
               </div>
             </div>
 

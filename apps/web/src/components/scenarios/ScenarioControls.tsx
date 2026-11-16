@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Lock, Play, Loader2 } from "lucide-react";
+import { Lock, Play, Loader2, ChevronDown } from "lucide-react";
 import type { RunItem } from "@/hooks/useRuns";
 import type { FitResultPayload } from "@epilens/shared";
 import { formatNumber, formatInt } from "@epilens/shared";
@@ -66,22 +66,25 @@ export function ScenarioControls({
             {completedRunsWithFit.length} available
           </span>
         </label>
-        <select
-          id="parent-run-select"
-          value={selectedRunId || ""}
-          onChange={(e) => onSelectRun(e.target.value)}
-          disabled={isRunning || completedRunsWithFit.length === 0}
-          className="w-full text-xs font-medium text-ink bg-surface border border-border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-600 focus:outline-none transition-shadow disabled:opacity-50"
-        >
-          {completedRunsWithFit.length === 0 && (
-            <option value="">No completed fits available</option>
-          )}
-          {completedRunsWithFit.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.displayName} ({r.modelType} · {r.mode})
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            id="parent-run-select"
+            value={selectedRunId || ""}
+            onChange={(e) => onSelectRun(e.target.value)}
+            disabled={isRunning || completedRunsWithFit.length === 0}
+            className="w-full appearance-none pl-3 pr-8 py-2 text-xs font-semibold text-ink bg-surface border border-border rounded-lg shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition disabled:opacity-50 cursor-pointer"
+          >
+            {completedRunsWithFit.length === 0 && (
+              <option value="">No completed fits available</option>
+            )}
+            {completedRunsWithFit.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.displayName} ({r.modelType} · {r.mode})
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+        </div>
         {selectedRunId && (
           <div className="flex items-center gap-2 pt-1 text-[11px] text-muted">
             {runs.find((r) => r.id === selectedRunId)?.dataset?.isSynthetic && (

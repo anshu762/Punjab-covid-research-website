@@ -368,6 +368,12 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
             last_m1_params = None
             last_m2_params = None
 
+            # Fast evaluation settings: warm-start multi-start for rolling origins
+            # Final model fit (lines below) retains full config.advanced.nStarts
+            eval_n_starts = min(config.advanced.nStarts, 3)
+            eval_cp_search_starts = min(config.advanced.cpSearchStarts, 2)
+            eval_bootstrap_replicates = min(config.advanced.bootstrapReplicates, 20)
+
             for b in blocks:
                 check_cancellation(run_id)
 
@@ -404,7 +410,7 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
                         beta_bounds=(config.advanced.betaBounds[0], config.advanced.betaBounds[1]),
                         i0_bounds=(config.advanced.initialInfectiousBounds[0], config.advanced.initialInfectiousBounds[1]),
                         dispersion_bounds=(config.advanced.dispersionBounds[0], config.advanced.dispersionBounds[1]),
-                        n_starts=config.advanced.nStarts,
+                        n_starts=eval_n_starts,
                         seed=config.advanced.seed,
                         task_id=f"m1_{b.origin}",
                         warm_start_params=last_m1_params,
@@ -424,7 +430,7 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
                     if uncertainty_on:
                         b_res_origin = run_parametric_bootstrap(
                             fit=m1_fit, N=N, susceptible_fraction=f_s, gamma=gamma, rho=rho,
-                            n_replicates=50, bootstrap_starts=1, seed=config.advanced.seed, forecast_horizon=7,
+                            n_replicates=eval_bootstrap_replicates, bootstrap_starts=1, seed=config.advanced.seed, forecast_horizon=7,
                         )
                         m1_lower = b_res_origin.forecast_lower
                         m1_upper = b_res_origin.forecast_upper
@@ -470,8 +476,8 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
                         dispersion_bounds=(config.advanced.dispersionBounds[0], config.advanced.dispersionBounds[1]),
                         cp_min_segment_days=config.advanced.cpMinSegmentDays,
                         cp_step_days=config.advanced.cpStepDays,
-                        cp_search_starts=config.advanced.cpSearchStarts,
-                        n_starts=config.advanced.nStarts,
+                        cp_search_starts=eval_cp_search_starts,
+                        n_starts=eval_n_starts,
                         seed=config.advanced.seed,
                         task_id=f"m2_{b.origin}",
                         warm_start_params=last_m2_params,
@@ -490,7 +496,7 @@ def execute_run(run_id: str, job_id: str | None = None) -> None:
                     if uncertainty_on:
                         b_res_origin = run_parametric_bootstrap(
                             fit=m2_fit, N=N, susceptible_fraction=f_s, gamma=gamma, rho=rho,
-                            n_replicates=50, bootstrap_starts=1, seed=config.advanced.seed, forecast_horizon=7,
+                            n_replicates=eval_bootstrap_replicates, bootstrap_starts=1, seed=config.advanced.seed, forecast_horizon=7,
                         )
                         m2_lower = b_res_origin.forecast_lower
                         m2_upper = b_res_origin.forecast_upper

@@ -35,6 +35,7 @@ import {
   FileText,
   ShieldCheck,
   RefreshCw,
+  ChevronDown,
 } from "lucide-react";
 
 export default function DataPage() {
@@ -226,22 +227,25 @@ export default function DataPage() {
           {datasets.length > 0 && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted hidden sm:inline">Active dataset:</span>
-              <select
-                value={currentDatasetId || ""}
-                onChange={(e) => {
-                  const sel = datasets.find((d) => d.id === e.target.value);
-                  if (sel) {
-                    setDataset(sel.id, sel.name, sel.isSynthetic);
-                  }
-                }}
-                className="text-xs font-medium rounded-lg border border-border px-3 py-1.5 bg-surface-2 text-ink focus:outline-none focus:ring-2 focus:ring-blue-600"
-              >
-                {datasets.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name} ({d.isSynthetic ? "Synthetic" : "Archive"})
-                  </option>
-                ))}
-              </select>
+              <div className="relative inline-flex items-center">
+                <select
+                  value={currentDatasetId || ""}
+                  onChange={(e) => {
+                    const sel = datasets.find((d) => d.id === e.target.value);
+                    if (sel) {
+                      setDataset(sel.id, sel.name, sel.isSynthetic);
+                    }
+                  }}
+                  className="appearance-none pl-3 pr-8 py-1.5 text-xs font-semibold rounded-lg border border-border bg-surface-2 text-ink shadow-2xs hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
+                >
+                  {datasets.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.name} ({d.isSynthetic ? "Synthetic" : "Archive"})
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+              </div>
             </div>
           )}
         </div>
@@ -474,22 +478,25 @@ export default function DataPage() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold text-ink">Filter by Flag:</span>
-                <select
-                  value={flagFilter}
-                  onChange={(e) => {
-                    setFlagFilter(e.target.value);
-                    setPage(1);
-                  }}
-                  className="text-xs rounded-lg border border-border px-3 py-1.5 bg-surface text-ink"
-                >
-                  <option value="">All Flags ({obsData?.total ?? 0})</option>
-                  <option value="OK">OK / Valid</option>
-                  <option value="CORRECTED">CORRECTED (Adjusted)</option>
-                  <option value="CORRECTION_DAY">CORRECTION_DAY</option>
-                  <option value="MISSING">MISSING (Gaps & Blanks)</option>
-                  <option value="DUPLICATE">DUPLICATE</option>
-                  <option value="UNRESOLVED_CORRECTION">UNRESOLVED</option>
-                </select>
+                <div className="relative inline-flex items-center">
+                  <select
+                    value={flagFilter}
+                    onChange={(e) => {
+                      setFlagFilter(e.target.value);
+                      setPage(1);
+                    }}
+                    className="appearance-none pl-3 pr-8 py-1.5 text-xs font-medium rounded-lg border border-border bg-surface text-ink shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer"
+                  >
+                    <option value="">All Flags ({obsData?.total ?? 0})</option>
+                    <option value="OK">OK / Valid</option>
+                    <option value="CORRECTED">CORRECTED (Adjusted)</option>
+                    <option value="CORRECTION_DAY">CORRECTION_DAY</option>
+                    <option value="MISSING">MISSING (Gaps & Blanks)</option>
+                    <option value="DUPLICATE">DUPLICATE</option>
+                    <option value="UNRESOLVED_CORRECTION">UNRESOLVED</option>
+                  </select>
+                  <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+                </div>
               </div>
 
               {/* Action buttons */}

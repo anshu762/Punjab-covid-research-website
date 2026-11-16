@@ -9,6 +9,7 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   SlidersHorizontal,
   Check,
   X,
@@ -140,26 +141,32 @@ export function RunsTable({
 
         <div className="flex items-center gap-2 flex-wrap">
           {/* Mode Filter */}
-          <select
-            value={modeFilter}
-            onChange={(e) => onModeFilterChange(e.target.value)}
-            className="text-xs font-medium text-ink bg-surface border border-border rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-blue-600 focus:outline-none"
-          >
-            <option value="ALL">All Modes</option>
-            <option value="FIT">Fit-only</option>
-            <option value="EVALUATE">Evaluate</option>
-          </select>
+          <div className="relative inline-flex items-center">
+            <select
+              value={modeFilter}
+              onChange={(e) => onModeFilterChange(e.target.value)}
+              className="appearance-none pl-3 pr-8 py-2 text-xs font-semibold text-ink bg-surface border border-border rounded-lg shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+            >
+              <option value="ALL">All Modes</option>
+              <option value="FIT">Fit-only</option>
+              <option value="EVALUATE">Evaluate</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+          </div>
 
           {/* Model Filter */}
-          <select
-            value={modelFilter}
-            onChange={(e) => onModelFilterChange(e.target.value)}
-            className="text-xs font-medium text-ink bg-surface border border-border rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-blue-600 focus:outline-none"
-          >
-            <option value="ALL">All Models</option>
-            <option value="M1">SIR Constant (M1)</option>
-            <option value="M2">SIR Change-Point (M2)</option>
-          </select>
+          <div className="relative inline-flex items-center">
+            <select
+              value={modelFilter}
+              onChange={(e) => onModelFilterChange(e.target.value)}
+              className="appearance-none pl-3 pr-8 py-2 text-xs font-semibold text-ink bg-surface border border-border rounded-lg shadow-2xs hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+            >
+              <option value="ALL">All Models</option>
+              <option value="M1">SIR Constant (M1)</option>
+              <option value="M2">SIR Change-Point (M2)</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+          </div>
 
           <span className="text-xs text-muted font-mono ml-1">
             {total} {total === 1 ? "run" : "runs"}

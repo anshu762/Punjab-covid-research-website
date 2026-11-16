@@ -83,9 +83,19 @@ export default function ModelSetupPage() {
   const [uncertainty, setUncertainty] = useState<"OFF" | "BOOTSTRAP">("OFF");
 
   // Effective values derived from dataset defaults or explicit overrides
-  const startDate = startDateOverride ?? activeDataset?.qualitySummary?.date_start ?? DEFAULT_DATE_RANGE.start;
-  const endDate = endDateOverride ?? activeDataset?.qualitySummary?.date_end ?? DEFAULT_DATE_RANGE.end;
+  const startDate = startDateOverride ?? (mode === "EVALUATE" ? DEFAULT_DATE_RANGE.start : activeDataset?.qualitySummary?.date_start ?? DEFAULT_DATE_RANGE.start);
+  const endDate = endDateOverride ?? (mode === "EVALUATE" ? DEFAULT_DATE_RANGE.end : activeDataset?.qualitySummary?.date_end ?? DEFAULT_DATE_RANGE.end);
   const populationValue = populationOverride ?? activeDataset?.populationValue ?? 30000000;
+
+  // Estimated rolling origin blocks when in EVALUATE mode
+  const estimatedBlocks = useMemo(() => {
+    if (mode !== "EVALUATE") return 0;
+    const totalDays = diffDays(startDate, endDate) + 1;
+    if (totalDays < 133) return 0;
+    const initialTrain = totalDays >= 153 ? 62 : 42;
+    const originCount = Math.floor((totalDays - initialTrain - 7) / 7) + 1;
+    return Math.max(0, originCount);
+  }, [mode, startDate, endDate]);
 
   // Advanced accordion state
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -199,15 +209,16 @@ export default function ModelSetupPage() {
   const runtimeEstimate = useMemo(() => {
     let est = "";
     if (mode === "FIT") {
-      est = modelType === "M1" ? "~3–5s (LSODA multi-start)" : "~15–25s (change-point scan + L-BFGS-B)";
+      est = modelType === "M1" ? "~2–4s (LSODA multi-start)" : "~10–18s (change-point scan + L-BFGS-B)";
     } else {
-      est = "~45–90s (13 rolling origins × 4 models)";
+      const blocks = estimatedBlocks > 0 ? estimatedBlocks : 13;
+      est = `~${Math.round(blocks * 2.5)}s (${blocks} rolling origins × 4 models, warm-started)`;
     }
     if (uncertainty === "BOOTSTRAP") {
-      est += " + ~60–90s (200 bootstrap replicates)";
+      est += " + ~40–60s (200 bootstrap replicates)";
     }
     return est;
-  }, [mode, modelType, uncertainty]);
+  }, [mode, modelType, uncertainty, estimatedBlocks]);
 
   // Handler: Submit Run
   const handleLaunchRun = async () => {
@@ -292,27 +303,30 @@ export default function ModelSetupPage() {
             <label htmlFor="dataset-picker" className="text-xs text-muted font-medium">
               Change:
             </label>
-            <select
-              id="dataset-picker"
-              value={activeDatasetId || ""}
-              onChange={(e) => {
-                const id = e.target.value;
-                const d = datasets.find((item) => item.id === id);
-                if (d) {
-                  setWorkspaceDataset(d.id, d.name, d.isSynthetic);
-                  setStartDateOverride(null);
-                  setEndDateOverride(null);
-                  setPopulationOverride(null);
-                }
-              }}
-              className="text-xs bg-surface-2 border border-border rounded-lg px-2.5 py-1.5 font-medium text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none"
-            >
-              {datasets.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name} {d.isSynthetic ? "(Synthetic)" : ""}
-                </option>
-              ))}
-            </select>
+            <div className="relative inline-flex items-center">
+              <select
+                id="dataset-picker"
+                value={activeDatasetId || ""}
+                onChange={(e) => {
+                  const id = e.target.value;
+                  const d = datasets.find((item) => item.id === id);
+                  if (d) {
+                    setWorkspaceDataset(d.id, d.name, d.isSynthetic);
+                    setStartDateOverride(null);
+                    setEndDateOverride(null);
+                    setPopulationOverride(null);
+                  }
+                }}
+                className="appearance-none pl-3 pr-8 py-1.5 text-xs font-semibold text-ink bg-surface-2 border border-border rounded-lg shadow-2xs hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 transition cursor-pointer"
+              >
+                {datasets.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.name} {d.isSynthetic ? "(Synthetic)" : ""}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-muted pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2" />
+            </div>
           </div>
         )}
       </div>
@@ -355,7 +369,11 @@ export default function ModelSetupPage() {
 
                 <button
                   type="button"
-                  onClick={() => setMode("EVALUATE")}
+                  onClick={() => {
+                    setMode("EVALUATE");
+                    setStartDateOverride(DEFAULT_DATE_RANGE.start);
+                    setEndDateOverride(DEFAULT_DATE_RANGE.end);
+                  }}
                   className={`p-3.5 rounded-xl border text-left transition-all ${
                     mode === "EVALUATE"
                       ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-600/30"
@@ -379,18 +397,43 @@ export default function ModelSetupPage() {
               </div>
             </div>
 
-            {/* Section 2: Model Architecture (Disabled in EVALUATE) */}
-            <div className={mode === "EVALUATE" ? "opacity-60" : ""}>
+            {/* Section 2: Model Architecture */}
+            <div>
               <FieldHelp
                 label="SIR Model Architecture"
                 tooltip="M1 assumes a single constant transmission rate. M2 searches for a discrete change-point in transmission rate."
               />
               {mode === "EVALUATE" ? (
-                <div className="p-2.5 rounded-lg bg-surface-2 border border-border text-xs text-muted flex items-center gap-2 mt-1">
-                  <Info className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>
-                    Evaluation protocol always benchmarks both <strong>M1</strong> and <strong>M2</strong> against both baselines (B1, B2).
-                  </span>
+                <div className="space-y-2 mt-1.5">
+                  <div className="p-3 rounded-xl bg-blue-50/60 border border-blue-200 text-xs text-blue-900 flex items-start gap-2.5">
+                    <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="font-semibold text-ink">
+                        Comprehensive Multi-Model Benchmarking
+                      </p>
+                      <p className="text-[11px] text-muted leading-relaxed">
+                        In Evaluation mode, both <strong>M1 (Constant SIR)</strong> and <strong>M2 (Change-Point SIR)</strong> are evaluated alongside both empirical baselines across all 13 rolling origins. The best model is selected automatically by frozen PRD rules.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                    <div className="p-2.5 rounded-lg border border-border bg-surface-2 font-mono font-medium text-ink flex flex-col items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-blue-600" />
+                      <span>M1: Constant</span>
+                    </div>
+                    <div className="p-2.5 rounded-lg border border-border bg-surface-2 font-mono font-medium text-ink flex flex-col items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-cyan-600" />
+                      <span>M2: Change-Point</span>
+                    </div>
+                    <div className="p-2.5 rounded-lg border border-border bg-surface-2 font-mono font-medium text-ink flex flex-col items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-slate-500" />
+                      <span>B1: 7-Day Mean</span>
+                    </div>
+                    <div className="p-2.5 rounded-lg border border-border bg-surface-2 font-mono font-medium text-ink flex flex-col items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-slate-400" />
+                      <span>B2: Weekday</span>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
@@ -447,13 +490,28 @@ export default function ModelSetupPage() {
 
             {/* Section 3: Date Range */}
             <div>
-              <FieldHelp
-                label="Date Range"
-                tooltip="Select starting and ending dates for calibration or evaluation."
-              />
+              <div className="flex items-center justify-between">
+                <FieldHelp
+                  label="Date Range"
+                  tooltip="Select starting and ending dates for calibration or evaluation."
+                />
+                {mode === "EVALUATE" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStartDateOverride(DEFAULT_DATE_RANGE.start);
+                      setEndDateOverride(DEFAULT_DATE_RANGE.end);
+                      toast.info("Date range set to PRD standard 13-origin evaluation period");
+                    }}
+                    className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    Use Standard Protocol (Jul 01 – Nov 30, 2020)
+                  </button>
+                )}
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
                 <div>
-                  <label htmlFor="start-date" className="block text-[11px] text-muted mb-1">
+                  <label htmlFor="start-date" className="block text-[11px] text-muted mb-1 font-medium">
                     Start Date
                   </label>
                   <input
@@ -461,11 +519,11 @@ export default function ModelSetupPage() {
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDateOverride(e.target.value)}
-                    className="w-full text-xs font-mono bg-surface border border-border rounded-lg px-3 py-2 text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none"
+                    className="w-full text-xs font-mono bg-surface border border-border rounded-lg px-3 py-2 text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none hover:border-slate-300 transition-colors"
                   />
                 </div>
                 <div>
-                  <label htmlFor="end-date" className="block text-[11px] text-muted mb-1">
+                  <label htmlFor="end-date" className="block text-[11px] text-muted mb-1 font-medium">
                     End Date
                   </label>
                   <input
@@ -473,19 +531,33 @@ export default function ModelSetupPage() {
                     type="date"
                     value={endDate}
                     onChange={(e) => setEndDateOverride(e.target.value)}
-                    className="w-full text-xs font-mono bg-surface border border-border rounded-lg px-3 py-2 text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none"
+                    className="w-full text-xs font-mono bg-surface border border-border rounded-lg px-3 py-2 text-ink focus-visible:ring-2 focus-visible:ring-blue-600 outline-none hover:border-slate-300 transition-colors"
                   />
                 </div>
               </div>
-              <div className="flex items-center justify-between mt-1 text-[11px] text-muted">
-                <span>Selected duration: {daysSelected} days</span>
-                {mode === "EVALUATE" && daysSelected < 133 && (
-                  <span className="text-danger font-medium">Requires ≥ 133 days for 13 blocks</span>
+              <div className="flex flex-wrap items-center justify-between mt-1.5 text-[11px] text-muted gap-2">
+                <span>Selected duration: <strong>{daysSelected} days</strong></span>
+                {mode === "EVALUATE" && (
+                  <span className={`font-semibold px-2 py-0.5 rounded border text-[10px] ${
+                    estimatedBlocks >= 13
+                      ? "text-blue-700 bg-blue-50 border-blue-200"
+                      : "text-danger bg-red-50 border-red-200"
+                  }`}>
+                    {estimatedBlocks} rolling origins {estimatedBlocks >= 13 ? "(Ready)" : "(Requires ≥133 days)"}
+                  </span>
                 )}
                 {mode === "FIT" && modelType === "M2" && daysSelected < 42 && (
                   <span className="text-danger font-medium">M2 requires ≥ 42 days</span>
                 )}
               </div>
+              {mode === "EVALUATE" && estimatedBlocks > 15 && (
+                <div className="mt-2.5 p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2">
+                  <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-semibold">Extended date range:</span> You have selected {daysSelected} days generating <strong>{estimatedBlocks} weekly forecast blocks</strong>. This will run ~{Math.round(estimatedBlocks * 2.5)}s. For standard evaluation, use the 13-origin protocol (2020-07-01 to 2020-11-30).
+                  </div>
+                </div>
+              )}
               {validationResult.errors["dateRange"] && (
                 <InlineError message={validationResult.errors["dateRange"]} />
               )}

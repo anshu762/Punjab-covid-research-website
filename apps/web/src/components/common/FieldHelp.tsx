@@ -23,13 +23,20 @@ export function FieldHelp({
   return (
     <div className="flex flex-col gap-0.5 mb-1">
       <div className="flex items-center gap-1.5">
-        <label
-          htmlFor={htmlFor}
-          className="text-xs font-semibold text-slate-800 tracking-tight"
-        >
-          {label}
-          {required && <span className="text-danger ml-0.5">*</span>}
-        </label>
+        {htmlFor ? (
+          <label
+            htmlFor={htmlFor}
+            className="text-xs font-semibold text-slate-800 tracking-tight"
+          >
+            {label}
+            {required && <span className="text-danger ml-0.5">*</span>}
+          </label>
+        ) : (
+          <span className="text-xs font-semibold text-slate-800 tracking-tight">
+            {label}
+            {required && <span className="text-danger ml-0.5">*</span>}
+          </span>
+        )}
         {tooltip && (
           <div className="relative inline-flex items-center">
             <button
